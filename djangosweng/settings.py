@@ -76,7 +76,11 @@ WSGI_APPLICATION = 'djangosweng.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'swengdb',
+        'USER': 'swengadmin',
+        'PASSWORD': 'jezpass',
+        'HOST': 'mtay.dev',
+        'PORT': '5432',
     }
 }
 
