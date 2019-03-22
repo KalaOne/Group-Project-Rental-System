@@ -1,3 +1,4 @@
 .idea/
 djangosweng/__pycache__/
 rentalsystem/__pycache__/
+rentalsystem/migrations/__pycache__/
