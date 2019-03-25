@@ -36,6 +36,12 @@ class Item(models.Model):
     category_id = models.ForeignKey(Category, on_delete=models.PROTECT) # foreign key to Category
 
 
+# Item category link, item can have multiple category pairs
+class ItemCategoryPair(models.Model):
+    item_id = models.ForeignKey(Item, on_delete=models.PROTECT)  # foreign key to Category
+    category_id = models.ForeignKey(Category, on_delete=models.PROTECT)  # foreign key to Category
+
+
 # item listing class
 class ItemListing(models.Model):
     title = models.CharField(max_length=100)                    # Title for item listing
