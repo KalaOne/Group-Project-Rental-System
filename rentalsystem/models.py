@@ -33,7 +33,7 @@ class Category(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=100)                 # Name of generic item
     info = models.CharField(max_length=500, blank=True)     # description of item
-    category_id = models.ForeignKey(Category, on_delete=models.PROTECT, db_column='item_id') # foreign key to Category
+    category_id = models.ForeignKey(Category, on_delete=models.PROTECT, db_column='category_id') # foreign key to Category
 
 
 # Item category link, item can have multiple category pairs
