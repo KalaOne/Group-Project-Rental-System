@@ -31,12 +31,18 @@ class Category(models.Model):
 
 # item class
 class Item(models.Model):
-    title = models.CharField(max_length=100)
-    info = models.CharField(max_length=500, blank=True)     # optional description of item/listing
+    name = models.CharField(max_length=100)                 # Name of generic item
+    info = models.CharField(max_length=500, blank=True)     # description of item
+    category_id = models.ForeignKey(Category, on_delete=models.PROTECT) # foreign key to Category
+
+
+# item listing class
+class ItemListing(models.Model):
+    title = models.CharField(max_length=100)                    # Title for item listing
+    additional_info = models.CharField(max_length=500, blank=True)     # optional description of item listed
     cost_per_day = models.PositiveIntegerField()            # holds the cost per day, must be positive
     owner_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT)  # foreign key to CustomUser
-    category_id = models.ForeignKey(Category, on_delete=models.PROTECT) # foreign key to Category
-    region = models.CharField(max_length=100)
+    item_type_id = models.ForeignKey(Item, on_delete=models.PROTECT) # foreign key to Item
 
 
 # transaction class
@@ -49,7 +55,7 @@ class Transaction(models.Model):
     end_date = models.DateField()
 
 
-#job list class
+# job list class
 class JobList(models.Model):
     staff_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
 
