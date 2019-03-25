@@ -33,13 +33,13 @@ class Category(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=100)                 # Name of generic item
     info = models.CharField(max_length=500, blank=True)     # description of item
-    category_id = models.ForeignKey(Category, on_delete=models.PROTECT) # foreign key to Category
+    category_id = models.ForeignKey(Category, on_delete=models.PROTECT, db_column='item_id') # foreign key to Category
 
 
 # Item category link, item can have multiple category pairs
 class ItemCategoryPair(models.Model):
-    item_id = models.ForeignKey(Item, on_delete=models.PROTECT)  # foreign key to Category
-    category_id = models.ForeignKey(Category, on_delete=models.PROTECT)  # foreign key to Category
+    item_id = models.ForeignKey(Item, on_delete=models.PROTECT, db_column='item_id')  # foreign key to Category
+    category_id = models.ForeignKey(Category, on_delete=models.PROTECT, db_column='category_id')  # foreign key to Category
 
 
 # item listing class
@@ -47,13 +47,13 @@ class ItemListing(models.Model):
     title = models.CharField(max_length=100)                    # Title for item listing
     additional_info = models.CharField(max_length=500, blank=True)     # optional description of item listed
     cost_per_day = models.PositiveIntegerField()            # holds the cost per day, must be positive
-    owner_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT)  # foreign key to CustomUser
-    item_type_id = models.ForeignKey(Item, on_delete=models.PROTECT) # foreign key to Item
+    owner_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='owner_id')  # foreign key to CustomUser
+    item_type_id = models.ForeignKey(Item, on_delete=models.PROTECT, db_column='item_type_id') # foreign key to Item
 
 
 # transaction class
 class Transaction(models.Model):
-    item_id = models.ForeignKey(Item, on_delete=models.PROTECT) # foreign key to Item
+    item_id = models.ForeignKey(Item, on_delete=models.PROTECT, db_column='item_id') # foreign key to Item
     owner_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='owner_id')
     renter_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name ='renter_id')
     total_cost = models.PositiveIntegerField()
@@ -63,27 +63,27 @@ class Transaction(models.Model):
 
 # job list class
 class JobList(models.Model):
-    staff_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    staff_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='staff_id')
 
 
 # job class
 class Job(models.Model):
-    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
-    job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT)
+    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
+    job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT, db_column='job_list_id')
     delivered_datetime = models.DateTimeField(blank=True, null=True)
 
 
 # dispute class
 class Dispute(models.Model):
-    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
+    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
     content = models.CharField(max_length=500, blank=True, null=True)
     resolved = models.BooleanField(default=False)
 
 
 # payment class
 class Payment(models.Model):
-    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
+    user_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='user_id')
     payment_amt = models.PositiveIntegerField()
     payment_date = models.DateTimeField()
 
@@ -91,10 +91,10 @@ class Payment(models.Model):
 # reviews class
 class Reviews(models.Model):
     # review can be left for either a transaction or a customer? not sure what we wanna do here
-    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT)
+    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
     content = models.CharField(max_length=500)
     rating = models.PositiveIntegerField()
-    left_by_user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    left_by_user_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='left_by_user_id')
 
 
 
