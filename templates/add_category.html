@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h2>Add Category</h2>
+
+    <table>
+    {% for category in cat_objects %}
+        <tr>
+            <td>{{ category.title }}</td>
+            <td>{{ category.description }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+
+  <a href="{% url 'landing' %}">Go back</a>
+{% endblock %}
