@@ -28,6 +28,9 @@ class Category(models.Model):
     title = models.CharField(max_length=100)                # holds the title of the category
     description = models.CharField(max_length=500)          # holds the description of the category
 
+    def __str__(self):
+        return self.title
+
 
 # item class
 class Item(models.Model):
@@ -49,6 +52,8 @@ class ItemListing(models.Model):
     owner_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='owner_id')  # foreign key to CustomUser
     item_type_id = models.ForeignKey(Item, on_delete=models.PROTECT, db_column='item_type_id') # foreign key to Item
 
+    def __str__(self):
+        return self.title
 
 # transaction class
 class Transaction(models.Model):

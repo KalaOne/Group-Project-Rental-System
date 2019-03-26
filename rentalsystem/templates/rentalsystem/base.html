@@ -41,23 +41,20 @@
             <a class="nav-link" href="#">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
           </li>
+          <li class="nav-item">
+            <p><a class="nav-link" href="{% url 'logout' %}">logout</a></p>
+          </li>
         </ul>
+
       </div>
     </div>
   </nav>
 
   <!-- Page Content -->
   <div class="container">
-    <div class="row">
-      <div class="col-md-8">
         {%  block content %}{% endblock %}
-      </div>
-    </div>
   </div>
 
   <!-- Bootstrap core JavaScript -->
