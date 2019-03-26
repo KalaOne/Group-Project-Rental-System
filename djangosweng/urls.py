@@ -22,5 +22,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),    # points to django admin pages
     path('', include('rentalsystem.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # points to django's auth module urls
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),  # points to home template
 ]
