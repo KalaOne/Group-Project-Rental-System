@@ -36,6 +36,10 @@ class Category(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=100)                 # Name of generic item
     info = models.CharField(max_length=500, blank=True)     # description of item
+    image_url = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 # Item category link, item can have multiple category pairs
