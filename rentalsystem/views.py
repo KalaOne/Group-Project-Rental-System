@@ -12,21 +12,11 @@ def index(request):
         return HttpResponseRedirect('/landing')
     return TemplateResponse(request, "home.html")
 
+
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
 
-def add_category(request):
-    cat_objects = Category.objects.all().values()   # get all categories (as dict with .values())
-                                                    # need this for post and non-post requests
 
-    if request.method == 'POST':
-        form = AddCategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-    else:
-        form = AddCategoryForm()
-
-    return render(request, 'add_category.html', {'cat_objects': cat_objects, 'form': form})  # render template

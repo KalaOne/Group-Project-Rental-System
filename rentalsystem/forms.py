@@ -20,8 +20,4 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ('username', 'email')
 
 
-# used to add categories in the add_category.html template
-class AddCategoryForm(ModelForm):
-    class Meta:
-        model = Category
-        fields = ['title', 'description']
+
