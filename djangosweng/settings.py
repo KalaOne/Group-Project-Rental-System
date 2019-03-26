@@ -122,11 +122,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/rentalsystem/'
 
 # sets where to send users to once logged in successfully
-LOGIN_REDIRECT_URL = '/landing'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home'
+LOGOUT_REDIRECT_URL = '/landing'
 
 # allows us to create a custom user class
 AUTH_USER_MODEL = 'rentalsystem.CustomUser'

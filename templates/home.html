@@ -3,6 +3,13 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Login</a> or <a href="{% url 'signup' %}">Sign up</a>
+
+    Hi {{ user.username }}! You have been successfully logged in.
+    <p><a href="{% url 'logout' %}">logout</a></p>
+
+    <!-- Admin specific stuff -->
+    {% if user.role == 'Admin' %}
+    <p><a href="{% url 'add_category' %}">Add category</a></p>
+    {% endif %}
+
 {% endblock %}
