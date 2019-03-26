@@ -19,9 +19,14 @@ class SignUp(generic.CreateView):
 
 
 def add_category(request):
-    cat_objects = Category.objects.all().values()   # get all the category objects from model
+    cat_objects = Category.objects.all().values()   # get all categories (as dict with .values())
+                                                    # need this for post and non-post requests
 
-    print(cat_objects)
+    if request.method == 'POST':
+        form = AddCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AddCategoryForm()
 
-    # render template, give it all the category objects
-    return render(request, 'add_category.html', {'cat_objects': cat_objects})
+    return render(request, 'add_category.html', {'cat_objects': cat_objects, 'form': form})  # render template

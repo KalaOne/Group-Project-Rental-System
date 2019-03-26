@@ -3,9 +3,20 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h2>Add Category</h2>
+    <h1>Add Category Page</h1>
 
+    <h2>Add Category</h2>
+        <form method="post" class="add-cat">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Submit">
+        </form>
+    <h2>Existing Categories</h2>
     <table>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+    </tr>
     {% for category in cat_objects %}
         <tr>
             <td>{{ category.title }}</td>
