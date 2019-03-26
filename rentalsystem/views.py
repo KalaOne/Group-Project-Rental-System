@@ -9,8 +9,8 @@ from .forms import *
 
 def index(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/landing')
-    return TemplateResponse(request, "home.html")
+        return HttpResponseRedirect('/home')
+    return TemplateResponse(request, "landing.html")
 
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
