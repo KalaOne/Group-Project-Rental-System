@@ -8,7 +8,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = CustomUser
-        fields = ('username', 'email')
+        fields = ('username', 'email', 'region', 'name')
 
 
 # a form which extends the built-in Django UserChangeForm - required because we're overriding the built in User, so

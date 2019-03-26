@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
         ('A', 'Admin'),
     )
 
-    role = models.CharField(max_length=50, choices=ROLE_TYPES, default='Customer')  # stores customer/staff/admin role
+    role = models.CharField(max_length=50, choices=ROLE_TYPES, default='C')  # stores customer/staff/admin role
     region = models.CharField(max_length=100)               # stores region
     name = models.CharField(max_length=100)                 # stores full name of user
     job_capacity = models.IntegerField(blank=True, null=True)          # STAFF ONLY: number of jobs they can do per day
