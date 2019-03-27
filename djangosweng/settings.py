@@ -124,6 +124,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/rentalsystem/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # sets where to send users to once logged in successfully
 LOGIN_REDIRECT_URL = '/home'
 LOGOUT_REDIRECT_URL = '/landing'
