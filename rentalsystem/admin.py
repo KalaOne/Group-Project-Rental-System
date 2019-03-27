@@ -7,7 +7,6 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser, ItemCategoryPair, Profile, JobList
 
 
-
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -32,10 +31,12 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'description']
     fields = ('title', 'description')
 
+
 # sets up the inline admin edit for ItemCategoryPair 
 class ItemCategoryPairInline(admin.StackedInline):
     model = ItemCategoryPair
     list_display = ['']
+
 
 # sets up the item view in the admin page
 class ItemAdmin(admin.ModelAdmin):
@@ -46,13 +47,13 @@ class ItemAdmin(admin.ModelAdmin):
     inlines = [ItemCategoryPairInline]
 
 
-#transaction view in admin page
+# transaction view in admin page
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ['item_id', 'owner_id', 'renter_id', 'total_cost','start_date','end_date']
     field = ('item_id', 'owner_id', 'renter_id', 'total_cost','start_date','end_date')
 
 
-#joblistview in admin page
+# joblistview in admin page
 class JobListAdmin(admin.ModelAdmin):
     list_display = ['staff_id']
     field = ('staff_id')
