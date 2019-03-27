@@ -10,8 +10,9 @@ from .models import *
 
 def index(request):
     if request.user.is_authenticated:
-       return home(request)
+        return home(request)
     return landing(request)
+
 
 def home(request):
     context = {
@@ -20,8 +21,10 @@ def home(request):
     }
     return render(request, "rentalsystem/home.html", context)
 
+
 def landing(request):
     return render(request, "rentalsystem/landing.html")
+
 
 
 def myjobs(request):
