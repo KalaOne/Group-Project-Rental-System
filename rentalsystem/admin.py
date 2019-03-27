@@ -2,7 +2,7 @@ from django.contrib import admin
 from rentalsystem import models
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, ItemCategoryPair
+from .models import CustomUser, ItemCategoryPair, Profile
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -47,3 +47,4 @@ class ItemAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Item, ItemAdmin)
+admin.site.register(Profile)

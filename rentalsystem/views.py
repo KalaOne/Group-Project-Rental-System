@@ -23,10 +23,12 @@ def home(request):
 def landing(request):
     return render(request, "rentalsystem/landing.html")
 
+def profile(request):
+    return render(request, 'profile.html')
+
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'rentalsystem/signup.html'
-
 
 
