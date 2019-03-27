@@ -1,0 +1,23 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}My Jobs{% endblock %}
+
+{% block content %}
+    <table>
+    <tr>
+        <th>Transaction_ID</th>
+        <th>JobList_ID</th>
+        <th>Due Date</th>
+        <th>Delivered Date</th>
+    </tr>
+    {% for job in jobs %}
+        <tr>
+            <td>{{ job.transaction_id }}</td>
+            <td>{{ job.job_list_id }}</td>
+            <td>{{ job.due_delivery_datetime }}</td>
+            <td>{{ job.delivered_datetime }}</td>
+        </tr>
+    {% endfor %}
+
+    </table>
+{% endblock %}

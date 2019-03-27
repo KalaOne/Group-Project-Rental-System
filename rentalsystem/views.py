@@ -23,10 +23,18 @@ def home(request):
 def landing(request):
     return render(request, "rentalsystem/landing.html")
 
+
+def myjobs(request):
+    current_id = request.user.id # gets current logged in staff ID
+    jl_id = JobList.objects.get(staff_id = current_id) #get current staff joblist
+    jobs = Job.objects.filter(job_list_id = jl_id) #get all jobs for joblist_id
+
+    return render(request, "rentalsystem/myjobs.html", {'jobs' : jobs})
+
+
+
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'rentalsystem/signup.html'
-
-
 

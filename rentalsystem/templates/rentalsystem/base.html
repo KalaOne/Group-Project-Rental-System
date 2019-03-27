@@ -39,6 +39,11 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
+            {% if user.role ==  'S' %}
+                <li class="nav-item">
+                    <p><a class="nav-link" href="{% url 'myjobs' %}">My Jobs</a></p>
+                </li>
+            {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
           </li>
