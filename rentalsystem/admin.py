@@ -40,8 +40,8 @@ class ItemCategoryPairInline(admin.StackedInline):
 
 # sets up the item view in the admin page
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ['name', 'info']
-    fields = ('name', 'info')
+    list_display = ['name', 'info', 'image']
+    fields = ('name', 'info', 'image')
 
     # inlines ability to change different model from this one
     inlines = [ItemCategoryPairInline]

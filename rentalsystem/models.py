@@ -42,7 +42,7 @@ class Category(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=100)                 # Name of generic item
     info = models.CharField(max_length=500, blank=True)     # description of item
-    image_url = models.CharField(max_length=100, null=True)
+    image = models.ImageField(default='default.jpg', upload_to='item_pics')
 
     def __str__(self):
         return self.name
