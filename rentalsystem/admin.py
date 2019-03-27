@@ -4,7 +4,9 @@ from django.contrib.auth.admin import UserAdmin
 
 from rentalsystem.models import Job
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, ItemCategoryPair, JobList
+from .models import CustomUser, ItemCategoryPair, Profile, JobList
+
+
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -68,3 +70,5 @@ admin.site.register(models.Item, ItemAdmin)
 admin.site.register(models.Transaction, TransactionAdmin)
 admin.site.register(models.JobList, JobListAdmin)
 admin.site.register(models.Job, JobAdmin)
+admin.site.register(Profile)
+
