@@ -6,6 +6,8 @@ from rentalsystem.models import Job
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser, ItemCategoryPair, Profile, JobList
 
+
+
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
