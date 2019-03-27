@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
     region = models.CharField(max_length=100)               # stores region
     name = models.CharField(max_length=100)                 # stores full name of user
     job_capacity = models.IntegerField(blank=True, null=True)          # STAFF ONLY: number of jobs they can do per day
-    card_long_number = models.IntegerField(blank=True, null=True)      # CUSTOMER ONLY: payment card long number
+    card_long_number = models.BigIntegerField(blank=True, null=True)      # CUSTOMER ONLY: payment card long number
     card_expiry_date = models.DateField(blank=True, null=True)         # CUSTOMER ONLY: payment card expiry date
     card_cvv = models.IntegerField(blank=True, null=True)              # CUSTOMER ONLY: payment card cvv code
 
@@ -78,6 +78,7 @@ class JobList(models.Model):
 class Job(models.Model):
     transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
     job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT, db_column='job_list_id')
+    due_delivery_datetime = models.DateTimeField()
     delivered_datetime = models.DateTimeField(blank=True, null=True)
 
 
