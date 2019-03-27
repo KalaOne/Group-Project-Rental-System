@@ -4,11 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from rentalsystem.models import Job
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-<<<<<<< HEAD
-from .models import CustomUser, ItemCategoryPair, JobList
-=======
-from .models import CustomUser, ItemCategoryPair, Profile
->>>>>>> User_Account_View
+from .models import CustomUser, ItemCategoryPair, Profile, JobList
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
