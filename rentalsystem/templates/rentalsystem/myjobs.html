@@ -3,19 +3,30 @@
 {% block title %}My Jobs{% endblock %}
 
 {% block content %}
+    <h2>Your current jobs</h2>
     <table>
     <tr>
+        <th>Job ID</th>
         <th>Transaction_ID</th>
         <th>JobList_ID</th>
         <th>Due Date</th>
         <th>Delivered Date</th>
+        <th>Mark as delivered</th>
     </tr>
     {% for job in jobs %}
         <tr>
+            <td>{{job.id }}</id>
             <td>{{ job.transaction_id }}</td>
             <td>{{ job.job_list_id }}</td>
             <td>{{ job.due_delivery_datetime }}</td>
             <td>{{ job.delivered_datetime }}</td>
+            <td>
+                <form action='jobcomp/' method='POST'>
+                    {% csrf_token %} 
+                    <input type="hidden" name="jobpk" value="{{job.id}}">
+                    <button class="btnMarkComplete">Mark {{job.id}} as delivered!</button>
+                </form>
+            </td>
         </tr>
     {% endfor %}
 
