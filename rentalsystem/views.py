@@ -22,10 +22,20 @@ def home(request):
     }
     return render(request, "rentalsystem/home.html", context)
 
-# Re renders home page after a search 
+# Re renders home page with new 'context' after a search
 def home_search(request):
+    items = Item.objects.filter(name__icontains=request.GET['search_query'])
+
+    # finds the category id for any category matching a search
+    cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
+
+    # TODO: need to fix this!
+    games_in_cat_id = ItemCategoryPair.objects.filter(category_id=cat_id).values_list('item_id', flat=True)
+
+    print("Games in category" + str(games_in_cat_id))
+    print("Category=" + str(cat_id))
     context = {
-        'items': Item.objects.filter(name__icontains=request.GET['search_query']),
+        'items': items,
         'categories': Category.objects.all()
     }
     return render(request, "rentalsystem/home.html", context)
