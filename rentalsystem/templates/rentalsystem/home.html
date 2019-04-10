@@ -13,6 +13,12 @@
         <h1 class="my-4">Categories</h1>
 
         <div class="list-group">
+
+          <form class="searchBar" action="/home_search/" method="get">
+            <input type="text" name="search_query" placeholder="Search">
+            <button type="submit" value="Search"><i class="fas fa-search"></i></button>
+          </form>
+
             {% for category in categories %}
             <a href="#" class="list-group-item">{{ category }}</a>
             {%  endfor %}

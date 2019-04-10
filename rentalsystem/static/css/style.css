@@ -1,2 +1,12 @@
+.searchBar  {
+  margin-bottom: 20px;
+  display: flex;
+}
 
+.searchBar input {
+  flex: 2;
+}
 
+.searchBar button {
+  flex: 1;
+}

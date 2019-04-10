@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.utils import timezone
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import *
@@ -18,6 +18,14 @@ def index(request):
 def home(request):
     context = {
         'items': Item.objects.all(),
+        'categories': Category.objects.all()
+    }
+    return render(request, "rentalsystem/home.html", context)
+
+# Re renders home page after a search 
+def home_search(request):
+    context = {
+        'items': Item.objects.filter(name__icontains=request.GET['search_query']),
         'categories': Category.objects.all()
     }
     return render(request, "rentalsystem/home.html", context)
@@ -42,7 +50,7 @@ def myjobs(request):
 
         # save object
         job.save()
-        
+
     # create list of current users jobs to pass into template
     current_id = request.user.id # gets current logged in staff ID
     jl_id = JobList.objects.get(staff_id = current_id) #get current staff joblist
