@@ -50,8 +50,21 @@ def myjobs(request):
 
     return render(request, "rentalsystem/myjobs.html", {'jobs' : jobs})
 
+
 def jobstats(request):
-    return render(request, 'jobstats.html')
+    # calculate the completed number of jobs
+    total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
+
+    # calculate the completed jobs in past 7 days
+    total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
+
+    context = {
+        'total_jobs_completed_count': total_jobs_completed_count,
+        'total_jobs_comp_last_week': total_jobs_comp_last_week
+    }
+
+    return render(request, 'jobstats.html', context)
+
 
 def profile(request):
     return render(request, 'profile.html')
