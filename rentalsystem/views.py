@@ -50,6 +50,8 @@ def myjobs(request):
 
     return render(request, "rentalsystem/myjobs.html", {'jobs' : jobs})
 
+def jobstats(request):
+    return render(request, 'jobstats.html')
 
 def profile(request):
     return render(request, 'profile.html')

@@ -11,4 +11,5 @@ urlpatterns = [
     path('myjobs/', views.myjobs, name='myjobs'),
     path('myjobs/jobcomp/', views.myjobs, name='myjobsupdate'),
     path('profile/', views.profile, name='profile'),
+    path('jobstats/', views.jobstats, name='jobstats')
 ]
