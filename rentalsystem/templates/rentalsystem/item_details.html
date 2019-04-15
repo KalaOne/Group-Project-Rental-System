@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Details for {{ Item.name }} {% endblock %}
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <img src="{{ item.image }}">
+                    <h1>{{ item.name }}</h1>
+                    <h3> {{ item.info }}</h3>
+{#                    FOR PRICE    #}
+{#                    <h3>{{ item.price }}</h3>#}
+                    <div class="col-xs-6 col-sm-10 text-left">
+                    <button type="submit" class="btn btn-success">Post Item</button>
+                    </div>
+                    <div class="col-xs-6 col-sm-10 text-right">
+                        <button type="submit" class="btn btn-success">Edit Item</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

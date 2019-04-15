@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
 
 # subclassing django's default user class to make our own user class - AbstractUser superclass contains all the
 # password and session magic we need
@@ -43,6 +44,9 @@ class Item(models.Model):
     name = models.CharField(max_length=100)                 # Name of generic item
     info = models.CharField(max_length=500, blank=True)     # description of item
     image = models.ImageField(default='default.jpg', upload_to='item_pics')
+
+    def get_absolute_url(self):
+        return reverse('item_details', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.name

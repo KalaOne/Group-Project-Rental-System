@@ -10,4 +10,6 @@ urlpatterns = [
     path('landing/', views.landing, name='landing'),
     path('myjobs/', views.myjobs, name='myjobs'),
     path('profile/', views.profile, name='profile'),
+    path('postItem/', views.UserPostItem.as_view(), name='postItem'),
+    path('item_details/<int:pk>', views.item_details, name="item_details"),
 ]

@@ -44,6 +44,11 @@
                     <p><a class="nav-link" href="{% url 'myjobs' %}">My Jobs</a></p>
                 </li>
             {% endif %}
+            {% if user.role ==  'C' %}
+                <li class="nav-item">
+                    <p><a class="nav-link" href="{% url 'postItem' %}">Post Item</a></p>
+                </li>
+            {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
           </li>
