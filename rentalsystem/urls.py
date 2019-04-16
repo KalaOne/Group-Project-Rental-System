@@ -12,4 +12,6 @@ urlpatterns = [
     path('myjobs/jobcomp/', views.myjobs, name='myjobsupdate'),
     path('profile/', views.profile, name='profile'),
     path('jobstats/', views.jobstats, name='jobstats')
+    path('postItem/', views.UserPostItem.as_view(), name='postItem'),
+    path('post_item_details/<int:pk>', views.item_details, name="post_item_details"),
 ]
