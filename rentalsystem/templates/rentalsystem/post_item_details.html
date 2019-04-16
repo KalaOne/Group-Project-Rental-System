@@ -7,7 +7,7 @@
             <form class="form-horizontal" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
-                    <img src="{{ item.image.url }}">
+                    <img src="{{ item.image.url }}", class="img-thumbnail" alt="Responsive image">
                     <h1>{{ item.name }}</h1>
                     <h3> {{ item.info }}</h3>
 {#                    FOR PRICE    #}

@@ -13,5 +13,6 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('jobstats/', views.jobstats, name='jobstats'),
     path('postItem/', views.UserPostItem.as_view(), name='postItem'),
-    path('post_item_details/<int:pk>', views.item_details, name="post_item_details"),
+    path('post_item_details/<int:pk>', views.UserPostItem.post_item_details, name='post_item_details'),
+    path('item_details/<int:pk>', views.ItemDetails.as_view(), name='item_details'),
 ]

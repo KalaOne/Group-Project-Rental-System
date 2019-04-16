@@ -77,6 +77,12 @@ class UserPostItem(generic.CreateView):
     model = Item
     fields = ['name', 'info', 'image']
 
-def item_details(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    return render(request, 'rentalsystem/post_item_details.html', {'item': item})
+    def post_item_details(request, pk):
+        item = get_object_or_404(Item, pk=pk)
+        return render(request, 'rentalsystem/post_item_details.html', {'item': item})
+
+class ItemDetails(generic.DetailView):
+    model = Item
+
+    def item_details(self):
+        return get_object_or_404(Item)
