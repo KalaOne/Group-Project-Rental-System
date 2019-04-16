@@ -46,7 +46,7 @@ class Item(models.Model):
     image = models.ImageField(default='default.jpg', upload_to='item_pics')
 
     def get_absolute_url(self):
-        return reverse('item_details', kwargs={'pk': self.pk})
+        return reverse('post_item_details', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.name

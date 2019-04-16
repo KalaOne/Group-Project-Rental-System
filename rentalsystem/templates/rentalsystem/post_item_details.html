@@ -5,17 +5,18 @@
     <div class="container">
         <div class="row">
             <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="form-group">
-                    <img src="{{ item.image }}">
+                    <img src="{{ item.image.url }}">
                     <h1>{{ item.name }}</h1>
                     <h3> {{ item.info }}</h3>
 {#                    FOR PRICE    #}
 {#                    <h3>{{ item.price }}</h3>#}
-                    <div class="col-xs-6 col-sm-10 text-left">
-                    <button type="submit" class="btn btn-success">Post Item</button>
-                    </div>
-                    <div class="col-xs-6 col-sm-10 text-right">
-                        <button type="submit" class="btn btn-success">Edit Item</button>
+                    <div class="row">
+                        <div class="col-sm-12 text-left">
+                            <button class="btn btn-success center-block" value="Post Item">Post Item</button>
+                            <button class="btn btn-danger center-block" value="Edit Item">Edit Item</button>
+                        </div>
                     </div>
                 </div>
             </form>

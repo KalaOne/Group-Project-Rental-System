@@ -48,4 +48,4 @@ class UserPostItem(generic.CreateView):
 
 def item_details(request, pk):
     item = get_object_or_404(Item, pk=pk)
-    return render(request, 'item_details.html', {'item': item})
+    return render(request, 'rentalsystem/post_item_details.html', {'item': item})
