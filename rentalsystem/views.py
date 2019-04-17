@@ -30,9 +30,9 @@ def home_search(request):
     cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
 
     # TODO: need to fix this!
-    games_in_cat_id = ItemCategoryPair.objects.filter(category_id=cat_id).values_list('item_id', flat=True)
+    #games_in_cat_id = ItemCategoryPair.objects.filter(category_id=cat_id).values_list('item_id', flat=True)
 
-    print("Games in category" + str(games_in_cat_id))
+    #print("Games in category" + str(games_in_cat_id))
     print("Category=" + str(cat_id))
     context = {
         'items': items,
