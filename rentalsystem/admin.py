@@ -47,6 +47,11 @@ class ItemAdmin(admin.ModelAdmin):
     inlines = [ItemCategoryPairInline]
 
 
+class ItemListingAdmin(admin.ModelAdmin):
+    list_display = ['title', 'additional_info', 'cost_per_day', 'owner_id', 'item_type_id']
+    fields = ('title', 'additional_info', 'cost_per_day', 'owner_id', 'item_type_id')
+
+
 # transaction view in admin page
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ['item_id', 'owner_id', 'renter_id', 'total_cost','start_date','end_date']
@@ -72,4 +77,5 @@ admin.site.register(models.Transaction, TransactionAdmin)
 admin.site.register(models.JobList, JobListAdmin)
 admin.site.register(models.Job, JobAdmin)
 admin.site.register(Profile)
+admin.site.register(models.ItemListing, ItemListingAdmin)
 
