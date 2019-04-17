@@ -23,6 +23,17 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
+# stores addresses for customers
+class Address(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='CustomUser_id')
+    address1 = models.CharField(max_length=200, blank=True, null=True)
+    address2 = models.CharField(max_length=200, blank=True, null=True)
+    address3 = models.CharField(max_length=200, blank=True, null=True)
+    address4 = models.CharField(max_length=200, blank=True, null=True)
+    address5 = models.CharField(max_length=200, blank=True, null=True)
+    county = models.CharField(max_length=100)
+    post_code = models.CharField(max_length=20, blank=True, null=True)
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
@@ -90,6 +101,14 @@ class Job(models.Model):
     job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT, db_column='job_list_id')
     due_delivery_datetime = models.DateTimeField()
     delivered_datetime = models.DateTimeField(blank=True, null=True)
+
+    address1 = models.CharField(max_length=200, blank=True, null=True)
+    address2 = models.CharField(max_length=200, blank=True, null=True)
+    address3 = models.CharField(max_length=200, blank=True, null=True)
+    address4 = models.CharField(max_length=200, blank=True, null=True)
+    address5 = models.CharField(max_length=200, blank=True, null=True)
+    county = models.CharField(max_length=100)
+    post_code = models.CharField(max_length=20, blank=True, null=True)
 
 
 # dispute class
