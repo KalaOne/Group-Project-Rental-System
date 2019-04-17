@@ -16,9 +16,28 @@ def index(request):
 
 
 def home(request):
+    #For every Item
+    lowest_prices = []
+    for item in Item.objects.all():
+        #get all ItemListings
+        price = 1000000
+        if ItemListing.objects.filter(item_type_id=item.id):
+            print(ItemListing.objects.all())
+            for item_listing in ItemListing.objects.filter(item_type_id=item.id):
+                if item_listing.cost_per_day < price:
+                    price = item_listing.cost_per_day
+        else:
+            price = None
+        lowest_prices.append(price)
+        print(lowest_prices)
+    item_objects = Item.objects.all()
+    prices = lowest_prices
+
+    items_and_prices = zip(item_objects,prices)
+
     context = {
-        'items': Item.objects.all(),
-        'categories': Category.objects.all()
+        'categories': Category.objects.all(),
+        'items': items_and_prices
     }
     return render(request, "home.html", context)
 
