@@ -88,16 +88,36 @@ def myjobs(request):
 
 
 def jobstats(request):
-    # calculate the completed number of jobs
-    total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
+    # if POST request then the jobstats page is being filtered
+    if request.method == 'POST':
+        region = request.POST.get('region')
 
-    # calculate the completed jobs in past 7 days
-    total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
+        print("Region from page is: " + str(region))
+        # calculate the completed number of jobs
+        total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, county = region).count()
 
-    context = {
-        'total_jobs_completed_count': total_jobs_completed_count,
-        'total_jobs_comp_last_week': total_jobs_comp_last_week
-    }
+        # calculate the completed jobs in past 7 days
+        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
+
+        context = {
+            'total_jobs_completed_count': total_jobs_completed_count,
+            'total_jobs_comp_last_week': total_jobs_comp_last_week,
+            'searched_region' : region
+        }
+
+    # if no POST request then show all job stats
+    else:
+        # calculate the completed number of jobs
+        total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
+
+        # calculate the completed jobs in past 7 days
+        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
+
+        context = {
+            'total_jobs_completed_count': total_jobs_completed_count,
+            'total_jobs_comp_last_week': total_jobs_comp_last_week,
+            'searched_region' : 'All Regions'
+        }
 
     return render(request, 'jobstats.html', context)
 

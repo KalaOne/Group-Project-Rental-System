@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('home_search/', views.home_search),
     path('jobstats/', views.jobstats, name='jobstats'),
+    path('jobstats/jobstatsregion/', views.jobstats, name='jobstatsregion'),
     path('postItem/', views.UserPostItem.as_view(), name='postItem'),
     path('post_item_details/<int:pk>', views.item_details, name="post_item_details"),
 
