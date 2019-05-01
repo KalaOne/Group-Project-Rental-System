@@ -3,9 +3,16 @@
 {% block title %}My Jobs{% endblock %}
 
 {% block content %}
-    <h2>Job Statistics</h2>
+    <h2>Job Statistics For {{ searched_region }}</h2>
 
-    <h3>Total number of jobs completed: {{ total_jobs_completed_count }}</h3>
-    <h3>Total number of jobs completed last week: {{ total_jobs_comp_last_week}}</h3>
+
+    <form action='jobstatsregion/' method='POST'>
+        {% csrf_token %} 
+        <input type="text" id="region" name="region">
+        <button class="btnSelect">Filter by region</button>
+    </form>
+
+    Total number of jobs completed: {{ total_jobs_completed_count }}
+    Total number of jobs completed last week: {{ total_jobs_comp_last_week}}
 
 {% endblock %}
