@@ -28,7 +28,7 @@ class HomePageTests(TestCase):
         response = self.client.get(url)
         self.assertTemplateUsed(response, 'landing.html')
 
-class HomeStatsTests(TestCase):
+class JobStatsTests(TestCase):
     def test_jobstats_returns_right_status(self):
         url = reverse('jobstats')
         response = self.client.get(url)
@@ -41,7 +41,7 @@ class HomeStatsTests(TestCase):
 
 
     # tests all the data that a default jobstats page returns
-    def test_jobstats_returns_context_data(self):
+    def test_jobstats_no_post_returns_context_data(self):
         url = reverse('jobstats')
         response = self.client.get(url)
         self.assertIsNotNone(response.context['total_jobs_completed_count'])
@@ -50,3 +50,13 @@ class HomeStatsTests(TestCase):
         # if no post request is sent, jobstats should return 'All Regions'
         self.assertEqual(response.context['searched_region'], 'All Regions')
 
+
+    # test post request returns data
+    def test_jobstats_post_returns_context_data(self):
+        url = reverse('jobstats')
+        
+        # create post request passing a search for "Norfolk in"
+        response = self.client.post(url, {'region': 'Norfolk'})
+        
+        # if post request sent, should return region in context
+        self.assertEqual(response.context['searched_region'], 'Norfolk')
