@@ -99,9 +99,18 @@ def jobstats(request):
         # calculate the completed jobs in past 7 days
         total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
 
+        # calculate number of unallocated jobs
+        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True, county = region).count()
+
+        
+        # calulate number of undelivered jobs
+        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True, county = region).count()
+
         context = {
             'total_jobs_completed_count': total_jobs_completed_count,
             'total_jobs_comp_last_week': total_jobs_comp_last_week,
+            'unalloc_jobs' : unalloc_jobs_count,
+            'undelivered_jobs' : undelivered_jobs_count,
             'searched_region' : region
         }
 
@@ -113,9 +122,17 @@ def jobstats(request):
         # calculate the completed jobs in past 7 days
         total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
 
+        # calculate number of unallocated jobs
+        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True).count()
+
+        # calulate number of undelivered jobs
+        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True).count()
+
         context = {
             'total_jobs_completed_count': total_jobs_completed_count,
             'total_jobs_comp_last_week': total_jobs_comp_last_week,
+            'unalloc_jobs' : unalloc_jobs_count,
+            'undelivered_jobs' : undelivered_jobs_count,
             'searched_region' : 'All Regions'
         }
 
