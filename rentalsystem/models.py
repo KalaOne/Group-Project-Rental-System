@@ -98,7 +98,7 @@ class JobList(models.Model):
 # job class
 class Job(models.Model):
     transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
-    job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT, db_column='job_list_id')
+    job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT, db_column='job_list_id', blank=True, null=True)
     due_delivery_datetime = models.DateTimeField()
     delivered_datetime = models.DateTimeField(blank=True, null=True)
 

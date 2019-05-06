@@ -11,8 +11,42 @@
         <input type="text" id="region" name="region">
         <button class="btnSelect">Filter by region</button>
     </form>
+    <p>
 
-    Total number of jobs completed: {{ total_jobs_completed_count }}
-    Total number of jobs completed last week: {{ total_jobs_comp_last_week}}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                    <h5 class="card-title">Jobs completed</h5>
+                        {{ total_jobs_completed_count }}
+                    </div>
+                </div>
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                    <h5 class="card-title">Jobs completed (Last week)</h5>
+                        {{ total_jobs_comp_last_week}}
+                    </div>
+                </div>
+                <div class="card text-white bg-info mb-3">
+                        <div class="card-body">
+                    <h5 class="card-title">Unallocated jobs</h5> 
+                        {{ unalloc_jobs }}
+                    </div>
+                </div>
+
+                </div>
+                <div class="col-sm">
+                    <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                        <h5 class="card-title">Undelivered jobs</h5> 
+                            {{ undelivered_jobs }}
+                        </div>
+                    </div>
+            </div>
+
+        </div>
+    </div>
 
 {% endblock %}
