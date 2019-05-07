@@ -4,3 +4,4 @@ rentalsystem/__pycache__/
 rentalsystem/migrations/__pycache__/
 venv/
 rentalsystem/tests/__pycache__/
+htmlcov/
