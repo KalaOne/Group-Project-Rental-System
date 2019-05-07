@@ -154,3 +154,24 @@ class UserPostItem(generic.CreateView):
 def item_details(request, pk):
     item = get_object_or_404(Item, pk=pk)
     return render(request, 'rentalsystem/post_item_details.html', {'item': item})
+
+
+def my_orders(request):
+    current_user_id = request.user.id
+
+    # integration test - print current users id
+    print("TEST: Current user ID is: " + str(current_user_id))
+
+    # get all orders filtered to current user
+    # use select_related to also query the item table (needed for item name)
+    orders = Transaction.objects.filter(renter_id = current_user_id).select_related('item_id').order_by('start_date')
+
+    # integration test - print all orders
+    print("TEST: Printing current users orders:")
+    print(orders)
+
+    context = {
+        'orders' : orders
+    }
+
+    return render(request, 'myorders.html', context)
