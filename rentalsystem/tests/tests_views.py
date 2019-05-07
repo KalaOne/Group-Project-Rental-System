@@ -60,3 +60,12 @@ class JobStatsTests(TestCase):
         
         # if post request sent, should return region in context
         self.assertEqual(response.context['searched_region'], 'Norfolk')
+
+class MyOrdersTests(TestCase):
+    
+    def test_myorders_returns_correctly(self):
+        url = reverse('my_orders')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'myorders.html') 
+
