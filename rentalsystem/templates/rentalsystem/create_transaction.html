@@ -7,14 +7,19 @@
                     <form action='/create_transaction/' method='POST'>
                     {% csrf_token %}
                     <p>Start Date: </p>
-                    <input id="StartDate" name="date1" value="" >
+{#                    <input type="date" class="form-control" id="date" value="{{placement.date|date:"Y-m-d" }}">#}
+                        <input type="date" id="StartDate" name="date" class="form-control"  value="{{placement.EndDate|date:"Y-m-d" }}">
                     <p>End Date: </p>
-                    <input id="EndDate" name="date2" >
+{#                    <input id="EndDate" name="date2" value="{{placement.date|date:"Y-m-d" }}" >#}
+                        <input type="date" id="EndDate" name="date1" class="form-control"  value="{{placement.EndDate|date:"Y-m-d" }}">
+                        <p>Cost per day: </p>
+                    <input id="Cost" name="cost" >
                     <button class="btn btn-success center-block" value="Submit">Submit</button>
                 </form>
 
     <h4>{{info}}</h4>
         <h4>{{info1}}</h4>
+    <h4>{{info2}}</h4>
 
   <script>
     $(function () {

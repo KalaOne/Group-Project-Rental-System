@@ -89,6 +89,25 @@ def myjobs(request):
 
     return render(request, "myjobs.html", {'jobs' : jobs})
 
+def createTrans(request):
+    if (request.method == 'POST'):
+        context = {
+            'info' : request.POST.get('date'),
+            'info1' : request.POST.get('date1'),
+            'info2' : "Cost " + request.POST.get('cost')
+        }
+        Transaction.objects.create(item_id=Item.objects.get(name = "The Goonies: Adventure Card Game"),
+                                   owner_id=CustomUser.objects.get(name = "Matthew Taylor"),
+                                   renter_id=CustomUser.objects.get(username = request.user.username),
+                                   total_cost=request.POST.get('cost'),
+                                   start_date=request.POST.get('date'),
+                                   end_date=request.POST.get('date1'))
+    else:
+        context = {
+            'info': "",
+        }
+    return render(request, 'create_transaction.html', context)
+
 
 
 def jobstats(request):
@@ -181,14 +200,3 @@ def my_orders(request):
     }
 
     return render(request, 'myorders.html', context)
-def createTrans(request):
-    if (request.method == 'POST'):
-        context = {
-            'info' : "Start date " + request.POST.get('date1'),
-            'info1' : "End date " + request.POST.get('date2'),
-        }
-    else:
-        context = {
-            'info': "",
-        }
-    return render(request, 'create_transaction.html', context)
