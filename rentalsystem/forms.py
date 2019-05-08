@@ -22,5 +22,5 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class DateForm(forms.Form):
-    date = forms.DateTimeField(input_formats=['%Y/%m/%d %H:%M'])
+    date = forms.DateField(input_formats=['%Y/%m/%d'])
 

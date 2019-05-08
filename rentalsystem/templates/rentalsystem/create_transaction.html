@@ -8,10 +8,10 @@
                     {% csrf_token %}
                     <p>Start Date: </p>
 {#                    <input type="date" class="form-control" id="date" value="{{placement.date|date:"Y-m-d" }}">#}
-                        <input type="date" id="StartDate" name="date" class="form-control"  value="{{placement.EndDate|date:"Y-m-d" }}">
+                        <input id="StartDate" name="date" value="">
                     <p>End Date: </p>
 {#                    <input id="EndDate" name="date2" value="{{placement.date|date:"Y-m-d" }}" >#}
-                        <input type="date" id="EndDate" name="date1" class="form-control"  value="{{placement.EndDate|date:"Y-m-d" }}">
+                        <input id="EndDate" name="date1" value="">
                         <p>Cost per day: </p>
                     <input id="Cost" name="cost" >
                     <button class="btn btn-success center-block" value="Submit">Submit</button>
@@ -23,12 +23,16 @@
 
   <script>
     $(function () {
-      $("#StartDate").datepicker();
+      $("#StartDate").datepicker({
+          format: 'yyyy-mm-dd',
+      });
     });
   </script>
-      <script>
+  <script>
     $(function () {
-      $("#EndDate").datepicker();
+      $("#EndDate").datepicker({
+          format: 'yyyy-mm-dd',
+      });
     });
   </script>
 
