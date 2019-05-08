@@ -25,12 +25,12 @@
 		<div class="col-md-4" style="text-align: center;">
       <p>{{ listing.additional_info }}</p>
 		</div>
-		<div class="col-md-4" style="text-align: center;">
-      <p>Cost per day : £{{listing.cost_per_day}}</p>
+		<div class="col-md-4">
+      <p class = "text-center">Cost per day : £{{listing.cost_per_day}}</p>
 		</div>
 		<div class="col-md-4" style="text-align: center;">
 
-      <button type="button" class="btn btn-primary">Rent</button>
+            <button type="button" class="btn btn-danger"><a class = "text-white" href="/create_transaction/">Rent</a></button>
 		</div>
 	</div>
   {% endfor %}
