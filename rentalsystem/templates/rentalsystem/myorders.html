@@ -8,20 +8,28 @@
 
     <table class="table">
     <tr>
-        <th>Order ID</th>   
-        <th>Product Ordered</th>   
-        <th>Total Cost</th>   
-        <th>Order Start Date</th>   
-        <th>Order End Date</th>   
+        <th>Order ID</th>
+        <th>Product Ordered</th>
+        <th>Total Cost</th>
+        <th>Order Start Date</th>
+        <th>Order End Date</th>
+        <th> </th>
     </tr>
 
     {% for order in orders%}
         <tr>
             <td> {{ order.id }} </td>
-            <td> {{ order.item_id.name }} </td>     
+            <td> {{ order.item_id.name }} </td>
             <td> £{{ order.total_cost }} </td>
             <td> {{ order.start_date }} </td>
-            <td> {{ order.end_date }} </td>       
+            <td> {{ order.end_date }} </td>
+            <td>
+                <form action='leave_review/' method='POST'>
+                    {% csrf_token %}
+                    <input type="hidden" name="transactionpk" value="{{order.id}}">
+                    <button class="btnMarkComplete">Mark {{job.id}} as delivered!</button>
+                </form>
+            </td>
         </tr>
     {% endfor %}
     </table>

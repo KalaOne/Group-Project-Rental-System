@@ -1,4 +1,5 @@
 import datetime
+from django.db.models import Min
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.utils import timezone
@@ -20,16 +21,17 @@ def home(request):
     lowest_prices = []
     for item in Item.objects.all():
         #get all ItemListings
-        price = 1000000
+        min_price = 0
         if ItemListing.objects.filter(item_type_id=item.id):
-            print(ItemListing.objects.all())
-            for item_listing in ItemListing.objects.filter(item_type_id=item.id):
-                if item_listing.cost_per_day < price:
-                    price = item_listing.cost_per_day
+           # print(ItemListing.objects.all())
+            min_price = ItemListing.objects.filter(item_type_id=item.id).aggregate(Min('cost_per_day'))
+            #for item_listing in ItemListing.objects.filter(item_type_id=item.id):
+            #    if item_listing.cost_per_day < price:
+            #        price = item_listing.cost_per_day
         else:
-            price = None
-        lowest_prices.append(price)
-        print(lowest_prices)
+            min_price = None
+        lowest_prices.append(min_price)
+        #print(lowest_prices)
     item_objects = Item.objects.all()
     prices = lowest_prices
 
@@ -155,6 +157,8 @@ def item_details(request, pk):
     item = get_object_or_404(Item, pk=pk)
     return render(request, 'rentalsystem/post_item_details.html', {'item': item})
 
+def leave_review(request):
+    print('hello')
 
 def my_orders(request):
     current_user_id = request.user.id

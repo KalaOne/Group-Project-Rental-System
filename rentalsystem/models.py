@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # subclassing django's default user class to make our own user class - AbstractUser superclass contains all the
 # password and session magic we need
@@ -131,7 +132,18 @@ class Reviews(models.Model):
     # review can be left for either a transaction or a customer? not sure what we wanna do here
     transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
     content = models.CharField(max_length=500)
-    rating = models.PositiveIntegerField()
+    item_rating = models.PositiveIntegerField(
+        default = 3,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(1)
+        ])
+    transaction_rating = models.PositiveIntegerField(
+        default = 3,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(1)
+        ])
     left_by_user_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='left_by_user_id')
 
 
