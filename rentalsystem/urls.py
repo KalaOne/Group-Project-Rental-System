@@ -16,4 +16,5 @@ urlpatterns = [
     path('jobstats/jobstatsregion/', views.jobstats, name='jobstatsregion'),
     path('postItem/', views.UserPostItem.as_view(), name='postItem'),
     path('post_item_details/<int:pk>', views.item_details, name="post_item_details"),
+    path('create_transaction/', views.createTrans, name='create_transaction'),
 ]

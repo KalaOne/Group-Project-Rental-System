@@ -1,0 +1,24 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+                    <p>Start Date: </p>
+                    <input id="StartDate" name="date1" >
+                    <p>End Date: </p>
+                    <input id="EndDate" name="date2" >
+                    <button class="btn btn-success center-block" value="Submit">Submit</button>
+  <script>
+    $(function () {
+      $("#StartDate").datepicker();
+    });
+  </script>
+      <script>
+    $(function () {
+      $("#EndDate").datepicker();
+    });
+  </script>
+
+{% endblock %}
+
