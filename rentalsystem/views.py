@@ -103,7 +103,7 @@ def jobstats(request):
         # calculate number of unallocated jobs
         unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True, county = region).count()
 
-
+        
         # calulate number of undelivered jobs
         undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True, county = region).count()
 
