@@ -87,6 +87,20 @@ def myjobs(request):
     return render(request, "myjobs.html", {'jobs' : jobs})
 
 
+
+def trans_data(request):
+    # if update button pressed
+    if request.method == 'POST':
+        # get job id from the post request (button press)
+        startDate = request.POST.get('date1')
+        endDate = request.POST.get('date2')
+
+        date1 = endDate
+        date = startDate
+
+    return render(request, "create_transaction.html",)
+
+
 def jobstats(request):
     # if POST request then the jobstats page is being filtered
     if request.method == 'POST':
@@ -139,4 +153,13 @@ def item_details(request, pk):
     return render(request, 'rentalsystem/post_item_details.html', {'item': item})
 
 def createTrans(request):
-    return render(request, 'create_transaction.html')
+    if (request.method == 'POST'):
+        context = {
+            'info' : "Start date " + request.POST.get('date1'),
+            'info1' : "End date " + request.POST.get('date2'),
+        }
+    else:
+        context = {
+            'info': "",
+        }
+    return render(request, 'create_transaction.html', context)
