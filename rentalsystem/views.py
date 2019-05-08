@@ -90,6 +90,7 @@ def myjobs(request):
     return render(request, "myjobs.html", {'jobs' : jobs})
 
 
+
 def jobstats(request):
     # if POST request then the jobstats page is being filtered
     if request.method == 'POST':
@@ -180,3 +181,14 @@ def my_orders(request):
     }
 
     return render(request, 'myorders.html', context)
+def createTrans(request):
+    if (request.method == 'POST'):
+        context = {
+            'info' : "Start date " + request.POST.get('date1'),
+            'info1' : "End date " + request.POST.get('date2'),
+        }
+    else:
+        context = {
+            'info': "",
+        }
+    return render(request, 'create_transaction.html', context)

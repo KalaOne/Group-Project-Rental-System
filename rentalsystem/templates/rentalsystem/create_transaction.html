@@ -1,0 +1,31 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+                    <form action='/create_transaction/' method='POST'>
+                    {% csrf_token %}
+                    <p>Start Date: </p>
+                    <input id="StartDate" name="date1" value="" >
+                    <p>End Date: </p>
+                    <input id="EndDate" name="date2" >
+                    <button class="btn btn-success center-block" value="Submit">Submit</button>
+                </form>
+
+    <h4>{{info}}</h4>
+        <h4>{{info1}}</h4>
+
+  <script>
+    $(function () {
+      $("#StartDate").datepicker();
+    });
+  </script>
+      <script>
+    $(function () {
+      $("#EndDate").datepicker();
+    });
+  </script>
+
+{% endblock %}
+

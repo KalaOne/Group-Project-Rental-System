@@ -85,7 +85,7 @@ class ItemListing(models.Model):
 class Transaction(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.PROTECT, db_column='item_id') # foreign key to Item
     owner_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='owner_id')
-    renter_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name ='renter_id')
+    renter_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='renter_id')
     total_cost = models.PositiveIntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
