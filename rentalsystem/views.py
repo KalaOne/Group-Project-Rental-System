@@ -83,7 +83,7 @@ def myjobs(request):
     # create list of current users jobs to pass into template
     current_id = request.user.id # gets current logged in staff ID
     jl_id = JobList.objects.get(staff_id = current_id) #get current staff joblist
-    jobs = Job.objects.filter(job_list_id = jl_id) #get all jobs for joblist_id
+    jobs = Job.objects.filter(job_list_id = jl_id).order_by('-delivered_datetime')#get all jobs for joblist_id
 
     return render(request, "myjobs.html", {'jobs' : jobs})
 
