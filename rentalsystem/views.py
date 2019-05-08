@@ -15,25 +15,24 @@ def index(request):
         return home(request)
     return landing(request)
 
-
-def home(request):
-    #For every Item
+def getLowestPrices():
     lowest_prices = []
     for item in Item.objects.all():
         #get all ItemListings
         min_price = 0
         if ItemListing.objects.filter(item_type_id=item.id):
-           # print(ItemListing.objects.all())
             min_price = ItemListing.objects.filter(item_type_id=item.id).aggregate(Min('cost_per_day'))
-            #for item_listing in ItemListing.objects.filter(item_type_id=item.id):
-            #    if item_listing.cost_per_day < price:
-            #        price = item_listing.cost_per_day
         else:
             min_price = None
         lowest_prices.append(min_price)
-        #print(lowest_prices)
+    return lowest_prices
+
+def home(request):
+
+    prices = getLowestPrices()
+
     item_objects = Item.objects.all()
-    prices = lowest_prices
+
 
     items_and_prices = zip(item_objects,prices)
 
@@ -54,10 +53,13 @@ def home_search(request):
     else:
         items = Item.objects.filter(name__icontains=request.GET['search_query'])
 
+
         cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
 
+    prices = getLowestPrices()
+    items_and_prices = zip(items,prices)
     context = {
-        'items': items,
+        'items': items_and_prices,
         'categories': Category.objects.all()
     }
     return render(request, "rentalsystem/home.html", context)
@@ -125,7 +127,7 @@ def jobstats(request):
         # calculate number of unallocated jobs
         unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True, county = region).count()
 
-        
+
         # calulate number of undelivered jobs
         undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True, county = region).count()
 
@@ -200,3 +202,19 @@ def my_orders(request):
     }
 
     return render(request, 'myorders.html', context)
+
+
+def item_listings(request):
+    item_name = request.GET.get('query_name')
+    item = Item.objects.filter(name=item_name).first()
+    print(item_name)
+    items = ItemListing.objects.filter(item_type_id=item.id)
+
+    print(items)
+
+
+    context = {
+    'item':item,
+    'item_listings':items }
+
+    return render(request, "rentalsystem/itemListings.html", context)

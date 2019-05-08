@@ -28,6 +28,10 @@ class HomePageTests(TestCase):
         response = self.client.get(url)
         self.assertTemplateUsed(response, 'landing.html')
 
+    # def test_landing_page_returns_right_search_results(self):
+    #     response = self.client.get('/home_search')
+    #     self.
+
 class JobStatsTests(TestCase):
     def test_jobstats_returns_right_status(self):
         url = reverse('jobstats')
@@ -54,18 +58,17 @@ class JobStatsTests(TestCase):
     # test post request returns data
     def test_jobstats_post_returns_context_data(self):
         url = reverse('jobstats')
-        
+
         # create post request passing a search for "Norfolk in"
         response = self.client.post(url, {'region': 'Norfolk'})
-        
+
         # if post request sent, should return region in context
         self.assertEqual(response.context['searched_region'], 'Norfolk')
 
 class MyOrdersTests(TestCase):
-    
+
     def test_myorders_returns_correctly(self):
         url = reverse('my_orders')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'myorders.html') 
-
+        self.assertTemplateUsed(response, 'myorders.html')

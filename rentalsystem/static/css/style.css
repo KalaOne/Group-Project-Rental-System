@@ -10,3 +10,7 @@
 .searchBar button {
   flex: 1;
 }
+
+.mt-32 {
+  margin-top: 32;
+}

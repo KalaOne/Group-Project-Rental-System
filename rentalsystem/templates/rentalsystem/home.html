@@ -21,7 +21,7 @@
 
             {% for category in categories %}
             <!--<a href="" class="list-group-item">{{ category }}</a> -->
-            <form action='home_search/' method='POST'>
+            <form action='/home_search/' method='POST'>
                 {% csrf_token %}
                 <input type="hidden" name="catPk" value="{{category.id}}">
                 <button class="btnMarkComplete">{{category}}</button>
@@ -68,7 +68,7 @@
               <a href="#"><img class="card-img-top" src="{{ item.image.url }}" height="200" width="auto"></a>
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#">{{ item }}</a>
+                  <a href="/item_listings?query_name={{ item|urlencode }}">{{ item }}</a>
                 </h4>
                   {% if price.cost_per_day__min != None %}
                     <h5 class="text-success">£{{price.cost_per_day__min}}</h5>
