@@ -185,4 +185,16 @@ def my_orders(request):
 
 
 def item_listings(request):
-    return render(request, "rentalsystem/itemListings.html")
+    item_name = request.GET.get('query_name')
+    item = Item.objects.filter(name=item_name).first()
+    print(item_name)
+    items = ItemListing.objects.filter(item_type_id=item.id)
+
+    print(items)
+
+
+    context = {
+    'item':item,
+    'item_listings':items }
+
+    return render(request, "rentalsystem/itemListings.html", context)

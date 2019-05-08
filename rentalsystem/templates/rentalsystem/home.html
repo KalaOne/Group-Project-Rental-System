@@ -68,7 +68,7 @@
               <a href="#"><img class="card-img-top" src="{{ item.image.url }}" height="200" width="auto"></a>
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#">{{ item }}</a>
+                  <a href="/item_listings?query_name={{ item|urlencode }}">{{ item }}</a>
                 </h4>
                   {% if price.cost_per_day__min != None %}
                     <h5 class="text-success">£{{price.cost_per_day__min}}</h5>
