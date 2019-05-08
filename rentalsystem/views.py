@@ -43,16 +43,17 @@ def home(request):
 
 # Re renders home page with new 'context' after a search
 def home_search(request):
-    items = Item.objects.filter(name__icontains=request.GET['search_query'])
+    # if update button pressed
+    if request.method == 'POST':
+        print("POST request")
+        catPk = request.POST.get('catPk')
+        itemsInCategory = ItemCategoryPair.objects.filter(category_id=catPk)
+        items = Item.objects.filter(id__in=itemsInCategory)
+    else:
+        items = Item.objects.filter(name__icontains=request.GET['search_query'])
 
-    # finds the category id for any category matching a search
-    cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
+        cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
 
-    # TODO: need to fix this!
-    #games_in_cat_id = ItemCategoryPair.objects.filter(category_id=cat_id).values_list('item_id', flat=True)
-
-    #print("Games in category" + str(games_in_cat_id))
-    print("Category=" + str(cat_id))
     context = {
         'items': items,
         'categories': Category.objects.all()
