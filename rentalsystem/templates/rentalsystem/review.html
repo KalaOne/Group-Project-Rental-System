@@ -1,0 +1,28 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Leave Review{% endblock %}
+
+{% block content %}
+
+    <h2>Leave a review</h2><br>
+
+    <table class="table">
+    <tr>
+        <th>Product</th>
+        <th>Total Cost</th>   
+        <th>Order Start Date</th>   
+        <th>Order End Date</th>
+        <th>Owner</th>
+    </tr>
+
+
+    <tr>
+        <td> {{ order.id }} </td>
+        <td> {{ order.item_id.name }} </td>
+        <td> £{{ order.total_cost }} </td>
+        <td> {{ order.start_date }} </td>
+        <td> {{ order.end_date }} </td>
+    </tr>
+    </table>
+
+{% endblock %}

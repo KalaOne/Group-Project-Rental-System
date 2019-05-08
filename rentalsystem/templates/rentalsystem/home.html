@@ -70,11 +70,16 @@
                 <h4 class="card-title">
                   <a href="#">{{ item }}</a>
                 </h4>
-                <h5>£{{price}}</h5>
-                <p class="card-text">{{ item.info }}</p>
+                  {% if price.cost_per_day__min != None %}
+                    <h5 class="text-success">£{{price.cost_per_day__min}}</h5>
+                  {% else %}
+                    <h5 class="text-danger">Currently Out Of Stock</h5>
+                  {% endif %}
+              <div class="card-title">
+                <small class="text-muted">test
+                    &#9733; &#9733; &#9733; &#9733; &#9734;</small>
               </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                <p class="card-text">{{ item.info }}</p>
               </div>
             </div>
           </div>
