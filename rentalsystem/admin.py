@@ -68,6 +68,10 @@ class JobAdmin(admin.ModelAdmin):
     list_display = ['transaction_id','job_list_id','due_delivery_datetime','delivered_datetime']
     field = ('transaction_id','job_list_id','due_delivery_datetime','delivered_datetime')
 
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['transaction_id','content','item_rating','transaction_rating', 'left_by_user_id']
+    field = ('transaction_id','content','item_rating','transaction_rating', 'left_by_user_id')
+
 
 # register the models with the admin site
 admin.site.register(CustomUser, CustomUserAdmin)
@@ -78,4 +82,5 @@ admin.site.register(models.JobList, JobListAdmin)
 admin.site.register(models.Job, JobAdmin)
 admin.site.register(Profile)
 admin.site.register(models.ItemListing, ItemListingAdmin)
+admin.site.register(models.Reviews, ReviewAdmin)
 

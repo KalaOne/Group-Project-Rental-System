@@ -210,14 +210,21 @@ def my_orders(request):
 
     # get all orders filtered to current user
     # use select_related to also query the item table (needed for item name)
-    orders = Transaction.objects.filter(renter_id = current_user_id).select_related('item_id').order_by('start_date')
+    # filter by all orders with end date greater/equal(gte) than today
+    current_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__gte = datetime.datetime.now()).select_related('item_id').order_by('start_date')
+
+    # get all orders filtered to current user
+    # use select_related to also query the item table (needed for item name)
+    # filter by all orders with end date less than(lt) than today
+    completed_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__lt = datetime.datetime.now()).select_related('item_id').prefetch_related('reviews_set').order_by('start_date')
 
     # integration test - print all orders
     print("TEST: Printing current users orders:")
-    print(orders)
+    print(current_orders)
 
     context = {
-        'orders' : orders
+        'current_orders' : current_orders, 
+        'completed_orders': completed_orders
     }
 
     return render(request, 'myorders.html', context)
