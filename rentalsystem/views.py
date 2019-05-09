@@ -181,7 +181,26 @@ def item_details(request, pk):
     return render(request, 'rentalsystem/post_item_details.html', {'item': item})
 
 def leave_review(request):
-    print('hello')
+    if request.method == 'POST':
+        # get job id from the post request (button press)
+        transactionpk = request.POST.get('transactionpk')
+        transaction = Transaction.objects.filter(id=transactionpk).select_related('item_id').select_related('owner_id').first()
+        context = {
+            'transaction': transaction,
+        }
+    else:
+        return redirect('/my_orders/')
+    return render(request, 'rentalsystem/review.html', context)
+
+def review_confirmation(request):
+    addNewReview(request)
+    return render(request, 'rentalsystem/reviewconfirmation.html')
+
+def addNewReview(request):
+    if request.method == 'POST':
+        print('Added review!')
+    else:
+        print("ERROR - adding new review")
 
 def my_orders(request):
     current_user_id = request.user.id

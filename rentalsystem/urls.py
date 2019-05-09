@@ -17,8 +17,7 @@ urlpatterns = [
     path('post_item_details/<int:pk>', views.item_details, name="post_item_details"),
     path('leave_review/',views.leave_review, name="leave_review"),
     path('create_transaction/', views.createTrans, name='create_transaction'),
-
-
     path('item_listings/', views.item_listings, name='item_listings'),
-
+    path('review_confirmation/',views.review_confirmation, name="review_confirmation"),
 ]
+
