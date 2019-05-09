@@ -56,6 +56,8 @@
                     <input type="hidden" name="transactionpk" value="{{order.id}}">
                     <button class="btn btn-primary btn-sm">Leave Review!</button>
                 </form>
+                {% else %}
+                <i>Alredy reviewed</i>
                 {% endif %}
             </td>
         </tr>
