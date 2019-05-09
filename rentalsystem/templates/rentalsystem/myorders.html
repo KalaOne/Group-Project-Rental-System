@@ -24,10 +24,10 @@
             <td> {{ order.start_date }} </td>
             <td> {{ order.end_date }} </td>
             <td>
-                <form action='leave_review/' method='POST'>
+                <form action='/leave_review/' method='POST'>
                     {% csrf_token %}
                     <input type="hidden" name="transactionpk" value="{{order.id}}">
-                    <button class="btnMarkComplete">Mark {{job.id}} as delivered!</button>
+                    <button class="btn btn-primary btn-sm">Leave Review!</button>
                 </form>
             </td>
         </tr>

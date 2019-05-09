@@ -18,4 +18,5 @@ urlpatterns = [
     path('postItem/', views.UserPostItem.as_view(), name='postItem'),
     path('post_item_details/<int:pk>', views.item_details, name="post_item_details"),
     path('leave_review/',views.leave_review, name="leave_review"),
+    path('review_confirmation/',views.review_confirmation, name="review_confirmation"),
 ]
