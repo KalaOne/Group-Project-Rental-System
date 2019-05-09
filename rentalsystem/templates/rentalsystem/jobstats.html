@@ -6,7 +6,7 @@
     <h2>Job Statistics For {{ searched_region }}</h2>
 
 
-    <form action='jobstatsregion/' method='POST'>
+    <form action='/jobstats/' method='POST'>
         {% csrf_token %} 
         <input type="text" id="region" name="region">
         <button class="btnSelect">Filter by region</button>
