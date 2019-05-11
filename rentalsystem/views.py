@@ -1,5 +1,5 @@
 import datetime
-from django.db.models import Min
+from django.db.models import Min, Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.utils import timezone
@@ -27,18 +27,44 @@ def getLowestPrices():
         lowest_prices.append(min_price)
     return lowest_prices
 
+def getAverageRating(itemid):
+    item = Item.objects.get(id = itemid)
+    print("Item: ",item)
+
+    related_transactions = Transaction.objects.filter(item_id = itemid)
+    if related_transactions.count() > 0:
+        avg_rating = 0
+        num_ratings = 0
+        for transaction in related_transactions:
+            try:
+                review = Reviews.objects.get(transaction_id = transaction.id)
+                avg_rating = avg_rating + review.item_rating
+                num_ratings = num_ratings + 1
+            except:
+                avg_rating = avg_rating + 0
+        if num_ratings > 0:
+            avg_rating = avg_rating/num_ratings
+        else:
+            avg_rating = 0
+        return avg_rating
+    else:
+        return 0
+
 def home(request):
 
     prices = getLowestPrices()
-
     item_objects = Item.objects.all()
 
+    average_reviews = []
+    for item in Item.objects.all():
+        average_reviews.append(int(getAverageRating(item.id)))
 
-    items_and_prices = zip(item_objects,prices)
+    print(average_reviews)
+    items_and_prices_and_ratings = zip(item_objects, prices, average_reviews)
 
     context = {
         'categories': Category.objects.all(),
-        'items': items_and_prices
+        'items': items_and_prices_and_ratings
     }
     return render(request, "home.html", context)
 

@@ -13,7 +13,6 @@
         <th>Total Cost</th>
         <th>Order Start Date</th>
         <th>Order End Date</th>
-        <th>Leave A Review</th>
     </tr>
 
     {% for order in current_orders%}
@@ -23,9 +22,6 @@
             <td> £{{ order.total_cost }} </td>
             <td> {{ order.start_date }} </td>
             <td> {{ order.end_date }} </td>
-            <td>
-            
-            </td>
         </tr>
     {% endfor %}
     </table>
@@ -57,7 +53,7 @@
                     <button class="btn btn-primary btn-sm">Leave Review!</button>
                 </form>
                 {% else %}
-                <i>Already reviewed</i>
+                <i class="text-success">Already reviewed</i>
                 {% endif %}
             </td>
         </tr>
