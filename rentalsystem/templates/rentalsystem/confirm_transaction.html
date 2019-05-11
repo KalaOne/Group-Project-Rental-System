@@ -38,7 +38,13 @@
               {{list_details.additional_info}}
             </div>
         </div>
-        <button class="btn btn-primary btn-sm rent-btn" style="right: 15px; position: absolute; padding: 10px; width: 96%">Rent</button>
+
+        <!-- create transaction -->
+        <form class="" action="index.html" method="post">
+          {% csrf_token %}
+          <input type="text" name="" value="">
+          <button class="btn btn-primary btn-sm rent-btn" style="right: 15px; position: absolute; padding: 10px; width: 96%">Rent</button>
+        </form>
 
 		</div>
 
