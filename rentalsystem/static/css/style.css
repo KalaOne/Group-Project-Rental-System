@@ -38,3 +38,17 @@
 .border-bottom {
   border-bottom: 1px solid grey
 }
+
+.listing-img {
+  width: 500px;
+}
+
+.footer {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  color: #ffffff;
+  background-color: #343a40;
+  position: absolute;
+  bottom: 0px;
+}
