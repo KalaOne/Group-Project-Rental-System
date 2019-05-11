@@ -7,8 +7,8 @@
 
 
     <form action='/jobstats/' method='POST'>
-        {% csrf_token %} 
-{#        <input type="text" id="region" name="region">#}
+        {% csrf_token %}
+        {#        <input type="text" id="region" name="region">#}
         <select name="region">
             <option value="Greater London">Greater London</option>
             <option value="West Midlands">West Midlands</option>
@@ -59,6 +59,14 @@
             <option value="Rutland">Rutland</option>
             <option value="City of London">City of London</option>
         </select>
+        <select name="days">
+            <option value="1 day">1 day</option>
+            <option value="1 week">1 week</option>
+            <option value="2 weeks">2 weeks</option>
+            <option value="1 month">1 month</option>
+            <option value="3 months">3 months</option>
+            <option value="All time">All time</option>
+        </select>
         <button class="btn btn-primary btn-sm">Filter by region</button>
     </form>
     <p>
@@ -68,32 +76,32 @@
             <div class="col-sm">
 
                 <div class="card text-white bg-info mb-3">
+                    <div class="card-header">
+                        <h10 class="card-title">Jobs completed</h10>
+                    </div>
                     <div class="card-body">
-                    <h5 class="card-title">Jobs completed</h5>
                         {{ total_jobs_completed_count }}
                     </div>
                 </div>
                 <div class="card text-white bg-info mb-3">
-                    <div class="card-body">
-                    <h5 class="card-title">Jobs completed (Last week)</h5>
-                        {{ total_jobs_comp_last_week}}
+                    <div class="card-header">
+                        <h10 class="card-title">Unallocated jobs</h10>
                     </div>
-                </div>
-                <div class="card text-white bg-info mb-3">
-                        <div class="card-body">
-                    <h5 class="card-title">Unallocated jobs</h5> 
+                    <div class="card-body">
                         {{ unalloc_jobs }}
                     </div>
                 </div>
 
-                </div>
-                <div class="col-sm">
-                    <div class="card text-white bg-info mb-3">
-                            <div class="card-body">
-                        <h5 class="card-title">Undelivered jobs</h5> 
-                            {{ undelivered_jobs }}
-                        </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-header">
+                        <h10 class="card-title">Undelivered jobs</h10>
                     </div>
+                    <div class="card-body">
+                        {{ undelivered_jobs }}
+                    </div>
+                </div>
             </div>
 
         </div>
