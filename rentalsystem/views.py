@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import *
 from .models import *
-from datetime import datetime
+# from datetime import datetime
 
 
 
@@ -184,9 +184,11 @@ def jobstats(request):
         elif days == "1 month":
             total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=30)), county = region).count()
         else:
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, county = region).count()
-
-        jobs = Job.objects.filter(delivered_datetime__isnull = False, county = region).order_by('-delivered_datetime')
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
+        if region != 'All':
+            jobs = Job.objects.filter(delivered_datetime__isnull=False, county=region).order_by('-delivered_datetime')
+        else:
+            jobs = Job.objects.filter(delivered_datetime__isnull=False).order_by('-delivered_datetime')
 
         # calculate the completed jobs in past 7 days
         # total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
@@ -214,24 +216,32 @@ def jobstats(request):
 
     # if no POST request then show all job stats
     else:
-        # calculate the completed number of jobs
-        total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
+        total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull=False).count()
+
+        jobs = Job.objects.filter(delivered_datetime__isnull=False).order_by('-delivered_datetime')
 
         # calculate the completed jobs in past 7 days
-        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
+        # total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
 
         # calculate number of unallocated jobs
-        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True).count()
+        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull=True).count()
+        unalloc_jobs = Job.objects.filter(job_list_id__isnull=True)
 
         # calulate number of undelivered jobs
-        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True).count()
+        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull=True).count()
+        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull=True,
+                                              job_list_id__isnull=False).order_by('-due_delivery_datetime')
 
         context = {
             'total_jobs_completed_count': total_jobs_completed_count,
             # 'total_jobs_comp_last_week': total_jobs_comp_last_week,
-            'unalloc_jobs' : unalloc_jobs_count,
-            'undelivered_jobs' : undelivered_jobs_count,
-            'searched_region' : 'All Regions'
+            'nun_unalloc_jobs': unalloc_jobs_count,
+            'nun_undelivered_jobs': undelivered_jobs_count,
+            'searched_region': 'All',
+            'day_sort': 'All time',
+            'jobs': jobs,
+            'unalloc_jobs': unalloc_jobs,
+            'undelivered_jobs': undelivered_jobs
         }
 
     return render(request, 'jobstats.html', context)

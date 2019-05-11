@@ -10,6 +10,7 @@
         {% csrf_token %}
         {#        <input type="text" id="region" name="region">#}
         <select name="region">
+            <option value="All" selected="selected">All Regions</option>
             <option value="Greater London">Greater London</option>
             <option value="West Midlands">West Midlands</option>
             <option value="Greater Manchester">Greater Manchester</option>
@@ -34,7 +35,7 @@
             <option value="Somerset">Somerset</option>
             <option value="Gloucestershire">Gloucestershire</option>
             <option value="Berkshire">Berkshire</option>
-            <option value="Norfolk" selected="selected">Norfolk</option>
+            <option value="Norfolk">Norfolk</option>
             <option value="County Durham">County Durham</option>
             <option value="West Sussex">West Sussex</option>
             <option value="Cambridgeshire">Cambridgeshire</option>
@@ -65,7 +66,7 @@
             <option value="2 weeks">2 weeks</option>
             <option value="1 month">1 month</option>
             <option value="3 months">3 months</option>
-            <option value="All time">All time</option>
+            <option value="All time" selected="selected">All time</option>
         </select>
         <button class="btn btn-primary btn-sm">Filter by region</button>
     </form>
