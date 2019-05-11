@@ -111,6 +111,17 @@ def createTrans(request):
 
     return render(request, 'create_transaction.html', context)
 
+def confirm_transaction(request):
+    if(request.method == 'GET'):
+        list_id = request.GET.get('listingid')
+        list_details = ItemListing.objects.select_related('item_type_id').get(id = list_id)
+
+        context = {
+            'list_details' : list_details
+        }
+
+    return render(request, 'confirm_transaction.html', context)
+
 
 def jobstats(request):
     # if POST request then the jobstats page is being filtered
@@ -237,7 +248,7 @@ def my_orders(request):
     print(current_orders)
 
     context = {
-        'current_orders' : current_orders, 
+        'current_orders' : current_orders,
         'completed_orders': completed_orders
     }
 

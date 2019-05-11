@@ -1,0 +1,55 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Confirm transaction{% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+  <h2 class="text-center text-info">Almost there</h2><br>
+	<div class="row">
+		<div class="col-md-3">
+        <img class="card-img-top" src="{{ list_details.item_type_id.image.url }}" >
+		</div>
+		<div class="col-md-9">
+        <table class="table border-bottom">
+            <tr>
+                <th>ID</th>
+                <th>Item</th>
+                <th>Total Cost</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Owner</th>
+            </tr>
+            <tr>
+                <td> {{ list_details.id }} </td>
+                <td> {{ list_details.title }} </td>
+                <td> £{{ cost.total_cost }} </td>
+                <td> {{ dates.start_date }} </td>
+                <td> {{ dates.end_date }} </td>
+                <td> {{ list_details.owner_id.name }} </td>
+            </tr>
+
+        </table>
+        <h5>Additional info</h5>
+        <div class="container-fluid bg-light">
+
+            <div class="col-lg-5 text-center" style="padding: 20px;">
+              {{list_details.additional_info}}
+            </div>
+        </div>
+        <button class="btn btn-primary btn-sm rent-btn" style="right: 15px; position: absolute; padding: 10px; width: 96%">Rent</button>
+
+		</div>
+
+
+	</div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

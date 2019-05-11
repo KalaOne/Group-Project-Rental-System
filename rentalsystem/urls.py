@@ -19,5 +19,5 @@ urlpatterns = [
     path('create_transaction/', views.createTrans, name='create_transaction'),
     path('item_listings/', views.item_listings, name='item_listings'),
     path('review_confirmation/',views.review_confirmation, name="review_confirmation"),
+    path('confirm_transaction/', views.confirm_transaction, name='confirm_transaction'),
 ]
-
