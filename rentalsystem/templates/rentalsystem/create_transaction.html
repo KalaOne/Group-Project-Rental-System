@@ -4,6 +4,8 @@
 
 {% block content %}
 
+<h2> Borrowing {{list_details.item_type_id.name}}</h2>
+
                     <form action='/create_transaction/' method='POST'>
                     {% csrf_token %}
                     <p>Start Date: </p>

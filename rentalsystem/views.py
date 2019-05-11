@@ -92,24 +92,24 @@ def myjobs(request):
     return render(request, "myjobs.html", {'jobs' : jobs})
 
 def createTrans(request):
-    if (request.method == 'POST'):
+    if(request.method == 'GET'):
+        list_id = request.GET.get('listingid')
+        list_details = ItemListing.objects.select_related('item_type_id').get(id = list_id)
+
         context = {
-            'info' : request.POST.get('date'),
-            'info1' : request.POST.get('date1'),
-            'info2' : "Cost " + request.POST.get('cost')
+            'list_details' : list_details
         }
+
+    if (request.method == 'POST'):
+        print("createTrans called with POST")
         Transaction.objects.create(item_id=Item.objects.get(name = "The Goonies: Adventure Card Game"),
                                    owner_id=CustomUser.objects.get(name = "Matthew Taylor"),
                                    renter_id=CustomUser.objects.get(username = request.user.username),
                                    total_cost=request.POST.get('cost'),
                                    start_date=request.POST.get('date'),
                                    end_date=request.POST.get('date1'))
-    else:
-        context = {
-            'info': "",
-        }
-    return render(request, 'create_transaction.html', context)
 
+    return render(request, 'create_transaction.html', context)
 
 
 def jobstats(request):
