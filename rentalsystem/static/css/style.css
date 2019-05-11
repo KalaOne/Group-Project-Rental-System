@@ -49,6 +49,7 @@
   line-height: 50px;
   color: #ffffff;
   background-color: #343a40;
-  position: absolute;
+  position: relative;
   bottom: 0px;
+  margin-top: 32px;
 }
