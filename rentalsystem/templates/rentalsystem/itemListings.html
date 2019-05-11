@@ -30,7 +30,7 @@
 		</div>
 		<div class="col-md-4" style="text-align: center;">
 
-			<form action='/create_transaction/' method='GET'>
+			<form action='/confirm_transaction/' method='GET'>
 				{% csrf_token %}
 				<input type="hidden" name="listingid" value="{{listing.id}}">
             	<button class="btn btn-danger">Rent</button>
