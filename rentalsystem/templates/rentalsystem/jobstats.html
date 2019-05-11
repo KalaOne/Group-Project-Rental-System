@@ -3,7 +3,7 @@
 {% block title %}My Jobs{% endblock %}
 
 {% block content %}
-    <h2>Job Statistics For {{ searched_region }}</h2>
+    <h2>Job Statistics For {{ searched_region }} {{ day_sort }}</h2>
 
 
     <form action='/jobstats/' method='POST'>
@@ -34,7 +34,7 @@
             <option value="Somerset">Somerset</option>
             <option value="Gloucestershire">Gloucestershire</option>
             <option value="Berkshire">Berkshire</option>
-            <option value="Norfolk">Norfolk</option>
+            <option value="Norfolk" selected="selected">Norfolk</option>
             <option value="County Durham">County Durham</option>
             <option value="West Sussex">West Sussex</option>
             <option value="Cambridgeshire">Cambridgeshire</option>
@@ -75,35 +75,87 @@
         <div class="row">
             <div class="col-sm">
 
-                <div class="card text-white bg-info mb-3">
+                <div class="text-white bg-success mb-3" style="overflow-y: scroll; height:400px;">
                     <div class="card-header">
-                        <h10 class="card-title">Jobs completed</h10>
+                        <h10 class="card-title">{{ total_jobs_completed_count }} Jobs completed</h10>
+                        <i style="margin-left: 15px" class="text-dark small">Ordered by delivered date</i>
                     </div>
                     <div class="card-body">
-                        {{ total_jobs_completed_count }}
+                        {% if jobs.count > 0 %}
+                            <table class="table bg-success" style="border-top: none">
+                                <tr style="border:none">
+                                    <th class="text-center"> JOB ID</th>
+                                    <th class="text-center"> PRODUCT</th>
+                                    <th class="text-center"> DELIVERED</th>
+                                    <th class="text-center"> STAFF</th>
+                                </tr>
+                                {% for job in jobs %}
+                                    <tr>
+                                        <td class="text-white text-center">  {{ job.id }} </td>
+                                        <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                        <td class="text-white text-center">  {{ job.delivered_datetime }} </td>
+                                        <td class="text-white text-center">  {{ job.job_list_id.staff_id }} </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
                     </div>
                 </div>
-                <div class="card text-white bg-info mb-3">
+
+                <div class="text-white bg-danger mb-3" style="overflow-y: scroll; height:400px;">
                     <div class="card-header">
-                        <h10 class="card-title">Unallocated jobs</h10>
+                        <h10 class="card-title">{{ nun_unalloc_jobs }} Unallocated jobs</h10>
+                        <i style="margin-left: 15px" class="text-dark small">Ordered by expected delivery date</i>
                     </div>
                     <div class="card-body">
-                        {{ unalloc_jobs }}
+                        {% if jobs.count > 0 %}
+                            <table class="table bg-danger" style="border-top: none">
+                                <tr style="border:none">
+                                    <th class="text-center"> JOB ID</th>
+                                    <th class="text-center"> PRODUCT</th>
+                                    <th class="text-center"> DUE DELIVERY</th>
+                                </tr>
+                                {% for job in unalloc_jobs %}
+                                    <tr>
+                                        <td class="text-white text-center">  {{ job.id }} </td>
+                                        <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                        <td class="text-white text-center">  {{ job.due_delivery_datetime }} </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="text-white bg-warning mb-3" style="overflow-y: scroll; height:400px;">
+                    <div class="card-header">
+                        <h10 class="card-title">{{ nun_undelivered_jobs }} Undelivered jobs</h10>
+                        <i style="margin-left: 15px" class="text-dark small">Ordered by expected delivery date</i>
+                    </div>
+                    <div class="card-body">
+                        {% if jobs.count > 0 %}
+                            <table class="table bg-warning" style="border-top: none">
+                                <tr style="border:none">
+                                    <th class="text-center"> JOB ID</th>
+                                    <th class="text-center"> PRODUCT</th>
+                                    <th class="text-center"> DUE DELIVERY</th>
+                                    <th class="text-center"> STAFF</th>
+                                </tr>
+                                {% for job in undelivered_jobs %}
+                                    <tr>
+                                        <td class="text-white text-center">  {{ job.id }} </td>
+                                        <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                        <td class="text-white text-center">  {{ job.due_delivery_datetime }} </td>
+                                        <td class="text-white text-center">  {{ job.job_list_id.staff_id }} </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
                     </div>
                 </div>
 
             </div>
-            <div class="col-sm">
-                <div class="card text-white bg-info mb-3">
-                    <div class="card-header">
-                        <h10 class="card-title">Undelivered jobs</h10>
-                    </div>
-                    <div class="card-body">
-                        {{ undelivered_jobs }}
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 

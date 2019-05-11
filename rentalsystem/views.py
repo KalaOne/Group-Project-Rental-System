@@ -124,6 +124,7 @@ def confirm_transaction(request):
 
 
 def jobstats(request):
+    obj = []
     # if POST request then the jobstats page is being filtered
     if request.method == 'POST':
         region = request.POST.get('region')
@@ -131,33 +132,40 @@ def jobstats(request):
         print("Region from page is: " + str(region))
         # calculate the completed number of jobs
         if days == "1day":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=1)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=1)), county = region).count()
         elif days == "1 week":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
         elif days == "2 weeks":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=14)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=14)), county = region).count()
         elif days == "1 month":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=30)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=30)), county = region).count()
         else:
             total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, county = region).count()
 
+        jobs = Job.objects.filter(delivered_datetime__isnull = False, county = region).order_by('-delivered_datetime')
 
         # calculate the completed jobs in past 7 days
         # total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
 
         # calculate number of unallocated jobs
         unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True, county = region).count()
+        unalloc_jobs = Job.objects.filter(job_list_id__isnull = True, county = region)
 
 
         # calulate number of undelivered jobs
         undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True, county = region).count()
+        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull = True, county = region, job_list_id__isnull = False).order_by('-due_delivery_datetime')
 
         context = {
             'total_jobs_completed_count': total_jobs_completed_count,
             # 'total_jobs_comp_last_week': total_jobs_comp_last_week,
-            'unalloc_jobs' : unalloc_jobs_count,
-            'undelivered_jobs' : undelivered_jobs_count,
-            'searched_region' : region
+            'nun_unalloc_jobs' : unalloc_jobs_count,
+            'nun_undelivered_jobs' : undelivered_jobs_count,
+            'searched_region' : region,
+            'day_sort' : days,
+            'jobs' : jobs,
+            'unalloc_jobs' : unalloc_jobs,
+            'undelivered_jobs' : undelivered_jobs
         }
 
     # if no POST request then show all job stats
@@ -166,8 +174,7 @@ def jobstats(request):
         total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
 
         # calculate the completed jobs in past 7 days
-        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte
-        = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
+        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
 
         # calculate number of unallocated jobs
         unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True).count()

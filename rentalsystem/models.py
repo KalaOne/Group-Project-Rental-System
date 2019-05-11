@@ -102,7 +102,6 @@ class Job(models.Model):
     job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT, db_column='job_list_id', blank=True, null=True)
     due_delivery_datetime = models.DateTimeField()
     delivered_datetime = models.DateTimeField(blank=True, null=True)
-
     address1 = models.CharField(max_length=200, blank=True, null=True)
     address2 = models.CharField(max_length=200, blank=True, null=True)
     address3 = models.CharField(max_length=200, blank=True, null=True)
