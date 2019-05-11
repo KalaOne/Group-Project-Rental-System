@@ -1,3 +1,10 @@
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
 .searchBar  {
   margin-bottom: 20px;
   display: flex;
@@ -19,6 +26,14 @@
   margin-bottom: 32px;
 }
 
+.mt-128 {
+  margin-top: 128px;
+}
+
+.mb-128 {
+  margin-bottom: 128px;
+}
+
 .image-preview{
   width: 100%;
 }
@@ -37,4 +52,17 @@
 
 .border-bottom {
   border-bottom: 1px solid grey
+}
+
+.listing-img {
+  width: 500px;
+}
+
+.footer {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  color: #ffffff;
+  background-color: #343a40;
+  margin-top: 32px;
 }

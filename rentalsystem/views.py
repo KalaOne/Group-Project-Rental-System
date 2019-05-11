@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import *
 from .models import *
+from datetime import datetime
+
 
 
 def index(request):
@@ -142,9 +144,25 @@ def confirm_transaction(request):
         list_id = request.GET.get('listingid')
         list_details = ItemListing.objects.select_related('item_type_id').get(id = list_id)
 
+        s_date = request.GET.get('start_date')
+        e_date = request.GET.get('end_date')
+
+        sDate = datetime.strptime(s_date, '%d-%m-%Y')
+        eDate = datetime.strptime(e_date, '%d-%m-%Y')
+
+        rent_period = eDate - sDate
+
+        total_cost = rent_period.days * list_details.cost_per_day
+
         context = {
-            'list_details' : list_details
+            'list_details' : list_details,
+            'dates' : [s_date, e_date],
+            'cost' : total_cost
         }
+
+
+    print("HELLOOOOOO")
+    print(s_date)
 
     return render(request, 'confirm_transaction.html', context)
 
@@ -346,7 +364,7 @@ def item_listings(request):
         e_date = request.POST.get('date_end')
 
         print("Selecting items available between " + str(s_date) + " and " + str(e_date))
-
+        print("HELLLLLOOOO")
 
 
         items = ItemListing.objects.filter(item_type_id = item.id)
@@ -356,13 +374,13 @@ def item_listings(request):
         context = {
             'item': item,
             'item_listings': items,
-            'dates' : [s_date, e_date], 
+            'dates' : [s_date, e_date],
             'cost' : cost
             }
 
         return render(request, "rentalsystem/itemListings.html", context)
 
-    # if not POSTed then first time page has been loaded - no dates so 
+    # if not POSTed then first time page has been loaded - no dates so
     # don't provide any items
     else:
         print('Not showing item listings yet: need dates')
