@@ -243,18 +243,52 @@ def my_orders(request):
 
     return render(request, 'myorders.html', context)
 
+def is_listing_available(listing_id):
+    print("is listing available?")
 
 def item_listings(request):
-    item_name = request.GET.get('query_name')
+
+    # get query from either type of request
+    if request.method == 'POST':
+        item_name = request.POST.get('query_name')
+    if request.method == 'GET':
+        item_name = request.GET.get('query_name')
+
+    # get the right item details from the query
     item = Item.objects.filter(name=item_name).first()
-    print(item_name)
-    items = ItemListing.objects.filter(item_type_id=item.id)
+    print("Item name found: " + str(item_name))
 
-    print(items)
-
-
+    # save item into context so it's detailed can be rendered
     context = {
-    'item':item,
-    'item_listings':items }
+        'item':item,
+        }
 
-    return render(request, "rentalsystem/itemListings.html", context)
+    # will be POSTed if dates have been selected
+    if request.method == 'POST':
+
+        # get the start and end dates from the form
+        s_date = request.POST.get('date_start')
+        e_date = request.POST.get('date_end')
+
+        print("Selecting items available between " + str(s_date) + " and " + str(e_date))
+
+
+
+        items = ItemListing.objects.filter(item_type_id = item.id)
+        cost = 10
+
+        # create context with all available item listings
+        context = {
+            'item': item,
+            'item_listings': items,
+            'dates' : [s_date, e_date], 
+            'cost' : cost
+            }
+
+        return render(request, "rentalsystem/itemListings.html", context)
+
+    # if not POSTed then first time page has been loaded - no dates so 
+    # don't provide any items
+    else:
+        print('Not showing item listings yet: need dates')
+        return render(request, "rentalsystem/itemListings.html", context)

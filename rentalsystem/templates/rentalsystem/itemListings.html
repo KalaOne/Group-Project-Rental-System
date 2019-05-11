@@ -20,6 +20,23 @@
 			</p>
 		</div>
 	</div>
+	<form action='/item_listings/' method='POST'>
+		<input type="hidden" name="query_name" value="{{item.name}}">
+		<div class="row">
+			{% csrf_token %}
+			<div class="col-sm">
+				<h4>Start date of rental</h4>
+					<input id="StartDate" name="date_start" value="">
+			</div>
+			<div class="col-sm">
+					<h4>End date of rental</h4>
+						<input id="EndDate" name="date_end" value="">
+			</div>
+			<div class="col-sm">
+				<button class="btn btn-danger">Find available items</button>
+			</div>
+		</div>
+	</form>
   {% for listing in item_listings %}
   <div class="row muted" style="padding: 30px; border: 1px grey solid; border-radius: 5px; margin: 10px 0px;">
 		<div class="col-md-4" style="text-align: center;">
@@ -34,12 +51,26 @@
 				{% csrf_token %}
 				<input type="hidden" name="listingid" value="{{listing.id}}">
             	<button class="btn btn-danger">Rent</button>
-
 			</form>
 
 		</div>
 	</div>
   {% endfor %}
 </div>
+
+  <script>
+    $(function () {
+      $("#StartDate").datepicker({
+          format: 'yyyy-mm-dd',
+      });
+    });
+  </script>
+  <script>
+    $(function () {
+      $("#EndDate").datepicker({
+          format: 'yyyy-mm-dd',
+      });
+    });
+  </script>
 
 {% endblock %}
