@@ -62,7 +62,7 @@
         </div>
 
         <div class="row">
-            {%  for item,price in items %}
+            {%  for item,price,rating in items %}
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
               <a href="#"><img class="card-img-top" src="{{ item.image.url }}" height="200" width="auto"></a>
@@ -76,11 +76,44 @@
                     <h5 class="text-danger">Currently Out Of Stock</h5>
                   {% endif %}
               <div class="card-title">
-                  <span class="fa fa-star" style="color:orange"></span>
-                  <span class="fa fa-star" style="color:orange"></span>
-                  <span class="fa fa-star" style="color:orange"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
+                      {% if rating == 0 %}
+                          <i>Not Rated</i>
+                      {% endif %}
+                      {% if rating == 1 %}
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                      {% endif %}
+                      {% if rating == 2%}
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                      {% endif %}
+                      {% if rating == 3%}
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                      {% endif %}
+                      {% if rating == 4%}
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star"></span>
+                      {% endif %}
+                      {% if rating == 5 %}
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                          <span class="fa fa-star" style="color:orange"></span>
+                      {% endif %}
               </div>
                 <p class="card-text">{{ item.info }}</p>
               </div>
