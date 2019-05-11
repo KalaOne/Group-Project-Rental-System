@@ -1,3 +1,10 @@
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
 .searchBar  {
   margin-bottom: 20px;
   display: flex;
@@ -17,6 +24,14 @@
 
 .mb-32 {
   margin-bottom: 32px;
+}
+
+.mt-128 {
+  margin-top: 128px;
+}
+
+.mb-128 {
+  margin-bottom: 128px;
 }
 
 .image-preview{
@@ -49,7 +64,5 @@
   line-height: 50px;
   color: #ffffff;
   background-color: #343a40;
-  position: relative;
-  bottom: 0px;
   margin-top: 32px;
 }

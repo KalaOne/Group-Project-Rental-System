@@ -282,7 +282,7 @@ def item_listings(request):
         e_date = request.POST.get('date_end')
 
         print("Selecting items available between " + str(s_date) + " and " + str(e_date))
-
+        print("HELLLLLOOOO")
 
 
         items = ItemListing.objects.filter(item_type_id = item.id)
@@ -292,13 +292,13 @@ def item_listings(request):
         context = {
             'item': item,
             'item_listings': items,
-            'dates' : [s_date, e_date], 
+            'dates' : [s_date, e_date],
             'cost' : cost
             }
 
         return render(request, "rentalsystem/itemListings.html", context)
 
-    # if not POSTed then first time page has been loaded - no dates so 
+    # if not POSTed then first time page has been loaded - no dates so
     # don't provide any items
     else:
         print('Not showing item listings yet: need dates')
