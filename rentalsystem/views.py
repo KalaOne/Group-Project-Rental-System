@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import *
 from .models import *
+from datetime import datetime
+
 
 
 def index(request):
@@ -116,9 +118,25 @@ def confirm_transaction(request):
         list_id = request.GET.get('listingid')
         list_details = ItemListing.objects.select_related('item_type_id').get(id = list_id)
 
+        s_date = request.GET.get('start_date')
+        e_date = request.GET.get('end_date')
+
+        sDate = datetime.strptime(s_date, '%d-%m-%Y')
+        eDate = datetime.strptime(e_date, '%d-%m-%Y')
+
+        rent_period = eDate - sDate
+
+        total_cost = rent_period.days * list_details.cost_per_day
+
         context = {
-            'list_details' : list_details
+            'list_details' : list_details,
+            'dates' : [s_date, e_date],
+            'cost' : total_cost
         }
+
+
+    print("HELLOOOOOO")
+    print(s_date)
 
     return render(request, 'confirm_transaction.html', context)
 
