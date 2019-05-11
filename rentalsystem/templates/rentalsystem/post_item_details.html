@@ -4,21 +4,29 @@
 
     <div class="container">
         <div class="row">
-            <form class="form-horizontal" method="post" enctype="multipart/form-data">
+            <form class="form-horizontal" method="post" action="{% url 'post_item_complete' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
-                    <img src="{{ item.image.url }}">
-                    <h1>{{ item.name }}</h1>
-                    <h3> {{ item.info }}</h3>
-{#                    FOR PRICE    #}
-{#                    <h3>{{ item.price }}</h3>#}
+                    <p>Title: {{item_name}}</p>
+                    <p>Description: {{info}}</p> 
+                    <p>Cost per day: {{cost}}</p>
+                    <input type="hidden" value="{{item_name}}" name = "i_name">
+                    <input type="hidden" value="{{info}}" name = "i_info">
+                    <input type="hidden" value="{{cost}}" name = "i_cost">
+                    <input type="hidden" value="{{item_id}}" name = "i_id">
                     <div class="row">
                         <div class="col-sm-12 text-left">
-                            <button class="btn btn-success center-block" value="Post Item">Post Item</button>
-                            <button class="btn btn-danger center-block" value="Edit Item">Edit Item</button>
+                            <button class="btn btn-success center-block" value="post_item">Post This Item</button>
                         </div>
                     </div>
                 </div>
+            </form>
+            <form class="form-horizontal" method="post" action="{% url 'user_post_item' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <div class="col-lrg-12 text-center">
+                        <button class="btn btn-danger center-block" value="edit_item">Edit Item</button>
+                    </div>
+
             </form>
         </div>
 

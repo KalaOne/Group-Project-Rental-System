@@ -220,13 +220,43 @@ class SignUp(generic.CreateView):
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
-class UserPostItem(generic.CreateView):
-    model = Item
-    fields = ['name', 'info', 'image']
+def user_post_item(request):
+    # items = ItemListing.objects.)
+    items = Item.objects.all()
+    context = {
+        'items' : items
+    }
+    return render(request, "user_post_item.html", context)
 
-def item_details(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    return render(request, 'rentalsystem/post_item_details.html', {'item': item})
+
+def item_details(request):
+    if request.method == 'POST':
+        
+        i_id = request.POST.get('dropdown_value') ##get the ID in dropdown
+        item = Item.objects.get(id = i_id) ## gets the Item with that ID
+        item_name = item.name ##gets that Item's name
+        item_id = request.POST.get('dropdown_value')
+        info = request.POST.get('info_field')
+        cost= request.POST.get('cost')
+        context = {
+            'item_name' : item_name,
+            'info' : info,
+            'cost' : cost,
+            'item_id' : i_id
+        }
+    return render(request, 'rentalsystem/post_item_details.html', context)
+
+def post_item_complete(request):
+    if request.method =='POST':
+        i_id = Item.objects.get(id = request.POST.get('i_id'))
+        user_id = CustomUser.objects.get(id=request.user.id)
+        ItemListing.objects.create(title=request.POST.get('i_name'),
+                                    additional_info = request.POST.get('i_info'),
+                                    cost_per_day = request.POST.get('i_cost'),
+                                    owner_id = user_id,
+                                    item_type_id = i_id)
+                                    
+    return render(request, 'rentalsystem/post_item_complete.html')
 
 def leave_review(request):
     if request.method == 'POST':
