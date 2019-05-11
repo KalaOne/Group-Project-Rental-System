@@ -24,7 +24,7 @@
             <form action='/home_search/' method='POST'>
                 {% csrf_token %}
                 <input type="hidden" name="catPk" value="{{category.id}}">
-                <button class="btnMarkComplete">{{category}}</button>
+                <button class="btn-outline-secondary btn-sm btn-block">{{category}}</button>
             </form>
             {%  endfor %}
         </div>
