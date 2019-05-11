@@ -1,0 +1,29 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Add Item{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <form class="form-horizontal" method="POST", action="{% url 'item_details' %}"  enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>Title: </p>
+                    <select name="dropdown_value">
+                        {%for i in items %}
+        
+                            <option value="{{i.id}}">{{i.name}}</option>
+                        {%endfor%}
+                    </select>
+                <p>Additional Information: </p>
+                    <input type="textarea" id="info" name="info_field" >
+                <p>Cost per day: </p>
+                <input id="Cost" name="cost" >
+                <input type="submit" value="Submit" class="btn btn-success">
+
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}

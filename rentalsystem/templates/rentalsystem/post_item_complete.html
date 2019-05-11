@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Details for {{ Item.name }} {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <form class="form-horizontal" method="post" action="{% url 'home' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <p class="text-lrg-center text-info">Your Item has been successfully posted</p>
+                
+                <div class="row">
+                    <div class="col-sm-12 text-left">
+                        <button class="btn btn-info center-block">Back Home</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
