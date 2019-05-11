@@ -3,7 +3,16 @@
 {% block title %}Review Confirmation{% endblock %}
 
 {% block content %}
+    <div class="container-fluid" style="margin-top: 5em">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h2>Thanks for leaving a review!</h2><br>
+                <h3>Your review has id: {{ review.id }}</h3>
 
-    <h2>Thanks for leaving a review!</h2><br>
-    <button><a href="/my_orders/">GOBACCCK</a></button>
+                <button class="btn btn-primary"><a class="text-white" href="/my_orders/">Return to Orders</a></button>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
 {% endblock %}

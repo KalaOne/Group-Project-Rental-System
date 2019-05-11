@@ -193,14 +193,23 @@ def leave_review(request):
     return render(request, 'rentalsystem/review.html', context)
 
 def review_confirmation(request):
-    addNewReview(request)
-    return render(request, 'rentalsystem/reviewconfirmation.html')
-
-def addNewReview(request):
     if request.method == 'POST':
-        print('Added review!')
+        if Reviews.objects.create(transaction_id=Transaction.objects.get(id=request.POST.get('transactionpk')),
+                                  content=request.POST.get('review_message'),
+                                  item_rating=request.POST.get('itemrating'),
+                                  transaction_rating=request.POST.get('transactionrating'),
+                                  left_by_user_id=CustomUser.objects.get(id=request.user.id)):
+            print("Successfully added review...")
+        else:
+            print("Review not added successfully...")
+            return render(request, 'rentalsystem/myorders.html')
     else:
         print("ERROR - adding new review")
+        return render(request, 'rentalsystem/myorders.html')
+    context = {
+        'review': Reviews.objects.filter(transaction_id=Transaction.objects.get(id=request.POST.get('transactionpk'))).last()
+    }
+    return render(request, 'rentalsystem/reviewconfirmation.html', context)
 
 def my_orders(request):
     current_user_id = request.user.id
