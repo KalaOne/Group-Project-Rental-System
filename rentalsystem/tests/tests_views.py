@@ -27,11 +27,10 @@ class HomePageTests(TestCase):
         url = reverse('landing')
         response = self.client.get(url)
         self.assertTemplateUsed(response, 'landing.html')
-
     # def test_landing_page_returns_right_search_results(self):
     #     response = self.client.get('/home_search')
     #     self.
-    item_listings?query_name=Where%27s%20Wally%3F%21
+    # item_listings?query_name=Where%27s%20Wally%3F%21
 
 class JobStatsTests(TestCase):
     def test_jobstats_returns_right_status(self):

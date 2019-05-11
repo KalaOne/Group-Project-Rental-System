@@ -122,7 +122,9 @@ def jobstats(request):
         total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, county = region).count()
 
         # calculate the completed jobs in past 7 days
-        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
+        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull =
+                                                       False, delivered_datetime__gte =
+        (datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
 
         # calculate number of unallocated jobs
         unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True, county = region).count()
@@ -145,7 +147,8 @@ def jobstats(request):
         total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
 
         # calculate the completed jobs in past 7 days
-        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
+        total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte
+        = (datetime.datetime.now() - datetime.timedelta(days=7))).count()
 
         # calculate number of unallocated jobs
         unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True).count()
@@ -220,12 +223,14 @@ def my_orders(request):
     # get all orders filtered to current user
     # use select_related to also query the item table (needed for item name)
     # filter by all orders with end date greater/equal(gte) than today
-    current_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__gte = datetime.datetime.now()).select_related('item_id').order_by('start_date')
+    current_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__gte =
+    datetime.datetime.now()).select_related('item_id').order_by('start_date')
 
     # get all orders filtered to current user
     # use select_related to also query the item table (needed for item name)
     # filter by all orders with end date less than(lt) than today
-    completed_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__lt = datetime.datetime.now()).select_related('item_id').prefetch_related('reviews_set').order_by('start_date')
+    completed_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__lt =
+    datetime.datetime.now()).select_related('item_id').prefetch_related('reviews_set').order_by('start_date')
 
     # integration test - print all orders
     print("TEST: Printing current users orders:")

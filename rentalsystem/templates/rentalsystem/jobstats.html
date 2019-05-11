@@ -8,7 +8,57 @@
 
     <form action='/jobstats/' method='POST'>
         {% csrf_token %} 
-        <input type="text" id="region" name="region">
+{#        <input type="text" id="region" name="region">#}
+        <select name="region">
+            <option value="Greater London">Greater London</option>
+            <option value="West Midlands">West Midlands</option>
+            <option value="Greater Manchester">Greater Manchester</option>
+            <option value="West Yorkshire">West Yorkshire</option>
+            <option value="Hampshire">Hampshire</option>
+            <option value="Kent">Kent</option>
+            <option value="Essex">Essex</option>
+            <option value="Lancashire">Lancashire</option>
+            <option value="Merseyside">Merseyside</option>
+            <option value="South Yorkshire">South Yorkshire</option>
+            <option value="Devon">Devon</option>
+            <option value="Surrey">Surrey</option>
+            <option value="Hertfordshire">Hertfordshire</option>
+            <option value="North Yorkshire">North Yorkshire</option>
+            <option value="Nottinghamshire">Nottinghamshire</option>
+            <option value="Tyne and Wear">Tyne and Wear</option>
+            <option value="Staffordshire">Staffordshire</option>
+            <option value="Lincolnshire">Lincolnshire</option>
+            <option value="Cheshire">Cheshire</option>
+            <option value="Derbyshire">Derbyshire</option>
+            <option value="Leicestershire">Leicestershire</option>
+            <option value="Somerset">Somerset</option>
+            <option value="Gloucestershire">Gloucestershire</option>
+            <option value="Berkshire">Berkshire</option>
+            <option value="Norfolk">Norfolk</option>
+            <option value="County Durham">County Durham</option>
+            <option value="West Sussex">West Sussex</option>
+            <option value="Cambridgeshire">Cambridgeshire</option>
+            <option value="East Sussex">East Sussex</option>
+            <option value="Buckinghamshire">Buckinghamshire</option>
+            <option value="Dorset">Dorset</option>
+            <option value="Suffolk">Suffolk</option>
+            <option value="Northamptonshire">Northamptonshire</option>
+            <option value="Wiltshire">Wiltshire</option>
+            <option value="Oxfordshire">Oxfordshire</option>
+            <option value="Bedfordshire">Bedfordshire</option>
+            <option value="East Riding of Yorkshire">East Riding of Yorkshire</option>
+            <option value="Worcestershire">Worcestershire</option>
+            <option value="Warwickshire">Warwickshire</option>
+            <option value="Cornwall">Cornwall</option>
+            <option value="Cumbria">Cumbria</option>
+            <option value="Shropshire">Shropshire</option>
+            <option value="Bristol">Bristol</option>
+            <option value="Northumberland">Northumberland</option>
+            <option value="Herefordshire">Herefordshire</option>
+            <option value="Isle of Wight">Isle of Wight</option>
+            <option value="Rutland">Rutland</option>
+            <option value="City of London">City of London</option>
+        </select>
         <button class="btn btn-primary btn-sm">Filter by region</button>
     </form>
     <p>
