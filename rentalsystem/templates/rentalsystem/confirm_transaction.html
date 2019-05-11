@@ -34,15 +34,20 @@
         <h5>Additional info</h5>
         <div class="container-fluid bg-light">
 
-            <div class="col-lg-5 text-center" style="padding: 20px;">
+            <div class="col-lg-5 center-text" style="padding: 20px;">
               {{list_details.additional_info}}
             </div>
         </div>
 
         <!-- create transaction -->
-        <form class="" action="index.html" method="post">
+        <form class="" action="#" method="post">
           {% csrf_token %}
-          <input type="text" name="" value="">
+          <input type="hidden" name="start_date" value="{{dates.0}}">
+          <input type="hidden" name="end_date" value="{{dates.1}}">
+          <input type="hidden" name="listing_id" value="{{ list_details.id }}">
+          <input type="hidden" name="owner_id" value="{{ list_details.owner_id.id }}">
+          <input type="hidden" name="total_cost" value="{{ cost }}">
+
           <button class="btn btn-primary btn-sm rent-btn" style="right: 15px; position: absolute; padding: 10px; width: 96%">Rent</button>
         </form>
 
