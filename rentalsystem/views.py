@@ -10,6 +10,7 @@ from .forms import *
 from .models import *
 from datetime import *
 from django.utils.dateparse import parse_datetime
+from django.core.mail import send_mail
 
 
 
@@ -206,6 +207,8 @@ def rent_item(request):
 
     return render(request, 'order_confirmation.html')
 
+# Checks unallocated jobs and allocates staff member with the least
+# amount of current jobs to that job, iff they are in the same region
 def allocate_jobs():
     for job in Job.objects.all():
         # if job hasnt been allocated yet
@@ -245,7 +248,15 @@ def allocate_jobs():
                 setattr(job, 'job_list_id', job_list)
                 job.save()
 
+                email = job.transaction_id.renter_id.email
 
+                # send_mail(
+                #     'Your board game is on route!',
+                #     'We hope you enjoy this game! we will be back to collect it on the pickup date!' ,
+                #     'from@example.com',
+                #     ['to@example.com'],
+                #     fail_silently=False,
+                # )
 
 
 
