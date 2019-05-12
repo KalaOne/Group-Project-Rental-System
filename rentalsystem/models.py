@@ -83,7 +83,7 @@ class ItemListing(models.Model):
 
 # transaction class
 class Transaction(models.Model):
-    item_id = models.ForeignKey(Item, on_delete=models.PROTECT, db_column='item_id') # foreign key to Item
+    item_id = models.ForeignKey(ItemListing, on_delete=models.PROTECT, db_column='item_id') # foreign key to Item
     owner_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='owner_id')
     renter_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='renter_id')
     total_cost = models.PositiveIntegerField()
@@ -144,8 +144,3 @@ class Reviews(models.Model):
             MinValueValidator(1)
         ])
     left_by_user_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='left_by_user_id')
-
-
-
-
-

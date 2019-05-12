@@ -172,6 +172,34 @@ def confirm_transaction(request):
     return render(request, 'confirm_transaction.html', context)
 
 
+def rent_item(request):
+    if request.method == 'POST':
+        # get job info from the post request (button press)
+        s_date = request.POST.get('start_date')
+        e_date = request.POST.get('end_date')
+        listing_id = ItemListing.objects.get(id=request.POST.get('listing_id'))
+        o_id = CustomUser.objects.get(id=request.POST.get('owner_id'))
+        cost = request.POST.get('cost_id')
+        r_id = CustomUser.objects.get(id=request.user.id)
+
+        #Create Transaction
+        Transaction.objects.create(total_cost = cost,
+                                   start_date = s_date,
+                                   end_date = e_date,
+                                   item_id = listing_id,
+                                   owner_id = o_id,
+                                   renter_id = r_id)
+
+
+        # # Create delivery job
+        # Job.objects.create( title=request.POST.get('i_name'),
+        #                     additional_info = request.POST.get('i_info'),
+        #                     cost_per_day = request.POST.get('i_cost'),
+        #                     owner_id = user_id,
+        #                     item_type_id = i_id)
+
+    return render(request, 'order_confirmation.html')
+
 def jobstats(request):
     obj = []
     # if POST request then the jobstats page is being filtered
@@ -271,7 +299,7 @@ def user_post_item(request):
 
 def item_details(request):
     if request.method == 'POST':
-        
+
         i_id = request.POST.get('dropdown_value') ##get the ID in dropdown
         item = Item.objects.get(id = i_id) ## gets the Item with that ID
         item_name = item.name ##gets that Item's name
@@ -295,7 +323,7 @@ def post_item_complete(request):
                                     cost_per_day = request.POST.get('i_cost'),
                                     owner_id = user_id,
                                     item_type_id = i_id)
-                                    
+
     return render(request, 'rentalsystem/post_item_complete.html')
 
 def leave_review(request):
