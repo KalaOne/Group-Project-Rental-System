@@ -1,0 +1,43 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <h2> {{ list_details.item_type_id.name }}</h2>
+
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <img class="card rounded-circle account-img" style="width:400px"
+                     src="{{ user.profile.image.url }}">
+            </div>
+            <div class="col-sm">
+                <form action='/change_details/' method='POST'>
+                    {% csrf_token %}
+                    <p>Username: <b>{{ user.username }}</b></p>
+                    <input id="StartDate" name="date" value="">
+                    <p>Email: <b>{{ user.email }}</b></p>
+                    <input id="EndDate" name="date1" value="">
+                    <p>Region: <b>{{ user.region }}</b></p>
+                    <input id="Cost" name="cost">
+                    <p>Name: <b>{{ user.name }}</b></p>
+                    <input id="Cost" name="cost">
+                    <p>Card number: <b>{{ user.card_long_number }}</b></p>
+                    <input id="Cost" name="cost">
+                    <p>Card expiry date: <b>{{ user.card_expiry_date }}</b></p>
+                    <input id="Cost" name="cost">
+                    <p>Card cvv: <b>{{ user.card_cvv }}</b></p>
+                    <input id="Cost" name="cost">
+                    <button class="btn btn-success center-block" value="Submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

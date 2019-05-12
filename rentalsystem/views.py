@@ -261,6 +261,15 @@ def profile(request):
     }
     return render(request, 'profile.html', context)
 
+def account_settings(request):
+    # current_user_id = request.user.id
+    #
+    # reviews = Reviews.objects.filter(left_by_user_id = current_user_id)
+    # context = {
+    #     'reviews':reviews
+    # }
+    return render(request, 'rentalsystem/accSet.html')
+
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
