@@ -261,17 +261,26 @@ class SignUp(generic.CreateView):
     template_name = 'signup.html'
 
 def user_post_item(request):
-    # items = ItemListing.objects.)
     items = Item.objects.all()
-    context = {
-        'items' : items
-    }
+    if request.method == 'POST':
+        i_info = request.POST.get('i_info')
+        i_cost = request.POST.get('i_cost')
+        i_id = request.POST.get('i_id')
+        context = {
+            'items' : items,
+            'i_cost' : i_cost,
+            'info' : i_info,
+            'i_id' : i_id
+        }
+    else:
+        context = {
+            'items' : items,
+        }
     return render(request, "user_post_item.html", context)
 
 
-def item_details(request):
+def post_item_details(request):
     if request.method == 'POST':
-        
         i_id = request.POST.get('dropdown_value') ##get the ID in dropdown
         item = Item.objects.get(id = i_id) ## gets the Item with that ID
         item_name = item.name ##gets that Item's name
@@ -282,8 +291,9 @@ def item_details(request):
             'item_name' : item_name,
             'info' : info,
             'cost' : cost,
-            'item_id' : i_id
+            'i_id' : i_id
         }
+        print("+++++++", i_id)
     return render(request, 'rentalsystem/post_item_details.html', context)
 
 def post_item_complete(request):

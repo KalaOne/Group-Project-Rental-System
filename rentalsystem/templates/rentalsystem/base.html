@@ -58,19 +58,14 @@
                     <p><a class="nav-link" href="{% url 'myjobs' %}">My Jobs</a></p>
                 </li>
             {% endif %}
-            {% if user.role ==  'C' %}
-                <li class="nav-item">
-                    <p><a class="nav-link" href="{% url 'create_transaction' %}">Try Transaction</a></p>
-                </li>
-            {% endif %}
             {% if user.role ==  'A' %}
                 <li class="nav-item">
                     <p><a class="nav-link" href="{% url 'jobstats' %}">Job Stats</a></p>
                 </li>
             {% endif %}
-            {% if user.role ==  'C' %}
+            {% if user.role ==  'C' or user.role == 'S' or user.role == 'A'%}
                 <li class="nav-item">
-                    <p><a class="nav-link" href="{% url 'user_post_item' %}">Post Item</a></p>
+                    <p><a class="nav-link" href="{% url 'user_post_item' %}">Upload Game</a></p>
                 </li>
             {% endif %}
             {% if user.role ==  'C' %}

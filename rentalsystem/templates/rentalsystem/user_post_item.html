@@ -11,14 +11,13 @@
                 <p>Title: </p>
                     <select name="dropdown_value">
                         {%for i in items %}
-        
                             <option value="{{i.id}}">{{i.name}}</option>
                         {%endfor%}
                     </select>
                 <p>Additional Information: </p>
-                    <input type="textarea" id="info" name="info_field" >
+                    <input type="textarea" value='{{info}}' id="info" name="info_field" required>
                 <p>Cost per day: </p>
-                <input id="Cost" name="cost" >
+                <input value= '{{i_cost}}'id="Cost" name="cost" required>
                 <input type="submit" value="Submit" class="btn btn-success">
 
             </form>
