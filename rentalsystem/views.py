@@ -9,6 +9,8 @@ from django.views import generic
 from .forms import *
 from .models import *
 from datetime import *
+from django.utils.dateparse import parse_datetime
+from django.core.mail import send_mail
 
 
 
@@ -114,6 +116,8 @@ def myjobs(request):
         job.delivered_datetime = datetime.now()
         job.delivered = True
 
+        job.job_list_id = None
+
         # save object
         job.save()
 
@@ -152,8 +156,8 @@ def confirm_transaction(request):
         s_date = request.GET.get('start_date')
         e_date = request.GET.get('end_date')
 
-        sDate = datetime.strptime(s_date, '%d-%m-%Y')
-        eDate = datetime.strptime(e_date, '%d-%m-%Y')
+        sDate = datetime.strptime(s_date, '%Y-%m-%d')
+        eDate = datetime.strptime(e_date, '%Y-%m-%d')
 
         rent_period = eDate - sDate
 
@@ -170,6 +174,92 @@ def confirm_transaction(request):
     print(s_date)
 
     return render(request, 'confirm_transaction.html', context)
+
+
+def rent_item(request):
+    if request.method == 'POST':
+        # get job info from the post request (button press)
+        s_date = request.POST.get('start_date')
+
+        e_date = request.POST.get('end_date')
+
+        listing_id = ItemListing.objects.get(id=request.POST.get('listing_id'))
+        o_id = CustomUser.objects.get(id=request.POST.get('owner_id'))
+        cost = request.POST.get('total_cost')
+        r_id = CustomUser.objects.get(id=request.user.id)
+
+        #Create Transaction
+        transaction = Transaction.objects.create(total_cost = cost,
+                                   start_date = s_date,
+                                   end_date = e_date,
+                                   item_id = listing_id,
+                                   owner_id = o_id,
+                                   renter_id = r_id)
+
+
+        # # Create delivery job
+        # Job.objects.create( transaction_id= transaction.id,
+        #                     due_delivery_datetime = transaction.start_date,
+        #                     cost_per_day = request.POST.get('i_cost'),
+        #                     owner_id = user_id,
+        #                     item_type_id = i_id)
+        allocate_jobs()
+
+    return render(request, 'order_confirmation.html')
+
+# Checks unallocated jobs and allocates staff member with the least
+# amount of current jobs to that job, iff they are in the same region
+def allocate_jobs():
+    for job in Job.objects.all():
+        # if job hasnt been allocated yet
+        if job.job_list_id is None:
+            print("JOB LIST ID IS NONE")
+            could_deliver = []
+            region = job.county
+            print(region)
+            # Find all staff in jobs region
+            for staff in CustomUser.objects.all():
+                if staff.region == region and staff.role == "S":
+                    print("FOUND STAFF")
+                    could_deliver.append(staff)
+
+            # If there are drivers in that region
+            if len(could_deliver) is not 0:
+
+                print("!!!!!!!!!!!!!COULD DELIVER NOT 0!!!!!!!!!!!!!!!!")
+
+                to_deliver = could_deliver[0]
+                max_job_count = 0
+
+                for staff in could_deliver:
+                    job_count = 0
+                    # find staff member with least number of jobs
+                    for jobList in JobList.objects.all():
+                        if jobList.staff_id is staff.id:
+                            job_count = job_count + 1
+
+                        if job_count > max_job_count:
+                            max_job_count = job_count
+                            to_deliver = staff
+
+                print(to_deliver)
+                job_list = JobList.objects.create(staff_id = to_deliver)
+
+                setattr(job, 'job_list_id', job_list)
+                job.save()
+
+                email = job.transaction_id.renter_id.email
+
+                # send_mail(
+                #     'Your board game is on route!',
+                #     'We hope you enjoy this game! we will be back to collect it on the pickup date!' ,
+                #     'from@example.com',
+                #     ['to@example.com'],
+                #     fail_silently=False,
+                # )
+
+
+
 
 
 def jobstats(request):
@@ -296,6 +386,7 @@ def user_post_item(request):
 
 def post_item_details(request):
     if request.method == 'POST':
+
         i_id = request.POST.get('dropdown_value') ##get the ID in dropdown
         item = Item.objects.get(id = i_id) ## gets the Item with that ID
         item_name = item.name ##gets that Item's name
@@ -320,7 +411,7 @@ def post_item_complete(request):
                                     cost_per_day = request.POST.get('i_cost'),
                                     owner_id = user_id,
                                     item_type_id = i_id)
-                                    
+
     return render(request, 'rentalsystem/post_item_complete.html')
 
 def leave_review(request):

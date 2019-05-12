@@ -22,5 +22,6 @@ urlpatterns = [
     path('review_confirmation/',views.review_confirmation, name="review_confirmation"),
     path('confirm_transaction/', views.confirm_transaction, name='confirm_transaction'),
     path('accSet/', views.account_settings, name='accSet'),
+    path('rent_item/', views.rent_item, name='rent_item'),
 
 ]
