@@ -9,6 +9,7 @@ from django.views import generic
 from .forms import *
 from .models import *
 from datetime import *
+from django.utils.dateparse import parse_datetime
 
 
 
@@ -152,8 +153,8 @@ def confirm_transaction(request):
         s_date = request.GET.get('start_date')
         e_date = request.GET.get('end_date')
 
-        sDate = datetime.strptime(s_date, '%d-%m-%Y')
-        eDate = datetime.strptime(e_date, '%d-%m-%Y')
+        sDate = datetime.strptime(s_date, '%Y-%m-%d')
+        eDate = datetime.strptime(e_date, '%Y-%m-%d')
 
         rent_period = eDate - sDate
 
@@ -176,10 +177,12 @@ def rent_item(request):
     if request.method == 'POST':
         # get job info from the post request (button press)
         s_date = request.POST.get('start_date')
+
         e_date = request.POST.get('end_date')
+
         listing_id = ItemListing.objects.get(id=request.POST.get('listing_id'))
         o_id = CustomUser.objects.get(id=request.POST.get('owner_id'))
-        cost = request.POST.get('cost_id')
+        cost = request.POST.get('total_cost')
         r_id = CustomUser.objects.get(id=request.user.id)
 
         #Create Transaction
