@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import *
 from .models import *
-from datetime import datetime
+from datetime import *
 
 
 
@@ -111,7 +111,7 @@ def myjobs(request):
         job = Job.objects.get(id = jobpk)
 
         # set datetime and boolean delivery status
-        job.delivered_datetime = datetime.datetime.now()
+        job.delivered_datetime = datetime.now()
         job.delivered = True
 
         # save object
@@ -181,13 +181,13 @@ def jobstats(request):
         print("Region from page is: " + str(region))
         # calculate the completed number of jobs
         if days == "1day":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=1)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=1)), county = region).count()
         elif days == "1 week":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=7)), county = region).count()
         elif days == "2 weeks":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=14)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=14)), county = region).count()
         elif days == "1 month":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=30)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=30)), county = region).count()
         else:
             total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
         if region != 'All':
@@ -339,13 +339,13 @@ def my_orders(request):
     # use select_related to also query the item table (needed for item name)
     # filter by all orders with end date greater/equal(gte) than today
     current_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__gte =
-    datetime.datetime.now()).select_related('item_id').order_by('start_date')
+    datetime.now()).select_related('item_id').order_by('start_date')
 
     # get all orders filtered to current user
     # use select_related to also query the item table (needed for item name)
     # filter by all orders with end date less than(lt) than today
     completed_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__lt =
-    datetime.datetime.now()).select_related('item_id').prefetch_related('reviews_set').order_by('start_date')
+    datetime.now()).select_related('item_id').prefetch_related('reviews_set').order_by('start_date')
 
     # integration test - print all orders
     print("TEST: Printing current users orders:")
