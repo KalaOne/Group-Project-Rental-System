@@ -115,6 +115,8 @@ def myjobs(request):
         job.delivered_datetime = datetime.now()
         job.delivered = True
 
+        job.job_list_id = None
+
         # save object
         job.save()
 
@@ -186,7 +188,7 @@ def rent_item(request):
         r_id = CustomUser.objects.get(id=request.user.id)
 
         #Create Transaction
-        Transaction.objects.create(total_cost = cost,
+        transaction = Transaction.objects.create(total_cost = cost,
                                    start_date = s_date,
                                    end_date = e_date,
                                    item_id = listing_id,
@@ -195,13 +197,59 @@ def rent_item(request):
 
 
         # # Create delivery job
-        # Job.objects.create( title=request.POST.get('i_name'),
-        #                     additional_info = request.POST.get('i_info'),
+        # Job.objects.create( transaction_id= transaction.id,
+        #                     due_delivery_datetime = transaction.start_date,
         #                     cost_per_day = request.POST.get('i_cost'),
         #                     owner_id = user_id,
         #                     item_type_id = i_id)
+        allocate_jobs()
 
     return render(request, 'order_confirmation.html')
+
+def allocate_jobs():
+    for job in Job.objects.all():
+        # if job hasnt been allocated yet
+        if job.job_list_id is None:
+            print("JOB LIST ID IS NONE")
+            could_deliver = []
+            region = job.county
+            print(region)
+            # Find all staff in jobs region
+            for staff in CustomUser.objects.all():
+                if staff.region == region and staff.role == "S":
+                    print("FOUND STAFF")
+                    could_deliver.append(staff)
+
+            # If there are drivers in that region
+            if len(could_deliver) is not 0:
+
+                print("!!!!!!!!!!!!!COULD DELIVER NOT 0!!!!!!!!!!!!!!!!")
+
+                to_deliver = could_deliver[0]
+                max_job_count = 0
+
+                for staff in could_deliver:
+                    job_count = 0
+                    # find staff member with least number of jobs
+                    for jobList in JobList.objects.all():
+                        if jobList.staff_id is staff.id:
+                            job_count = job_count + 1
+
+                        if job_count > max_job_count:
+                            max_job_count = job_count
+                            to_deliver = staff
+
+                print(to_deliver)
+                job_list = JobList.objects.create(staff_id = to_deliver)
+
+                setattr(job, 'job_list_id', job_list)
+                job.save()
+
+
+
+
+
+
 
 def jobstats(request):
     obj = []
