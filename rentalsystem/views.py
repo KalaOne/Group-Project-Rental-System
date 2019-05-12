@@ -1,4 +1,4 @@
-import datetime
+#import datetime
 from django.db.models import Min, Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.response import TemplateResponse
@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import *
 from .models import *
-# from datetime import datetime
+from datetime import datetime
 
 
 
@@ -84,10 +84,15 @@ def home_search(request):
 
         cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
 
+    average_reviews = []
+    for item in Item.objects.all():
+        average_reviews.append(int(getAverageRating(item.id)))
+
     prices = getLowestPrices()
-    items_and_prices = zip(items,prices)
+
+    items_and_prices_and_ratings = zip(items, prices, average_reviews)
     context = {
-        'items': items_and_prices,
+        'items': items_and_prices_and_ratings,
         'categories': Category.objects.all()
     }
     return render(request, "rentalsystem/home.html", context)

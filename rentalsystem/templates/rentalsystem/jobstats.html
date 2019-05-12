@@ -75,7 +75,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-
+                {#  DELIVERED/COPLETED JOBS  #}
                 <div class="text-white bg-success mb-3" style="overflow-y: scroll; height:400px;">
                     <div class="card-header">
                         <h10 class="card-title">{{ total_jobs_completed_count }} Jobs completed</h10>
@@ -87,6 +87,7 @@
                                 <tr style="border:none">
                                     <th class="text-center"> JOB ID</th>
                                     <th class="text-center"> PRODUCT</th>
+                                    <th class="text-center"> CUSTOMER</th>
                                     <th class="text-center"> DELIVERED</th>
                                     <th class="text-center"> STAFF</th>
                                 </tr>
@@ -94,6 +95,7 @@
                                     <tr>
                                         <td class="text-white text-center">  {{ job.id }} </td>
                                         <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                        <td class="text-white text-center">  {{ job.transaction_id.renter_id }} </td>
                                         <td class="text-white text-center">  {{ job.delivered_datetime }} </td>
                                         <td class="text-white text-center">  {{ job.job_list_id.staff_id }} </td>
                                     </tr>
@@ -103,6 +105,9 @@
                     </div>
                 </div>
 
+
+
+                {#  UNALLOCATED JOBS  #}
                 <div class="text-white bg-danger mb-3" style="overflow-y: scroll; height:400px;">
                     <div class="card-header">
                         <h10 class="card-title">{{ nun_unalloc_jobs }} Unallocated jobs</h10>
@@ -114,12 +119,14 @@
                                 <tr style="border:none">
                                     <th class="text-center"> JOB ID</th>
                                     <th class="text-center"> PRODUCT</th>
+                                    <th class="text-center"> CUSTOMER</th>
                                     <th class="text-center"> DUE DELIVERY</th>
                                 </tr>
                                 {% for job in unalloc_jobs %}
                                     <tr>
                                         <td class="text-white text-center">  {{ job.id }} </td>
                                         <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                        <td class="text-white text-center">  {{ job.transaction_id.renter_id }} </td>
                                         <td class="text-white text-center">  {{ job.due_delivery_datetime }} </td>
                                     </tr>
                                 {% endfor %}
@@ -128,7 +135,7 @@
                     </div>
                 </div>
 
-
+                {#  UNDELIVERED JOBS  #}
                 <div class="text-white bg-warning mb-3" style="overflow-y: scroll; height:400px;">
                     <div class="card-header">
                         <h10 class="card-title">{{ nun_undelivered_jobs }} Undelivered jobs</h10>
@@ -140,6 +147,7 @@
                                 <tr style="border:none">
                                     <th class="text-center"> JOB ID</th>
                                     <th class="text-center"> PRODUCT</th>
+                                    <th class="text-center"> CUSTOMER</th>
                                     <th class="text-center"> DUE DELIVERY</th>
                                     <th class="text-center"> STAFF</th>
                                 </tr>
@@ -147,6 +155,7 @@
                                     <tr>
                                         <td class="text-white text-center">  {{ job.id }} </td>
                                         <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                        <td class="text-white text-center">  {{ job.transaction_id.renter_id }} </td>
                                         <td class="text-white text-center">  {{ job.due_delivery_datetime }} </td>
                                         <td class="text-white text-center">  {{ job.job_list_id.staff_id }} </td>
                                     </tr>
