@@ -2,13 +2,108 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-    <div class="content-section">
-        <div class="media">
-            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
-            <div class="media-body">
-                <h2 class="account-heading">{{ user.username }}</h2>
-                <p class="text-secondary">{{ user.email }}</p>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2">
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img class="card rounded-circle account-img" style="width:250px"
+                                     src="{{ user.profile.image.url }}">
+                            </div>
+                            <div class="col-md-7">
+                                <h2 class="account-heading">{{ user.username }}</h2>
+                                <p class="text-secondary">{{ user.email }}</p>
+                                <p class="text-secondary">{{ user.address_id }}</p>
+
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 2em">
+                            <div class="col-md-12">
+                            <div class="card-header">
+                                        <h6 class="card-title">My Reviews<i style="margin-left: 15px" class="text-dark small">Ordered by Most Recent</i></h6>
+
+                                        <table class="table" style="border:none; margin-bottom: 0px">
+                                            <tr style="border:none">
+                                                <th class="text-center" style="border:none"> ORDER ID</th>
+                                                <th class="text-center" style="border:none"> PRODUCT</th>
+                                                <th class="text-center" style="border:none"> OWNER</th>
+                                                <th class="text-center" style="border:none"> RENTED FROM</th>
+                                                <th class="text-center" style="border:none"> RENTED UNTIL</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                <div class="text-white bg-secondary mb-3" style="overflow-y: scroll; height:400px;">
+
+                                    <div class="card-body">
+                                        {% if reviews.count > 0 %}
+                                            {% for review in reviews %}
+                                                <div class="row>">
+                                                    <div class="col-md-12 bg-dark">
+                                                        <table class="table bg-secondary" style="border-top: none">
+                                                            <tr>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.id }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.item_id }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.owner_id }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.start_date }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.end_date }} </td>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="row">
+                                                            <div class="col-md-2  text-center">
+
+                                                                <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <i>Game:</i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            {{ review.item_rating }}/5
+                                                                        </div>
+                                                                    </div>
+
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <p class="text-white text-center"> blah bdiw uwadubiwb
+                                                            kuwbiduibwdiugiugwdi iubiwudiu iuiwdaw </p>
+                                                                </div>
+                                                            <div class="col-md-2  text-center">
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            Quality:
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            {{ review.transaction_rating }}/5
+                                                                        </div>
+                                                                    </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 {% endblock %}

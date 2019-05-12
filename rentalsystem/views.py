@@ -253,7 +253,13 @@ def jobstats(request):
 
 
 def profile(request):
-    return render(request, 'profile.html')
+    current_user_id = request.user.id
+
+    reviews = Reviews.objects.filter(left_by_user_id = current_user_id)
+    context = {
+        'reviews':reviews
+    }
+    return render(request, 'profile.html', context)
 
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm

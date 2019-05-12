@@ -35,6 +35,9 @@ class Address(models.Model):
     county = models.CharField(max_length=100)
     post_code = models.CharField(max_length=20, blank=True, null=True)
 
+    def __str__(self):
+        return self.address1 + self.county + self.post_code
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
