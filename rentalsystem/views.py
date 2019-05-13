@@ -15,13 +15,6 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-
-def index(request):
-    if request.user.is_authenticated:
-        return home(request)
-    return landing(request)
-
-
 def getLowestPrices():
     lowest_prices = []
     for item in Item.objects.all():
