@@ -13,7 +13,7 @@
                     <input type="hidden" value="{{item_name}}" name = "i_name">
                     <input type="hidden" value="{{info}}" name = "i_info">
                     <input type="hidden" value="{{cost}}" name = "i_cost">
-                    <input type="hidden" value="{{item_id}}" name = "i_id">
+                    <input type="hidden" value="{{i_id}}" name = "i_id">
                     <div class="row">
                         <div class="col-sm-12 text-left">
                             <button class="btn btn-success center-block" value="post_item">Post This Item</button>
@@ -27,7 +27,7 @@
                 {% csrf_token %}
                     <div class="col-lrg-12 text-center">
                         <input type="hidden" value="{{item_name}}" name = "i_name">
-                        <input type="hidden" value="{{item_id}}" name = "i_id">
+                        <input type="hidden" value="{{i_id}}" name = "i_id">
                         <input type="hidden" value="{{info}}" name = "i_info">
                         <input type="hidden" value="{{cost}}" name = "i_cost">
                         <button class="btn btn-warning center-block" value="edit_item">Edit Item</button>
