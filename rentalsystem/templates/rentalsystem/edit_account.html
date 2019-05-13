@@ -4,47 +4,119 @@
 
 {% block content %}
 
-    <h2> {{ list_details.item_type_id.name }}</h2>
+<h2> {{ list_details.item_type_id.name }}</h2>
+<style>
+.asd {
+  position: relative;
+  margin-top: 50px;
+  width: 500px;
+  height: 300px;
+}
+
+.fagg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.5s ease;
+}
+
+.asd:hover .overlay {
+  display: block;
+  background: rgba(0, 0, 0, .3);
+}
 
 
+.title {
+  position: absolute;
+  width: 500px;
+  left: 0;
+  top: 120px;
+  font-weight: 700;
+  font-size: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
+  z-index: 1;
+  transition: top .5s ease;
+}
 
+.asd:hover .title {
+  top: 90px;
+}
 
+.button {
+  position: absolute;
+  width: 500px;
+  right:40px;
+  top: 180px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                <img class="card rounded-circle account-img" style="width:400px"
+.button a {
+  font-weight: bold;
+  font-size: 20px;
+  width: 200px;
+  padding: 12px 48px;
+  text-align: center;
+  color: black;
+  border: solid 2px black;
+  z-index: 1;
+  background: #f90;
+}
+
+.asd:hover .button {
+  opacity: 1;
+}
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="asd">
+                <img class="fagg card rounded-circle account-img" style="width:400px"
                      src="{{ user.profile.image.url }}">
-            </div>
-            <div class="col-sm">
-                <form action='/play/' method='POST'>
-                    {% csrf_token %}
-                    <p>Username: <b>{{ user.username }}</b></p>
-                    <input id="StartDate" name="username" value="">
-
-                    <p>Email: <b>{{ user.email }}</b></p>
-                    <input id="EndDate" name="email" value="">
-
-                    <p>Region: <b>{{ user.region }}</b></p>
-                    <input id="Costl" name="region">
-
-                    <p>Name: <b>{{ user.name }}</b></p>
-                    <input id="Costu" name="name">
-
-                    <p>Card number: <b>{{ user.card_long_number }}</b></p>
-                    <input id="Costfg" name="Card number">
-
-                    <p>Card expiry date: <b>{{ user.card_expiry_date }}</b></p>
-                    <input id="Costd" name="Card expiry date">
-
-                    <p>Card cvv: <b>{{ user.card_cvv }}</b></p>
-                    <input id="Costa" name="Card cvv">
-
-                    <button class="btn btn-success center-block" value="Submit">Submit</button>
-                </form>
+                <div class="overlay"></div>
+                <div class="button"><a href=""> CHANGE PICTURE </a></div>
             </div>
         </div>
+        <div class="col-sm">
+            <form action='/account_details/' method='POST'>
+                {% csrf_token %}
+                <p>Username</b></p>
+                <input id="StartDate" name="username" value={{user.username}}>
+
+                <p>Email</b></p>
+                <input id="EndDate" name="email" value={{user.email}}>
+
+                <p>Region</b></p>
+                <input id="Costl" name="region" value={{user.region}}>
+
+                <p>Name</b></p>
+                <input id="Costu" name="name" value={{user.name}}>
+
+                <p>Card number</b></p>
+                <input id="Costfg" name="Card number" value={{user.card_long_number}}>
+
+                <p>Card expiry date</b></p>
+                <input id="Costd" name="Card expiry date" value={{user.card_expiry_date}}>
+
+                <p>Card cvv</b></p>
+                <input id="Costa" name="Card cvv" value={{user.card_cvv}}>
+                <P></P>
+                <button class="btn btn-success btn-lg center-block" value="Submit">Submit</button>
+                <P></P>
+            </form>
+            <form action='/leave/' method='POST'>
+                {% csrf_token %}
+                <button class="btn btn-danger btn-lg center-block">Leave</button>
+            </form>
+        </div>
     </div>
+</div>
 
 
 {% endblock %}

@@ -4,6 +4,9 @@
 {% block content %}
 
     <div class="container-fluid">
+        <center><h4 style="color:red;">{% if controller == True %}Account details updated{% else %} {% endif %}</h4></center>
+        <center><h4 style="color:red;">{% if error_set %} {{ error }} {% endif %}</h4></center>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -19,11 +22,11 @@
                                      src="{{ user.profile.image.url }}">
                             </div>
                             <div class="col-md-7">
-                                <h2 class="account-heading">{{ user.username }}</h2>
-                                <p class="text-secondary">{{ user.email }}</p>
+                                <h2 class="account-heading">{% if controller == True %}{{ username }}{% else %}{{ user.username }}{% endif %}</h2>
+                                <p class="text-secondary">{% if controller == True %}{{ email }}{% else %}{{ user.email }}{% endif %}</p>
                                 <p class="text-secondary">{{ user.address_id }}</p>
                                 <div class="row">
-                                    <form action='/accSet/' method='POST'>
+                                    <form action='/edit_account/' method='POST'>
                                         {% csrf_token %}
                                         <input id="user" type="hidden" name="user" value="{{ user }}">
                                         <button class="btn btn-secondary btn-sm">Edit account</button>

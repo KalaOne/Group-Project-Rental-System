@@ -1,4 +1,4 @@
-#import datetime
+# import datetime
 from django.db.models import Min, Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.response import TemplateResponse
@@ -11,7 +11,9 @@ from .models import *
 from datetime import *
 from django.utils.dateparse import parse_datetime
 from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 
 def index(request):
@@ -19,10 +21,11 @@ def index(request):
         return home(request)
     return landing(request)
 
+
 def getLowestPrices():
     lowest_prices = []
     for item in Item.objects.all():
-        #get all ItemListings
+        # get all ItemListings
         min_price = 0
         if ItemListing.objects.filter(item_type_id=item.id):
             min_price = ItemListing.objects.filter(item_type_id=item.id).aggregate(Min('cost_per_day'))
@@ -31,31 +34,32 @@ def getLowestPrices():
         lowest_prices.append(min_price)
     return lowest_prices
 
-def getAverageRating(itemid):
-    item = Item.objects.get(id = itemid)
-    print("Item: ",item)
 
-    related_transactions = Transaction.objects.filter(item_id = itemid)
+def getAverageRating(itemid):
+    item = Item.objects.get(id=itemid)
+    print("Item: ", item)
+
+    related_transactions = Transaction.objects.filter(item_id=itemid)
     if related_transactions.count() > 0:
         avg_rating = 0
         num_ratings = 0
         for transaction in related_transactions:
             try:
-                review = Reviews.objects.get(transaction_id = transaction.id)
+                review = Reviews.objects.get(transaction_id=transaction.id)
                 avg_rating = avg_rating + review.item_rating
                 num_ratings = num_ratings + 1
             except:
                 avg_rating = avg_rating + 0
         if num_ratings > 0:
-            avg_rating = avg_rating/num_ratings
+            avg_rating = avg_rating / num_ratings
         else:
             avg_rating = 0
         return avg_rating
     else:
         return 0
 
-def home(request):
 
+def home(request):
     prices = getLowestPrices()
     item_objects = Item.objects.all()
 
@@ -72,6 +76,7 @@ def home(request):
     }
     return render(request, "home.html", context)
 
+
 # Re renders home page with new 'context' after a search
 def home_search(request):
     # if update button pressed
@@ -82,7 +87,6 @@ def home_search(request):
         items = Item.objects.filter(id__in=itemsInCategory)
     else:
         items = Item.objects.filter(name__icontains=request.GET['search_query'])
-
 
         cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
 
@@ -103,6 +107,7 @@ def home_search(request):
 def landing(request):
     return render(request, "landing.html")
 
+
 def myjobs(request):
     # if update button pressed
     if request.method == 'POST':
@@ -110,7 +115,7 @@ def myjobs(request):
         jobpk = request.POST.get('jobpk')
 
         # get the job from the model using the primary key
-        job = Job.objects.get(id = jobpk)
+        job = Job.objects.get(id=jobpk)
 
         # set datetime and boolean delivery status
         job.delivered_datetime = datetime.now()
@@ -122,36 +127,38 @@ def myjobs(request):
         job.save()
 
     # create list of current users jobs to pass into template
-    current_id = request.user.id # gets current logged in staff ID
-    jl_id = JobList.objects.get(staff_id = current_id) #get current staff joblist
-    jobs = Job.objects.filter(job_list_id = jl_id).order_by('-delivered_datetime')#get all jobs for joblist_id
+    current_id = request.user.id  # gets current logged in staff ID
+    jl_id = JobList.objects.get(staff_id=current_id)  # get current staff joblist
+    jobs = Job.objects.filter(job_list_id=jl_id).order_by('-delivered_datetime')  # get all jobs for joblist_id
 
-    return render(request, "myjobs.html", {'jobs' : jobs})
+    return render(request, "myjobs.html", {'jobs': jobs})
+
 
 def createTrans(request):
-    if(request.method == 'GET'):
+    if (request.method == 'GET'):
         list_id = request.GET.get('listingid')
-        list_details = ItemListing.objects.select_related('item_type_id').get(id = list_id)
+        list_details = ItemListing.objects.select_related('item_type_id').get(id=list_id)
 
         context = {
-            'list_details' : list_details
+            'list_details': list_details
         }
 
     if (request.method == 'POST'):
         print("createTrans called with POST")
-        Transaction.objects.create(item_id=Item.objects.get(name = "The Goonies: Adventure Card Game"),
-                                   owner_id=CustomUser.objects.get(name = "Matthew Taylor"),
-                                   renter_id=CustomUser.objects.get(username = request.user.username),
+        Transaction.objects.create(item_id=Item.objects.get(name="The Goonies: Adventure Card Game"),
+                                   owner_id=CustomUser.objects.get(name="Matthew Taylor"),
+                                   renter_id=CustomUser.objects.get(username=request.user.username),
                                    total_cost=request.POST.get('cost'),
                                    start_date=request.POST.get('date'),
                                    end_date=request.POST.get('date1'))
 
     return render(request, 'create_transaction.html', context)
 
+
 def confirm_transaction(request):
-    if(request.method == 'GET'):
+    if (request.method == 'GET'):
         list_id = request.GET.get('listingid')
-        list_details = ItemListing.objects.select_related('item_type_id').get(id = list_id)
+        list_details = ItemListing.objects.select_related('item_type_id').get(id=list_id)
 
         s_date = request.GET.get('start_date')
         e_date = request.GET.get('end_date')
@@ -164,11 +171,10 @@ def confirm_transaction(request):
         total_cost = rent_period.days * list_details.cost_per_day
 
         context = {
-            'list_details' : list_details,
-            'dates' : [s_date, e_date],
-            'cost' : total_cost
+            'list_details': list_details,
+            'dates': [s_date, e_date],
+            'cost': total_cost
         }
-
 
     print("HELLOOOOOO")
     print(s_date)
@@ -188,14 +194,13 @@ def rent_item(request):
         cost = request.POST.get('total_cost')
         r_id = CustomUser.objects.get(id=request.user.id)
 
-        #Create Transaction
-        transaction = Transaction.objects.create(total_cost = cost,
-                                   start_date = s_date,
-                                   end_date = e_date,
-                                   item_id = listing_id,
-                                   owner_id = o_id,
-                                   renter_id = r_id)
-
+        # Create Transaction
+        transaction = Transaction.objects.create(total_cost=cost,
+                                                 start_date=s_date,
+                                                 end_date=e_date,
+                                                 item_id=listing_id,
+                                                 owner_id=o_id,
+                                                 renter_id=r_id)
 
         # # Create delivery job
         # Job.objects.create( transaction_id= transaction.id,
@@ -206,6 +211,7 @@ def rent_item(request):
         allocate_jobs()
 
     return render(request, 'order_confirmation.html')
+
 
 # Checks unallocated jobs and allocates staff member with the least
 # amount of current jobs to that job, iff they are in the same region
@@ -243,7 +249,7 @@ def allocate_jobs():
                             to_deliver = staff
 
                 print(to_deliver)
-                job_list = JobList.objects.create(staff_id = to_deliver)
+                job_list = JobList.objects.create(staff_id=to_deliver)
 
                 setattr(job, 'job_list_id', job_list)
                 job.save()
@@ -259,9 +265,6 @@ def allocate_jobs():
                 # )
 
 
-
-
-
 def jobstats(request):
     obj = []
     # if POST request then the jobstats page is being filtered
@@ -271,15 +274,19 @@ def jobstats(request):
         print("Region from page is: " + str(region))
         # calculate the completed number of jobs
         if days == "1day":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=1)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull=False, delivered_datetime__gte=(
+                        datetime.now() - datetime.timedelta(days=1)), county=region).count()
         elif days == "1 week":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=7)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull=False, delivered_datetime__gte=(
+                        datetime.now() - datetime.timedelta(days=7)), county=region).count()
         elif days == "2 weeks":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=14)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull=False, delivered_datetime__gte=(
+                        datetime.now() - datetime.timedelta(days=14)), county=region).count()
         elif days == "1 month":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=30)), county = region).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull=False, delivered_datetime__gte=(
+                        datetime.now() - datetime.timedelta(days=30)), county=region).count()
         else:
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
+            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull=False).count()
         if region != 'All':
             jobs = Job.objects.filter(delivered_datetime__isnull=False, county=region).order_by('-delivered_datetime')
         else:
@@ -289,24 +296,24 @@ def jobstats(request):
         # total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
 
         # calculate number of unallocated jobs
-        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True, county = region).count()
-        unalloc_jobs = Job.objects.filter(job_list_id__isnull = True, county = region)
-
+        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull=True, county=region).count()
+        unalloc_jobs = Job.objects.filter(job_list_id__isnull=True, county=region)
 
         # calulate number of undelivered jobs
-        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True, county = region).count()
-        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull = True, county = region, job_list_id__isnull = False).order_by('-due_delivery_datetime')
+        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull=True, county=region).count()
+        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull=True, county=region,
+                                              job_list_id__isnull=False).order_by('-due_delivery_datetime')
 
         context = {
             'total_jobs_completed_count': total_jobs_completed_count,
             # 'total_jobs_comp_last_week': total_jobs_comp_last_week,
-            'nun_unalloc_jobs' : unalloc_jobs_count,
-            'nun_undelivered_jobs' : undelivered_jobs_count,
-            'searched_region' : region,
-            'day_sort' : days,
-            'jobs' : jobs,
-            'unalloc_jobs' : unalloc_jobs,
-            'undelivered_jobs' : undelivered_jobs
+            'nun_unalloc_jobs': unalloc_jobs_count,
+            'nun_undelivered_jobs': undelivered_jobs_count,
+            'searched_region': region,
+            'day_sort': days,
+            'jobs': jobs,
+            'unalloc_jobs': unalloc_jobs,
+            'undelivered_jobs': undelivered_jobs
         }
 
     # if no POST request then show all job stats
@@ -345,25 +352,151 @@ def jobstats(request):
 def profile(request):
     current_user_id = request.user.id
 
-    reviews = Reviews.objects.filter(left_by_user_id = current_user_id)
+    reviews = Reviews.objects.filter(left_by_user_id=current_user_id)
     context = {
-        'reviews':reviews
+        'reviews': reviews
     }
     return render(request, 'profile.html', context)
 
+
 def account_settings(request):
-    # current_user_id = request.user.id
-    #
+    current_user_id = request.user.id
+    # print(current_user_id)
+
     # reviews = Reviews.objects.filter(left_by_user_id = current_user_id)
     # context = {
     #     'reviews':reviews
     # }
-    return render(request, 'rentalsystem/accSet.html')
+
+    return render(request, 'rentalsystem/edit_account.html')
+
+
+def account_details(request):
+    controller = False
+    current_user_id = request.user.id
+    reviews = Reviews.objects.filter(left_by_user_id=current_user_id)
+    if request.method == 'POST':
+        usname = request.POST.get('username')
+        email = request.POST.get('email')
+        region = request.POST.get('region')
+        card_number = request.POST.get('Card number')
+        user = User.objects.get(id=current_user_id)
+        regions = [
+            "Greater London",
+            "West Midlands",
+            "Greater Manchester",
+            "West Yorkshire",
+            "Hampshire",
+            "Essex",
+            "Kent",
+            "Lancashire",
+            "Merseyside",
+            "South Yorkshire",
+            "Devon",
+            "Surrey",
+            "Hertfordshire",
+            "Noreth Yorkshire",
+            "Nottinghamshire",
+            "Tyne and Wear",
+            "Staffordshire",
+            "Lincolnshire",
+            "Chesire",
+            "Derbyshire",
+            "Leicestershire",
+            "Somerset",
+            "Gloustershire",
+            "Berkshire",
+            "Norfolk",
+            "Country Durham",
+            "West Sussex",
+            "Cambridgeshire",
+            "East Sussex",
+            "Buckinghamshire",
+            "Dorset",
+            "Suffolk",
+            "Northamptonshire",
+            "Wiltshire",
+            "Oxfordshire",
+            "Bedfordshire",
+            "East Riding of Yorkshire",
+            "Worcestershire",
+            "Warwickshire",
+            "Cornwall",
+            "Cumbria",
+            "Shropshire",
+            "Bristol",
+            "Northumberland",
+            "Herefordshire",
+            "Isle of Wight",
+            "Rutland",
+            "City of London",
+        ]
+        error_selection = ["Username is already taken or you left it blank",
+                           "Email is already taken or you left it blank",
+                           "Region is invalid",
+                           "Card number is invalid or you left it blank",
+                           "Card expiry date is invalid",
+                           "Card has expired",
+                           "Card CVV is invalid"]
+        context = {
+            'username': usname,
+            'email': email,
+            'region': region,
+            'card_number': card_number,
+            'reviews': reviews,
+            'controller': controller,
+        }
+        username_list = list(User.objects.values_list('username', flat=True))
+        username_list.remove(user.username)
+        if usname != '' and usname not in username_list:
+            if usname == user.username and email != '' and card_number != '':
+                context['controller'] = True
+            user.username = usname
+            user.save()
+        else:
+            context['error'] = error_selection[0]
+            context['error_set'] = True
+            return render(request, 'rentalsystem/profile.html', context)
+        email_list = list(User.objects.values_list('email', flat=True))
+        email_list.remove(user.email)
+        if email != '' and email not in email_list:
+            if email == user.email and usname != '' and card_number != '':
+                context['controller'] = True
+            user.email = email
+            user.save()
+        else:
+            context['error'] = error_selection[1]
+            context['error_set'] = True
+            return render(request, 'rentalsystem/profile.html', context)
+        if region in regions:
+            user.region = region
+            user.save()
+        else:
+            context['error'] = error_selection[2]
+            context['error_set'] = True
+            return render(request, 'rentalsystem/profile.html', context)
+        card_number_list = list(User.objects.values_list('card_long_number', flat=True))
+        card_number_list.remove(user.card_long_number)
+        if card_number != '' and card_number not in card_number_list:
+            if card_number == user.card_long_number and email != '' and usname != '':
+                context['controller'] = True
+            user.card_long_number = card_number
+            user.save()
+        else:
+            context['error'] = error_selection[3]
+            context['error_set'] = True
+            return render(request, 'rentalsystem/profile.html', context)
+
+
+    context['controller'] = True
+    return render(request, 'rentalsystem/profile.html', context)
+
 
 class SignUp(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
+
 
 def user_post_item(request):
     items = Item.objects.all()
@@ -372,59 +505,62 @@ def user_post_item(request):
         i_cost = request.POST.get('i_cost')
         i_id = request.POST.get('i_id')
         context = {
-            'items' : items,
-            'i_cost' : i_cost,
-            'info' : i_info,
-            'i_id' : i_id
+            'items': items,
+            'i_cost': i_cost,
+            'info': i_info,
+            'i_id': i_id
         }
     else:
         context = {
-            'items' : items,
+            'items': items,
         }
     return render(request, "user_post_item.html", context)
 
 
 def post_item_details(request):
     if request.method == 'POST':
-
-        i_id = request.POST.get('dropdown_value') ##get the ID in dropdown
-        item = Item.objects.get(id = i_id) ## gets the Item with that ID
-        item_name = item.name ##gets that Item's name
+        i_id = request.POST.get('dropdown_value')  ##get the ID in dropdown
+        item = Item.objects.get(id=i_id)  ## gets the Item with that ID
+        item_name = item.name  ##gets that Item's name
         item_id = request.POST.get('dropdown_value')
         info = request.POST.get('info_field')
-        cost= request.POST.get('cost')
+        cost = request.POST.get('cost')
         context = {
-            'item_name' : item_name,
-            'info' : info,
-            'cost' : cost,
-            'i_id' : i_id
+            'item_name': item_name,
+            'info': info,
+            'cost': cost,
+            'i_id': i_id
         }
         print("+++++++", i_id)
     return render(request, 'rentalsystem/post_item_details.html', context)
 
+
 def post_item_complete(request):
-    if request.method =='POST':
-        i_id = Item.objects.get(id = request.POST.get('i_id'))
+    if request.method == 'POST':
+        i_id = Item.objects.get(id=request.POST.get('i_id'))
         user_id = CustomUser.objects.get(id=request.user.id)
         ItemListing.objects.create(title=request.POST.get('i_name'),
-                                    additional_info = request.POST.get('i_info'),
-                                    cost_per_day = request.POST.get('i_cost'),
-                                    owner_id = user_id,
-                                    item_type_id = i_id)
+                                   additional_info=request.POST.get('i_info'),
+                                   cost_per_day=request.POST.get('i_cost'),
+                                   owner_id=user_id,
+                                   item_type_id=i_id)
 
     return render(request, 'rentalsystem/post_item_complete.html')
+
 
 def leave_review(request):
     if request.method == 'POST':
         # get job id from the post request (button press)
         transactionpk = request.POST.get('transactionpk')
-        transaction = Transaction.objects.filter(id=transactionpk).select_related('item_id').select_related('owner_id').first()
+        transaction = Transaction.objects.filter(id=transactionpk).select_related('item_id').select_related(
+            'owner_id').first()
         context = {
             'transaction': transaction,
         }
     else:
         return redirect('/my_orders/')
     return render(request, 'rentalsystem/review.html', context)
+
 
 def review_confirmation(request):
     if request.method == 'POST':
@@ -441,9 +577,11 @@ def review_confirmation(request):
         print("ERROR - adding new review")
         return render(request, 'rentalsystem/myorders.html')
     context = {
-        'review': Reviews.objects.filter(transaction_id=Transaction.objects.get(id=request.POST.get('transactionpk'))).last()
+        'review': Reviews.objects.filter(
+            transaction_id=Transaction.objects.get(id=request.POST.get('transactionpk'))).last()
     }
     return render(request, 'rentalsystem/reviewconfirmation.html', context)
+
 
 def my_orders(request):
     current_user_id = request.user.id
@@ -454,13 +592,13 @@ def my_orders(request):
     # get all orders filtered to current user
     # use select_related to also query the item table (needed for item name)
     # filter by all orders with end date greater/equal(gte) than today
-    current_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__gte =
+    current_orders = Transaction.objects.filter(renter_id=current_user_id, end_date__gte=
     datetime.now()).select_related('item_id').order_by('start_date')
 
     # get all orders filtered to current user
     # use select_related to also query the item table (needed for item name)
     # filter by all orders with end date less than(lt) than today
-    completed_orders = Transaction.objects.filter(renter_id = current_user_id, end_date__lt =
+    completed_orders = Transaction.objects.filter(renter_id=current_user_id, end_date__lt=
     datetime.now()).select_related('item_id').prefetch_related('reviews_set').order_by('start_date')
 
     # integration test - print all orders
@@ -468,17 +606,18 @@ def my_orders(request):
     print(current_orders)
 
     context = {
-        'current_orders' : current_orders,
+        'current_orders': current_orders,
         'completed_orders': completed_orders
     }
 
     return render(request, 'myorders.html', context)
 
+
 def is_listing_available(listing_id):
     print("is listing available?")
 
-def item_listings(request):
 
+def item_listings(request):
     # get query from either type of request
     if request.method == 'POST':
         item_name = request.POST.get('query_name')
@@ -491,8 +630,8 @@ def item_listings(request):
 
     # save item into context so it's detailed can be rendered
     context = {
-        'item':item,
-        }
+        'item': item,
+    }
 
     # will be POSTed if dates have been selected
     if request.method == 'POST':
@@ -504,17 +643,16 @@ def item_listings(request):
         print("Selecting items available between " + str(s_date) + " and " + str(e_date))
         print("HELLLLLOOOO")
 
-
-        items = ItemListing.objects.filter(item_type_id = item.id)
+        items = ItemListing.objects.filter(item_type_id=item.id)
         cost = 10
 
         # create context with all available item listings
         context = {
             'item': item,
             'item_listings': items,
-            'dates' : [s_date, e_date],
-            'cost' : cost
-            }
+            'dates': [s_date, e_date],
+            'cost': cost
+        }
 
         return render(request, "rentalsystem/itemListings.html", context)
 
