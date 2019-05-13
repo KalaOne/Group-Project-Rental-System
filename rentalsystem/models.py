@@ -15,7 +15,7 @@ class Address(models.Model):
     post_code = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
-        return self.address1 + self.county + self.post_code
+        return self.post_code
 
 # subclassing django's default user class to make our own user class - AbstractUser superclass contains all the
 # password and session magic we need
@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
         ('S', 'Staff'),
         ('A', 'Admin'),
     )
-    address =  models.ForeignKey(Address, on_delete=models.PROTECT, db_column='address_id', blank=False, null=False)  # foreign key to Category
+    address =  models.ForeignKey(Address, on_delete=models.PROTECT, db_column='address_id', blank=False, null=False, default=1)  # foreign key to Category
     role = models.CharField(max_length=50, choices=ROLE_TYPES, default='C')  # stores customer/staff/admin role
     region = models.CharField(max_length=100)               # stores region
     name = models.CharField(max_length=100)                 # stores full name of user
