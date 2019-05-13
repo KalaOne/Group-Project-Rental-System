@@ -445,6 +445,8 @@ def account_details(request):
         email = request.POST.get('email')
         region = request.POST.get('region')
         card_number = request.POST.get('Card number')
+        expiry_date = request.POST.get('Card expiry date')
+        cvv = request.POST.get('Card cvv')
         user = User.objects.get(id=current_user_id)
         regions = [
             "Greater London",
@@ -496,25 +498,43 @@ def account_details(request):
             "Rutland",
             "City of London",
         ]
+        expiry = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ]
         error_selection = ["Username is already taken or you left it blank",
                            "Email is already taken or you left it blank",
                            "Region is invalid",
                            "Card number is invalid or you left it blank",
-                           "Card expiry date is invalid",
-                           "Card has expired",
+                           "Card expiry date is invalid or card has expired",
                            "Card CVV is invalid"]
         context = {
             'username': usname,
             'email': email,
             'region': region,
             'card_number': card_number,
+            'expiry_date': expiry_date,
+            'cvv' : cvv,
             'reviews': reviews,
             'controller': controller,
         }
         username_list = list(User.objects.values_list('username', flat=True))
         username_list.remove(user.username)
         if usname != '' and usname not in username_list:
-            if usname == user.username and email != '' and card_number != '':
+            # print('___________________')
+            # print(username)
+            # print('___________________')
+            if usname == user.username and email != '' and card_number != '' and expiry_date != '' and cvv != '':
                 context['controller'] = True
             user.username = usname
             user.save()
@@ -525,7 +545,10 @@ def account_details(request):
         email_list = list(User.objects.values_list('email', flat=True))
         email_list.remove(user.email)
         if email != '' and email not in email_list:
-            if email == user.email and usname != '' and card_number != '':
+            # print('___________________')
+            # print(email)
+            # print('___________________')
+            if email == user.email and usname != '' and card_number != '' and expiry_date != '' and cvv != '':
                 context['controller'] = True
             user.email = email
             user.save()
@@ -534,6 +557,9 @@ def account_details(request):
             context['error_set'] = True
             return render(request, 'rentalsystem/profile.html', context)
         if region in regions:
+            # print('___________________')
+            # print(region)
+            # print('___________________')
             user.region = region
             user.save()
         else:
@@ -543,13 +569,46 @@ def account_details(request):
         card_number_list = list(User.objects.values_list('card_long_number', flat=True))
         card_number_list.remove(user.card_long_number)
         if card_number != '' and card_number not in card_number_list:
-            if card_number == user.card_long_number and email != '' and usname != '':
+            # print('___________________')
+            # print(card_number)
+            # print('___________________')
+            if card_number == user.card_long_number and email != '' and usname != '' and expiry_date != '' and cvv != '':
                 context['controller'] = True
             user.card_long_number = card_number
             user.save()
         else:
             context['error'] = error_selection[3]
             context['error_set'] = True
+            return render(request, 'rentalsystem/profile.html', context)
+        if expiry_date != '':
+            # print('___________________')
+            # print(expiry_date)
+            # print('___________________')
+            if expiry_date == user.card_expiry_date and email != '' and usname != '' and card_number != '' and cvv != '':
+                context['controller'] = True
+            user.card_expiry_date = expiry_date
+            user.save()
+        else:
+            context['error'] = error_selection[4]
+            context['error_set'] = True
+            # print('___________________')
+            # print(expiry_date)
+            # print('___________________')
+            return render(request, 'rentalsystem/profile.html', context)
+        if cvv != '':
+            # print('___________________')
+            # print(cvv)
+            # print('___________________')
+            if cvv == user.card_cvv and email != '' and usname != '' and card_number != '' and expiry_date != '':
+                context['controller'] = True
+            user.card_cvv = cvv
+            user.save()
+        else:
+            context['error'] = error_selection[5]
+            context['error_set'] = True
+            # print('___________________')
+            # print(expiry_date)
+            # print('___________________')
             return render(request, 'rentalsystem/profile.html', context)
 
 
