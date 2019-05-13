@@ -68,6 +68,9 @@ class JobAdmin(admin.ModelAdmin):
     list_display = ['transaction_id','job_list_id','due_delivery_datetime','delivered_datetime']
     field = ('transaction_id','job_list_id','due_delivery_datetime','delivered_datetime')
 
+    # def staff_name(self, obj):
+    #     return obj.job_list_id
+
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['transaction_id','content','item_rating','transaction_rating', 'left_by_user_id']
     field = ('transaction_id','content','item_rating','transaction_rating', 'left_by_user_id')
