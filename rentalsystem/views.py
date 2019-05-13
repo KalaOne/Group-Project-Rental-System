@@ -194,12 +194,32 @@ def rent_item(request):
                                                  owner_id=o_id,
                                                  renter_id=r_id)
 
-        # # Create delivery job
-        # Job.objects.create( transaction_id= transaction.id,
-        #                     due_delivery_datetime = transaction.start_date,
-        #                     cost_per_day = request.POST.get('i_cost'),
-        #                     owner_id = user_id,
-        #                     item_type_id = i_id)
+        customer = CustomUser.objects.get(id=request.user.id)
+        # Create delivery job
+        Job.objects.create( due_delivery_datetime = transaction.start_date,
+                            transaction_id = transaction,
+                            address1 = customer.address.address1,
+                            address2 = customer.address.address2,
+                            address3 = customer.address.address3,
+                            address4 = customer.address.address4,
+                            address5 = customer.address.address5,
+                            county = customer.region,
+                            post_code = customer.address.post_code
+                            )
+
+        # Create return delivery job
+        Job.objects.create( due_delivery_datetime = transaction.end_date,
+                            transaction_id = transaction,
+                            address1 = customer.address.address1,
+                            address2 = customer.address.address2,
+                            address3 = customer.address.address3,
+                            address4 = customer.address.address4,
+                            address5 = customer.address.address5,
+                            county = customer.region,
+                            post_code = customer.address.post_code
+                            )
+                            
+        # Try to allocate any unallocated jobs
         allocate_jobs()
 
     return render(request, 'order_confirmation.html')
