@@ -83,5 +83,28 @@ class UtilityTests(TestCase):
         print("lowest_price = ", lowest_price)
         self.assertEqual(lowest_price, [])
 
-   
-        
+ 
+class PostItemTests(TestCase):
+#if page loads, test should pass
+    def test_postitem_returns_correct_status(self):
+        url = reverse('user_post_item')
+        response = self.client.get(url) 
+        self.assertEqual(response.status_code, 200)
+
+
+#if correct tempate is loaded, pass
+    def test_postitem_returns_correct_template(self):
+        response = self.client.get('postItem/')
+        self.assertTemplateUsed('user_post_item.html')
+
+
+#if content of 'context' is not None, should pass
+    # def test_form_fields_are_valid(self):
+    #     url = reverse('item_details')
+    #     response = self.client.post(url, {'dropdown_value' : 3 , 'info_field' : "Superb", 'Cost': 3})
+    #     self.assertIsNotNone(response.context['item_name'])
+    #     self.assertIsNotNone(response.context['info'])
+    #     self.assertIsNotNone(response.context['cost'])
+    #     self.assertIsNotNone(response.context['i_id'])
+
+#
