@@ -218,7 +218,7 @@ def rent_item(request):
                             county = customer.region,
                             post_code = customer.address.post_code
                             )
-                            
+
         # Try to allocate any unallocated jobs
         allocate_jobs()
 
@@ -260,10 +260,13 @@ def allocate_jobs():
                             max_job_count = job_count
                             to_deliver = staff
 
-                print(to_deliver)
-                job_list = JobList.objects.create(staff_id=to_deliver)
+                jobList = JobList.objects.get(staff_id=to_deliver)
 
-                setattr(job, 'job_list_id', job_list)
+
+                # print(to_deliver)
+                # job_list = JobList.objects.create(staff_id=to_deliver)
+
+                setattr(job, 'job_list_id', jobList)
                 job.save()
 
                 email = job.transaction_id.renter_id.email
