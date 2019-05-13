@@ -3,6 +3,20 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+# stores addresses for customers
+class Address(models.Model):
+    # user = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='CustomUser_id')
+    address1 = models.CharField(max_length=200, blank=True, null=True)
+    address2 = models.CharField(max_length=200, blank=True, null=True)
+    address3 = models.CharField(max_length=200, blank=True, null=True)
+    address4 = models.CharField(max_length=200, blank=True, null=True)
+    address5 = models.CharField(max_length=200, blank=True, null=True)
+    # county = models.CharField(max_length=100)
+    post_code = models.CharField(max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return self.post_code
+
 # subclassing django's default user class to make our own user class - AbstractUser superclass contains all the
 # password and session magic we need
 class CustomUser(AbstractUser):
@@ -12,7 +26,7 @@ class CustomUser(AbstractUser):
         ('S', 'Staff'),
         ('A', 'Admin'),
     )
-
+    address =  models.ForeignKey(Address, on_delete=models.PROTECT, db_column='address_id', blank=False, null=False, default=1)  # foreign key to Category
     role = models.CharField(max_length=50, choices=ROLE_TYPES, default='C')  # stores customer/staff/admin role
     region = models.CharField(max_length=100)               # stores region
     name = models.CharField(max_length=100)                 # stores full name of user
@@ -24,19 +38,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-# stores addresses for customers
-class Address(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.PROTECT, db_column='CustomUser_id')
-    address1 = models.CharField(max_length=200, blank=True, null=True)
-    address2 = models.CharField(max_length=200, blank=True, null=True)
-    address3 = models.CharField(max_length=200, blank=True, null=True)
-    address4 = models.CharField(max_length=200, blank=True, null=True)
-    address5 = models.CharField(max_length=200, blank=True, null=True)
-    county = models.CharField(max_length=100)
-    post_code = models.CharField(max_length=20, blank=True, null=True)
 
-    def __str__(self):
-        return self.address1 + self.county + self.post_code
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

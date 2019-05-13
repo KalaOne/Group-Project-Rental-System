@@ -77,6 +77,11 @@ class ReviewAdmin(admin.ModelAdmin):
     field = ('transaction_id','content','item_rating','transaction_rating', 'left_by_user_id')
 
 
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ['address1', 'address2', 'address3', 'address4', 'address5', 'post_code']
+    field = ('address1', 'address2', 'address3', 'address4', 'address5', 'post_code')
+
+
 # register the models with the admin site
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(models.Category, CategoryAdmin)
@@ -87,4 +92,4 @@ admin.site.register(models.Job, JobAdmin)
 admin.site.register(Profile)
 admin.site.register(models.ItemListing, ItemListingAdmin)
 admin.site.register(models.Reviews, ReviewAdmin)
-
+admin.site.register(models.Address, AddressAdmin)

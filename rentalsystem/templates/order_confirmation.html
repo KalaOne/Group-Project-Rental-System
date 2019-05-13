@@ -4,8 +4,7 @@
 
 {% block content %}
 
-<h1>Thanks for your order!</h1>
-<h2>We'll send you an email when we've got your game ready</h2>
-<button class="btn btn-success">Continue shopping</button>
-
+<h1 style="margin-bottom: 32px;">Thanks for your order!</h1>
+<!-- <button action="/home/" class="btn btn-success">Continue shopping</button> -->
+<a class="btn btn-success" href="{%  url 'home' %}">Continue shopping</a>
 {% endblock %}

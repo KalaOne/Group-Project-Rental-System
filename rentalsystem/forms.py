@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
-from .models import CustomUser
+from .models import CustomUser, Address
 from django import forms
 
 

@@ -36,7 +36,7 @@
 						<input id="EndDate" name="date_end" value="{{dates.1}}" required>
 			</div>
 			<div class="col-sm">
-				<button class="btn btn-danger">Find available items</button>
+				<button class="btn btn-info">Find available items</button>
 			</div>
 		</div>
 	</form>
@@ -49,16 +49,19 @@
 		<div class="col-md-4">
       <p class = "text-center">Cost per day : £{{listing.cost_per_day}}</p>
 		</div>
+        {%  if user.card_long_number is not None %}
 		<div class="col-md-4" style="text-align: center;">
 			<form action='/confirm_transaction/' method='GET'>
 				{% csrf_token %}
 				<input type="hidden" name="start_date" value="{{dates.0}}">
 				<input type="hidden" name="end_date" value="{{dates.1}}">
 				<input type="hidden" name="listingid" value="{{listing.id}}">
-            	<button class="btn btn-danger">Rent</button>
+            	<button class="btn btn-info">Rent</button>
 			</form>
-
 		</div>
+        {% else %}
+            <i class="text-secondary"><a href="/edit_account/">Please add card details</a></i>
+        {% endif %}
 	</div>
   {% endfor %}
 </div>
