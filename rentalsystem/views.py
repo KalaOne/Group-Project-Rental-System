@@ -288,9 +288,9 @@ def user_post_item(request):
 def post_item_details(request):
     if request.method == 'POST':
         i_id = request.POST.get('dropdown_value') ##get the ID in dropdown
+        print("++++++++", i_id)
         item = Item.objects.get(id = i_id) ## gets the Item with that ID
         item_name = item.name ##gets that Item's name
-        item_id = request.POST.get('dropdown_value')
         info = request.POST.get('info_field')
         cost= request.POST.get('cost')
         context = {
@@ -299,8 +299,9 @@ def post_item_details(request):
             'cost' : cost,
             'i_id' : i_id
         }
-        print("+++++++", i_id)
-    return render(request, 'rentalsystem/post_item_details.html', context)
+        return render(request, 'rentalsystem/post_item_details.html', context)
+
+    return render(request, 'rentalsystem/post_item_details.html')
 
 def post_item_complete(request):
     if request.method =='POST':
