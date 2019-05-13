@@ -17,22 +17,29 @@
                      src="{{ user.profile.image.url }}">
             </div>
             <div class="col-sm">
-                <form action='/change_details/' method='POST'>
+                <form action='/play/' method='POST'>
                     {% csrf_token %}
                     <p>Username: <b>{{ user.username }}</b></p>
-                    <input id="StartDate" name="date" value="">
+                    <input id="StartDate" name="username" value="">
+
                     <p>Email: <b>{{ user.email }}</b></p>
-                    <input id="EndDate" name="date1" value="">
+                    <input id="EndDate" name="email" value="">
+
                     <p>Region: <b>{{ user.region }}</b></p>
-                    <input id="Cost" name="cost">
+                    <input id="Costl" name="region">
+
                     <p>Name: <b>{{ user.name }}</b></p>
-                    <input id="Cost" name="cost">
+                    <input id="Costu" name="name">
+
                     <p>Card number: <b>{{ user.card_long_number }}</b></p>
-                    <input id="Cost" name="cost">
+                    <input id="Costfg" name="Card number">
+
                     <p>Card expiry date: <b>{{ user.card_expiry_date }}</b></p>
-                    <input id="Cost" name="cost">
+                    <input id="Costd" name="Card expiry date">
+
                     <p>Card cvv: <b>{{ user.card_cvv }}</b></p>
-                    <input id="Cost" name="cost">
+                    <input id="Costa" name="Card cvv">
+
                     <button class="btn btn-success center-block" value="Submit">Submit</button>
                 </form>
             </div>
