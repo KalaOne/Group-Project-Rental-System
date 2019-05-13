@@ -25,5 +25,6 @@ urlpatterns = [
     path('rent_item/', views.rent_item, name='rent_item'),
     path('account_details/', views.account_details, name='account_details'),
     path('leave/', views.profile, name='leave'),
+    path('upload_pic/', views.upload_pic, name='upload_pic'),
 
 ]

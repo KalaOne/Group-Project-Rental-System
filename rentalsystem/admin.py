@@ -2,6 +2,7 @@ from django.contrib import admin
 from rentalsystem import models
 from django.contrib.auth.admin import UserAdmin
 
+
 from rentalsystem.models import Job
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser, ItemCategoryPair, Profile, JobList

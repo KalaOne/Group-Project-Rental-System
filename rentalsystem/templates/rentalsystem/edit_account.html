@@ -27,20 +27,6 @@
         }
 
 
-        .title {
-            position: absolute;
-            width: 500px;
-            left: 0;
-            top: 120px;
-            font-weight: 700;
-            font-size: 30px;
-            text-align: center;
-            text-transform: uppercase;
-            color: white;
-            z-index: 1;
-            transition: top .5s ease;
-        }
-
         .asd:hover .title {
             top: 90px;
         }
@@ -48,7 +34,7 @@
         .button {
             position: absolute;
             width: 500px;
-            right: 40px;
+            left: 110px;
             top: 180px;
             text-align: center;
             opacity: 0;
@@ -71,18 +57,35 @@
             opacity: 1;
         }
 
+        .asda {
+            top: 500px;
+            position: absolute;
+            width: 500px;
+            right: 200px;
+            text-align: center;
+        }
+
 
     </style>
 
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                <div class="asd">
-                    <img class="fagg card rounded-circle account-img" style="width:400px"
-                         src="{{ user.profile.image.url }}">
-                    <div class="overlay"></div>
-                    <div class="button"><a href=""> CHANGE PICTURE </a></div>
-                </div>
+
+                <form action='/upload_pic/' method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <p>
+                    <div class="asd">
+                        <img class="fagg card rounded-circle account-img" style="width:400px"
+                             src="{{ user.profile.image.url }}">
+                        <div class="overlay"></div>
+                        <input id="id_image" type="file" class="button" name="image" value="pick">
+                    </div>
+                    </p>
+                    <div class="asda">
+                        <input class="btn btn-success center-block" type="submit" value="Change picture"/>
+                    </div>
+                </form>
+
             </div>
             <div class="col-sm">
                 <form action='/account_details/' method='POST'>
@@ -113,9 +116,15 @@
                     {% csrf_token %}
                     <button class="btn btn-danger btn-lg center-block">Leave</button>
                 </form>
+
+
             </div>
         </div>
     </div>
+    {% if controller == True %}
+        <script>alert("Pick an image first");</script>{% endif %}
+
+
 
 
 {% endblock %}
