@@ -48,11 +48,11 @@ class JobStatsTests(TestCase):
     def test_jobstats_no_post_returns_context_data(self):
         url = reverse('jobstats')
         response = self.client.get(url)
-        self.assertIsNotNone(response.context['total_jobs_completed_count'])
-        self.assertIsNotNone(response.context['total_jobs_comp_last_week'])
+        self.assertIsNotNone(response.context['on_time_jobs_count'])
+        self.assertIsNotNone(response.context['unallocated_jobs_count'])
 
         # if no post request is sent, jobstats should return 'All Regions'
-        self.assertEqual(response.context['searched_region'], 'All Regions')
+        self.assertEqual(response.context['searched_region'], 'All')
 
 
     # test post request returns data
@@ -78,7 +78,10 @@ class UtilityTests(TestCase):
 
     # test function returns None when called with nothing
     def test_get_lowest_prices(self):
+        # test list returned is empty when no items passed in
         lowest_price = getLowestPrices()
         print("lowest_price = ", lowest_price)
         self.assertEqual(lowest_price, [])
+
+   
         

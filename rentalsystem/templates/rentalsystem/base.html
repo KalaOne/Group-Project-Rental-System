@@ -62,6 +62,9 @@
                 <li class="nav-item">
                     <p><a class="nav-link" href="{% url 'jobstats' %}">Job Stats</a></p>
                 </li>
+                <li class="nav-item">
+                    <p><a class="nav-link" href="/admin/">Admin</a></p>
+                </li>
             {% endif %}
             {% if user.role ==  'C' or user.role == 'S' or user.role == 'A'%}
                 <li class="nav-item">

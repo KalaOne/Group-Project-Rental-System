@@ -411,7 +411,7 @@ def jobstats(request):
             'unallocated_jobs_count' : unallocated_jobs_count
         }
 
-    return render(request, 'jobstats1.html', context)
+    return render(request, 'jobstats.html', context)
 
 
 def profile(request):
@@ -693,9 +693,18 @@ def item_listings(request):
     item = Item.objects.filter(name=item_name).first()
     print("Item name found: " + str(item_name))
 
+    itemcategorypairid = set()
+    for itemcategorypair in ItemCategoryPair.objects.all():
+        if itemcategorypair.item_id.id == item.id:
+            itemcategorypairid.add(itemcategorypair.category_id.id)
+
+    categories = Category.objects.filter(pk__in = itemcategorypairid)
+
+
     # save item into context so it's detailed can be rendered
     context = {
         'item': item,
+        'categories' : categories
     }
 
     # will be POSTed if dates have been selected
@@ -716,7 +725,8 @@ def item_listings(request):
             'item': item,
             'item_listings': items,
             'dates': [s_date, e_date],
-            'cost': cost
+            'cost': cost,
+            'categories' : categories
         }
 
         return render(request, "rentalsystem/itemListings.html", context)
