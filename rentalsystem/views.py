@@ -62,9 +62,9 @@ def home(request):
 
     print(average_reviews)
     items_and_prices_and_ratings = zip(item_objects, prices, average_reviews)
-
+    
     context = {
-        'categories': Category.objects.all(),
+        'categories': Category.objects.all().order_by('title'),
         'items': items_and_prices_and_ratings
     }
     return render(request, "home.html", context)
@@ -92,7 +92,7 @@ def home_search(request):
     items_and_prices_and_ratings = zip(items, prices, average_reviews)
     context = {
         'items': items_and_prices_and_ratings,
-        'categories': Category.objects.all()
+        'categories': Category.objects.all().order_by('title')
     }
     return render(request, "rentalsystem/home.html", context)
 
