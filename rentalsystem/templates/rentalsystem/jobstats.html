@@ -3,7 +3,7 @@
 {% block title %}My Jobs{% endblock %}
 
 {% block content %}
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
     <!-- Tab links -->
 
     <div class="tab" style="margin-top: -2em">
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="col-md-6 text-center" style=" width:70%;padding-right: 15%;">
-                {% if on_time_jobs.count > 0 and late_jobs_count > 0%}
+                {% if on_time_jobs_count > 0 or late_jobs_count > 0%}
                     <div id="on_time_vs_late" style="height: 300px; width: 100%;"></div>
                 {% else %}
                     <h4 style="margin-top: 40%">No Data To Show</h4>
@@ -124,7 +124,7 @@
                                     {% for job in on_time_jobs %}
                                         <tr>
                                             <td class="text-white text-center">  {{ job.id }} </td>
-                                            <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                            <td class="text-white text-center">  {{ job.transaction_id.item_id }} </td>
                                             <td class="text-white text-center">  {{ job.transaction_id.renter_id }} </td>
                                             <td class="text-white text-center">  {{ job.delivered_datetime }} </td>
                                             <td class="text-white text-center">  {{ job.job_list_id.staff_id }} </td>
@@ -155,7 +155,7 @@
                                     {% for job in late_jobs %}
                                         <tr>
                                             <td class="text-white text-center">  {{ job.id }} </td>
-                                            <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                            <td class="text-white text-center">  {{ job.transaction_id.item_id }} </td>
                                             <td class="text-white text-center">  {{ job.transaction_id.renter_id }} </td>
                                             <td class="text-white text-center">  {{ job.due_delivery_datetime }} </td>
                                             <td class="text-danger text-center">  {{ job.delivered_datetime }} </td>
@@ -263,7 +263,7 @@
                 </div>
             </div>
             <div class="col-md-6 text-center" style=" width:70%;padding-right: 15%;">
-                {% if undelivered_jobs.count > 0 and unallocated_jobs.count > 0 %}
+                {% if undelivered_jobs_count > 0 or unallocated_jobs_count > 0 %}
                     <div id="undelivered_vs_unallocated" style="height: 300px; width: 100%;"></div>
                 {% else %}
                     <h4 style="margin-top: 40%">No Data To Show</h4>
@@ -295,7 +295,7 @@
                                     {% for job in undelivered_jobs %}
                                         <tr>
                                             <td class="text-white text-center">  {{ job.id }} </td>
-                                            <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                            <td class="text-white text-center">  {{ job.transaction_id.item_id }} </td>
                                             <td class="text-white text-center">  {{ job.transaction_id.renter_id }} </td>
                                             <td class="text-white text-center">  {{ job.due_delivery_datetime }} </td>
                                             <td class="text-white text-center">  {{ job.job_list_id.staff_id }} </td>
@@ -325,7 +325,7 @@
                                     {% for job in unallocated_jobs %}
                                         <tr>
                                             <td class="text-white text-center">  {{ job.id }} </td>
-                                            <td class="text-white text-center">  {{ job.transaction_id.item_id.name }} </td>
+                                            <td class="text-white text-center">  {{ job.transaction_id.item_id }} </td>
                                             <td class="text-white text-center">  {{ job.transaction_id.renter_id }} </td>
                                             <td class="text-white text-center">  {{ job.due_delivery_datetime }} </td>
                                             <td class="text-white text-center"><button class="btn btn-sm btn-primary">
@@ -346,7 +346,7 @@
 
 
 
-
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script type="text/javascript">
         window.onload = function () {
             var on_time_vs_late_chart = new CanvasJS.Chart("on_time_vs_late",
