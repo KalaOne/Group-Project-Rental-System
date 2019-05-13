@@ -9,7 +9,7 @@ from rentalsystem.views import *
 # check home view returns something
 
 class HomePageTests(TestCase):
-
+    
     def test_home_view_returns_right_status(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
@@ -72,3 +72,13 @@ class MyOrdersTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'myorders.html')
+
+
+class UtilityTests(TestCase):
+
+    # test function returns None when called with nothing
+    def test_get_lowest_prices(self):
+        lowest_price = getLowestPrices()
+        print("lowest_price = ", lowest_price)
+        self.assertEqual(lowest_price, [])
+        
