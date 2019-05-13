@@ -12,7 +12,7 @@
 
         <h1 class="my-4">Categories</h1>
 
-        <div class="list-group">
+        <div class="list-group mb-32">
 
           <form class="searchBar" action="/home_search/" method="get">
             <input type="text" name="search_query" placeholder="Search">
@@ -21,7 +21,7 @@
 
             {% for category in categories %}
             <!--<a href="" class="list-group-item">{{ category }}</a> -->
-            <form action='/home_search/' method='POST'>
+            <form  action='/home_search/' method='POST'>
                 {% csrf_token %}
                 <input type="hidden" name="catPk" value="{{category.id}}">
                 <button class="btn-outline-secondary btn-sm btn-block">{{category}}</button>
