@@ -76,8 +76,16 @@ def home_search(request):
     if request.method == 'POST':
         print("POST request")
         catPk = request.POST.get('catPk')
-        itemsInCategory = ItemCategoryPair.objects.filter(category_id=catPk)
-        items = Item.objects.filter(id__in=itemsInCategory)
+
+        itemids = set()
+        for itemcatpair in ItemCategoryPair.objects.all():
+            print(itemcatpair.category_id.id, "!!!!!!!" , catPk)
+            # if itemcatpair.category_id.id == catPk:
+            if itemcatpair.category_id.id == int(catPk):
+                print("FOUND CAT")
+                itemids.add(itemcatpair.item_id.id)
+        items = Item.objects.filter(pk__in=itemids)
+
     else:
         items = Item.objects.filter(name__icontains=request.GET['search_query'])
 
