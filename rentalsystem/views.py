@@ -172,84 +172,162 @@ def confirm_transaction(request):
     return render(request, 'confirm_transaction.html', context)
 
 
+def getOnTimeJobsFromQuerySet(jobs):
+    on_time_jobs_ids = set()
+    for job in jobs:
+        delivery_date = job.delivered_datetime
+        due_date = job.due_delivery_datetime
+        if due_date is not None and delivery_date is not None and due_date >= delivery_date:
+            on_time_jobs_ids.add(job.id)
+    return jobs.filter(pk__in=on_time_jobs_ids)
+
+
+def getLateJobsFromQuerySet(jobs):
+    late_jobs_ids = set()
+    for job in jobs:
+        delivery_date = job.delivered_datetime
+        due_date = job.due_delivery_datetime
+        if due_date is not None and delivery_date is not None and due_date < delivery_date:
+            late_jobs_ids.add(job.id)
+    return jobs.filter(pk__in=late_jobs_ids)
+
+
+def getJobsByRegionAndPeriodPast(region, numdays):
+    if region == None and numdays == None:
+        return Job.objects.all()
+    elif region == None:
+        return Job.objects.filter(delivered_datetime__gte=(datetime.now() - timedelta(days=numdays)))
+    elif numdays == None:
+        return Job.objects.filter(county=region)
+    else:
+        return Job.objects.filter(delivered_datetime__gte=(datetime.now() - timedelta(days=numdays)),county=region)
+
+def getJobsByRegionAndPeriodFuture(region, numdays):
+    if region == None and numdays == None:
+        return Job.objects.all()
+    elif region == None:
+        return Job.objects.filter(delivered_datetime__lte=(datetime.now() + timedelta(days=numdays)),delivered_datetime__gte=(datetime.now()))
+    elif numdays == None:
+        return Job.objects.filter(county=region)
+    else:
+        return Job.objects.filter(delivered_datetime__lte=(datetime.now() + timedelta(days=numdays)),delivered_datetime__gte=(datetime.now()), county=region)
+
+
 def jobstats(request):
-    obj = []
     # if POST request then the jobstats page is being filtered
     if request.method == 'POST':
         region = request.POST.get('region')
         days = request.POST.get('days')
-        print("Region from page is: " + str(region))
-        # calculate the completed number of jobs
-        if days == "1day":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=1)), county = region).count()
-        elif days == "1 week":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=7)), county = region).count()
-        elif days == "2 weeks":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=14)), county = region).count()
-        elif days == "1 month":
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False, delivered_datetime__gte =(datetime.now() - datetime.timedelta(days=30)), county = region).count()
-        else:
-            total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull = False).count()
+
         if region != 'All':
-            jobs = Job.objects.filter(delivered_datetime__isnull=False, county=region).order_by('-delivered_datetime')
+            if days == "1day":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(region,1)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(region,1)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(region,1).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(region,1).filter(job_list_id__isnull = True).order_by('-due_delivery_datetime')
+            elif days == "1 week":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, 7)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, 7)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(region, 7).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(region, 7).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
+            elif days == "2 weeks":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, 14)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, 14)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(region, 14).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(region, 14).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
+            elif days == "1 month":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, 30)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, 30)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(region, 30).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(region, 30).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
+            else:
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, None)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(region, None)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(region, None).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(region, None).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
         else:
-            jobs = Job.objects.filter(delivered_datetime__isnull=False).order_by('-delivered_datetime')
+            if days == "1day":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 1)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 1)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(None, 1).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(None, 1).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
+            elif days == "1 week":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 7)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 7)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(None, 7).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(None, 7).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
+            elif days == "2 weeks":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 14)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 14)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(None, 14).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(None, 14).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
+            elif days == "1 month":
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 30)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 30)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(None, 30).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(None, 30).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
+            else:
+                on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, None)).order_by('-delivered_datetime')
+                late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, None)).order_by('-delivered_datetime')
+                undelivered_jobs = getJobsByRegionAndPeriodFuture(None, None).filter(delivered_datetime__isnull=True).order_by('-due_delivery_datetime')
+                unallocated_jobs = getJobsByRegionAndPeriodFuture(None, None).filter(job_list_id__isnull=True).order_by('-due_delivery_datetime')
 
-        # calculate the completed jobs in past 7 days
-        # total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
-
-        # calculate number of unallocated jobs
-        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull = True, county = region).count()
-        unalloc_jobs = Job.objects.filter(job_list_id__isnull = True, county = region)
-
-
-        # calulate number of undelivered jobs
-        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull = True, county = region).count()
-        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull = True, county = region, job_list_id__isnull = False).order_by('-due_delivery_datetime')
+        on_time_jobs_count = on_time_jobs.count()
+        late_jobs_count = late_jobs.count()
+        undelivered_jobs_count = undelivered_jobs.count()
+        unallocated_jobs_count = unallocated_jobs.count()
 
         context = {
-            'total_jobs_completed_count': total_jobs_completed_count,
-            # 'total_jobs_comp_last_week': total_jobs_comp_last_week,
-            'nun_unalloc_jobs' : unalloc_jobs_count,
-            'nun_undelivered_jobs' : undelivered_jobs_count,
-            'searched_region' : region,
-            'day_sort' : days,
-            'jobs' : jobs,
-            'unalloc_jobs' : unalloc_jobs,
-            'undelivered_jobs' : undelivered_jobs
+            'searched_region': region,
+            'day_sort': days,
+            'on_time_jobs': on_time_jobs,
+            'on_time_jobs_count': on_time_jobs_count,
+            'late_jobs': late_jobs,
+            'late_jobs_count': late_jobs_count,
+            'undelivered_jobs': undelivered_jobs,
+            'undelivered_jobs_count': undelivered_jobs_count,
+            'unallocated_jobs': unallocated_jobs,
+            'unallocated_jobs_count': unallocated_jobs_count
         }
 
     # if no POST request then show all job stats
     else:
-        total_jobs_completed_count = Job.objects.filter(delivered_datetime__isnull=False).count()
+        #Default to all regions, max time
 
-        jobs = Job.objects.filter(delivered_datetime__isnull=False).order_by('-delivered_datetime')
+        ############################### On Time Jobs vs Late Jobs ############################
 
-        # calculate the completed jobs in past 7 days
-        # total_jobs_comp_last_week = Job.objects.filter(delivered_datetime__isnull =False, delivered_datetime__gte =(datetime.datetime.now() - datetime.timedelta(days=7)), county = region).count()
+        # On time jobs
+        on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, None)).order_by('-delivered_datetime')
+        on_time_jobs_count = on_time_jobs.count()
 
-        # calculate number of unallocated jobs
-        unalloc_jobs_count = Job.objects.filter(job_list_id__isnull=True).count()
-        unalloc_jobs = Job.objects.filter(job_list_id__isnull=True)
+        # Late jobs
+        late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, None)).order_by('-delivered_datetime')
+        late_jobs_count = late_jobs.count()
 
-        # calulate number of undelivered jobs
-        undelivered_jobs_count = Job.objects.filter(delivered_datetime__isnull=True).count()
-        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull=True,
-                                              job_list_id__isnull=False).order_by('-due_delivery_datetime')
+        ############################### Un-Delivered and Unallocated Jobs ############################
+
+        # Un-Delivered jobs
+        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull=True,job_list_id__isnull = False).order_by('-due_delivery_datetime')
+        undelivered_jobs_count = undelivered_jobs.count()
+
+        # Unallocated jobs
+        unallocated_jobs = Job.objects.filter(job_list_id__isnull = True).order_by('-due_delivery_datetime')
+        unallocated_jobs_count = unallocated_jobs.count()
 
         context = {
-            'total_jobs_completed_count': total_jobs_completed_count,
-            # 'total_jobs_comp_last_week': total_jobs_comp_last_week,
-            'nun_unalloc_jobs': unalloc_jobs_count,
-            'nun_undelivered_jobs': undelivered_jobs_count,
             'searched_region': 'All',
             'day_sort': 'All time',
-            'jobs': jobs,
-            'unalloc_jobs': unalloc_jobs,
-            'undelivered_jobs': undelivered_jobs
+            'on_time_jobs': on_time_jobs,
+            'on_time_jobs_count' : on_time_jobs_count,
+            'late_jobs' : late_jobs,
+            'late_jobs_count' : late_jobs_count,
+            'undelivered_jobs' : undelivered_jobs,
+            'undelivered_jobs_count' : undelivered_jobs_count,
+            'unallocated_jobs' : unallocated_jobs,
+            'unallocated_jobs_count' : unallocated_jobs_count
         }
 
-    return render(request, 'jobstats.html', context)
+    return render(request, 'jobstats1.html', context)
 
 
 def profile(request):
