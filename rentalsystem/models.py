@@ -61,7 +61,8 @@ class Item(models.Model):
     name = models.CharField(max_length=100)                 # Name of generic item
     info = models.CharField(max_length=5000, blank=True)     # description of item
     image = models.ImageField(default='default.jpg', upload_to='item_pics')
-
+    average_rating = models.IntegerField(blank=True, null=True) 
+    lowest_cost = models.IntegerField(blank=True, null=True) 
     def get_absolute_url(self):
         return reverse('post_item_details', kwargs={'pk': self.pk})
 

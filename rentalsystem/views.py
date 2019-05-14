@@ -35,7 +35,13 @@ def getAverageRating(itemid):
     item = Item.objects.get(id=itemid)
     print("Item: ", item)
 
-    related_transactions = Transaction.objects.filter(item_id=itemid)
+    item_listing_ids = set()
+    for itemlisting in ItemListing.objects.all():
+        
+        if itemlisting.item_type_id.id == itemid:
+            item_listing_ids.add(itemlisting.id)
+
+    related_transactions = Transaction.objects.filter(item_id__in=item_listing_ids)
     if related_transactions.count() > 0:
         avg_rating = 0
         num_ratings = 0
