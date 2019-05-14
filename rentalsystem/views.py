@@ -114,6 +114,9 @@ def home_search(request):
     return render(request, "rentalsystem/home.html", context)
 
 
+def about(request):
+    return render(request, "about.html")
+
 def landing(request):
     return render(request, "landing.html")
 

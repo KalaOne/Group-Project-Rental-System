@@ -84,7 +84,7 @@
                 </li>
             {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="{% url 'about' %}">About</a>
           </li>
             {%  if user.is_authenticated %}
           <li class="nav-item">
@@ -120,8 +120,8 @@
   </div>
 
   <footer class="fixed-bottom footer center-text">
-    <div class="footer-copyright text-center">© 2018 Copyright:
-         <a href="#"> BorrowPeoplesStuff.com</a>
+    <div class="footer-copyright text-center">© 2019 Copyright:
+         <a href="{% url 'home' %}"> BorrowPeoplesStuff.com</a>
 
       <p> @BorrowPeoplesStuff</p>
       <p>www.support@BorrowPeoplesStuff.com</p>
