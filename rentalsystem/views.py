@@ -735,11 +735,35 @@ def post_item_complete(request):
     if request.method == 'POST':
         i_id = Item.objects.get(id=request.POST.get('i_id'))  # getting the item with that ID
         user_id = CustomUser.objects.get(id=request.user.id)
-        ItemListing.objects.create(title=request.POST.get('i_name'),
+        listing = ItemListing.objects.create(title=request.POST.get('i_name'),
                                    additional_info=request.POST.get('i_info'),
                                    cost_per_day=request.POST.get('i_cost'),
                                    owner_id=user_id,
                                    item_type_id=i_id)
+
+
+        # Create a transaction between seller and Admin
+        transaction = Transaction.objects.create(total_cost=0,
+                                   start_date=date.today(),
+                                   end_date=None,
+                                   item_id=listing,
+                                   owner_id=user_id,
+                                   renter_id= CustomUser.objects.get(id=1))
+
+
+        # Create delivery job to pick up game from seller in 1 day
+        Job.objects.create( due_delivery_datetime = date.today() + timedelta(days=1),
+                            transaction_id = transaction,
+                            address1 = user_id.address.address1,
+                            address2 = user_id.address.address2,
+                            address3 = user_id.address.address3,
+                            address4 = user_id.address.address4,
+                            address5 = user_id.address.address5,
+                            county = user_id.region,
+                            post_code = user_id.address.post_code
+                            )
+
+        allocate_jobs()
 
     return render(request, 'rentalsystem/post_item_complete.html')
 
