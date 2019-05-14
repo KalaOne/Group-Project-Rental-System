@@ -115,3 +115,15 @@ body {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+@media screen and (max-width: 600px){
+  tr td {
+    text-align:center;
+    width: 100%;
+    padding: 20px 40px;
+    display: block;
+  }
+  th{
+    display: block;
+  }
+  tr:nth-child(odd) td {background-color: #dfdfdf; border-color: #9e9e9e}
+}
