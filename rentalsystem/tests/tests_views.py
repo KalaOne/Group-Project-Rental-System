@@ -27,10 +27,17 @@ class HomePageTests(TestCase):
         url = reverse('landing')
         response = self.client.get(url)
         self.assertTemplateUsed(response, 'landing.html')
-    # def test_landing_page_returns_right_search_results(self):
-    #     response = self.client.get('/home_search')
-    #     self.
-    # item_listings?query_name=Where%27s%20Wally%3F%21
+        
+    def test_home_search_returns_right_search_results(self):
+        url = reverse('home_search')
+        # pass in category id of 2 
+        response = self.client.post(url, {'catPk' : 2} )
+        self.assertEqual(response.status_code, 200)        
+        self.assertTemplateUsed(response, 'rentalsystem/home.html')
+        self.assertIsNotNone(response.context['items'])
+        self.assertIsNotNone(response.context['categories'])
+        
+
 
 class JobStatsTests(TestCase):
     def test_jobstats_returns_right_status(self):
@@ -43,7 +50,6 @@ class JobStatsTests(TestCase):
         response = self.client.get(url)
         self.assertTemplateUsed(response, 'jobstats.html')
 
-
     # tests all the data that a default jobstats page returns
     def test_jobstats_no_post_returns_context_data(self):
         url = reverse('jobstats')
@@ -53,7 +59,6 @@ class JobStatsTests(TestCase):
 
         # if no post request is sent, jobstats should return 'All Regions'
         self.assertEqual(response.context['searched_region'], 'All')
-
 
     # test post request returns data
     def test_jobstats_post_returns_context_data(self):
@@ -91,20 +96,9 @@ class PostItemTests(TestCase):
         response = self.client.get(url) 
         self.assertEqual(response.status_code, 200)
 
-
 #if correct tempate is loaded, pass
     def test_postitem_returns_correct_template(self):
         response = self.client.get('postItem/')
         self.assertTemplateUsed('user_post_item.html')
 
 
-#if content of 'context' is not None, should pass
-    # def test_form_fields_are_valid(self):
-    #     url = reverse('item_details')
-    #     response = self.client.post(url, {'dropdown_value' : 3 , 'info_field' : "Superb", 'Cost': 3})
-    #     self.assertIsNotNone(response.context['item_name'])
-    #     self.assertIsNotNone(response.context['info'])
-    #     self.assertIsNotNone(response.context['cost'])
-    #     self.assertIsNotNone(response.context['i_id'])
-
-#
