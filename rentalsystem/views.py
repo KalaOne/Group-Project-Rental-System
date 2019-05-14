@@ -18,22 +18,23 @@ from django.urls import reverse_lazy  # new
 User = get_user_model()
 
 
-def getLowestPrices():
-    lowest_prices = []
-    for item in Item.objects.all():
-        # get all ItemListings
-        min_price = 0
-        if ItemListing.objects.filter(item_type_id=item.id):
-            min_price = ItemListing.objects.filter(item_type_id=item.id).aggregate(Min('cost_per_day'))
-        else:
-            min_price = None
-        lowest_prices.append(min_price)
-    return lowest_prices
-
-
-def getAverageRating(itemid):
+def updateLowestPrice(itemid):
     item = Item.objects.get(id=itemid)
-    print("Item: ", item)
+    if ItemListing.objects.filter(item_type_id=itemid).count()>0:
+        price = ItemListing.objects.filter(item_type_id=item.id).aggregate(Min('cost_per_day'))
+        print("HERE ->",price['cost_per_day__min'])
+        setattr(item, 'lowest_cost', price['cost_per_day__min'])
+        item.save()
+    else:
+        setattr(item, 'lowest_cost', None)
+        item.save()
+
+def updateAllLowestPrices():
+    for item in Item.objects.all():
+        updateLowestPrice(item.id)
+
+def updateAverageRating(itemid):
+    item = Item.objects.get(id=itemid)
 
     item_listing_ids = set()
     for itemlisting in ItemListing.objects.all():
@@ -53,31 +54,35 @@ def getAverageRating(itemid):
             except:
                 avg_rating = avg_rating + 0
         if num_ratings > 0:
-            avg_rating = avg_rating / num_ratings
+            new_rating = int(avg_rating / num_ratings)
+            setattr(item, 'average_rating', new_rating)
+            item.save()
         else:
-            avg_rating = 0
-        return avg_rating
+            setattr(item, 'average_rating', 0)
+            item.save()
+        
     else:
-        return 0
+        setattr(item, 'average_rating', 0)
+        item.save()
 
+def updateAllItemsRatings():
+    for item in Item.objects.all():
+        updateAverageRating(item.id)
 
 def home(request):
-    prices = getLowestPrices()
-    item_objects = Item.objects.all()
-
-    average_reviews = []
-    for item in Item.objects.all():
-        average_reviews.append(int(getAverageRating(item.id)))
-
-    print(average_reviews)
-    items_and_prices_and_ratings = zip(item_objects, prices, average_reviews)
-
+    item_objects = Item.objects.all().order_by('name')
+    
     context = {
         'categories': Category.objects.all().order_by('title'),
-        'items': items_and_prices_and_ratings
+        'items': item_objects
     }
     return render(request, "home.html", context)
 
+def updateiteminfo(request):
+    if request.user.role == 'A':
+        updateAllItemsRatings()
+        updateAllLowestPrices()
+    return home(request)
 
 # Re renders home page with new 'context' after a search
 def home_search(request):
@@ -789,6 +794,13 @@ def review_confirmation(request):
                                   item_rating=request.POST.get('itemrating'),
                                   transaction_rating=request.POST.get('transactionrating'),
                                   left_by_user_id=CustomUser.objects.get(id=request.user.id)):
+
+
+            for itemlisting in ItemListing.objects.all():
+                if itemlisting.id == Transaction.objects.get(id=request.POST.get('transactionpk')).item_id.id:
+                    updateAverageRating(itemlisting.item_type_id.id)
+                    break
+
             print("Successfully added review...")
         else:
             print("Review not added successfully...")
