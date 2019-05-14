@@ -817,6 +817,7 @@ def item_listings(request):
     if request.method == 'GET':
         item_name = request.GET.get('query_name')
 
+
     # get the right item details from the query
     item = Item.objects.filter(name=item_name).first()
     print("Item name found: " + str(item_name))
@@ -842,9 +843,18 @@ def item_listings(request):
         e_date = request.POST.get('date_end')
 
         print("Selecting items available between " + str(s_date) + " and " + str(e_date))
-        print("HELLLLLOOOO")
+        print("S_DATE IS: ", isinstance(s_date, str))
+
+        s_date_datetime = datetime.strptime(s_date, '%Y-%m-%d')
+        e_date_datetime = datetime.strptime(e_date, '%Y-%m-%d')
+        print(s_date_datetime)
 
         items = ItemListing.objects.filter(item_type_id=item.id)
+
+        # Find all item listings that are not being rented in requested period
+        for listing in ItemListing.objects.all():
+            transition = Transaction.objects.get(item_id=listing.id)
+
         cost = 10
 
         # create context with all available item listings
