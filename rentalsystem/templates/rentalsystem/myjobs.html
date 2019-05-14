@@ -7,7 +7,8 @@
     <table class="table">
     <tr>
         <th>Job ID</th>
-        <th>Transaction_ID</th>
+        <th>Product</th>
+        <th>Address</th>
         <th>Due Date</th>
         <th>Delivered Date</th>
         <th>Mark as delivered</th>
@@ -19,7 +20,24 @@
             <tr class="table-success">
         {% endif %}           
             <td>{{ job.id }}</id>
-            <td>{{ job.transaction_id }}</td>
+            <td>{{ job.transaction_id.item_id }}</td>
+            <td>
+                {{ job.address1 }} <br>
+                {% if job.address2 is not None %}
+                    {{ job.address2 }} <br>
+                {% endif %}
+                {% if job.address3 is not None %}
+                    {{ job.address3 }} <br>
+                {% endif %}
+                {% if job.address4 is not None %}
+                    {{ job.address4 }} <br>
+                {% endif %}
+                {% if job.address5 is not None %}
+                    {{ job.address5 }} <br>
+                {% endif %}
+                {{ job.county }} <br>
+                {{ job.post_code }} <br>
+            </td>
             <td>{{ job.due_delivery_datetime }}</td>
             <td>
                 {% if job.delivered_datetime is None%}
