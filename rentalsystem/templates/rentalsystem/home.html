@@ -36,7 +36,7 @@
 
 
         <div class="row">
-            {%  for item,price,rating in items %}
+            {%  for item in items %}
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
               <a href="/item_listings?query_name={{ item|urlencode }}"><img class="card-img-top" src="{{ item.image.url }}" height="200" width="auto"></a>
@@ -44,44 +44,44 @@
                 <h4 class="card-title">
                   <a href="/item_listings?query_name={{ item|urlencode }}">{{ item }}</a>
                 </h4>
-                  {% if price.cost_per_day__min != None %}
-                    <h5 class="text-success">£{{price.cost_per_day__min}}</h5>
+                  {% if item.lowest_cost != None %}
+                    <h5 class="text-success">£{{item.lowest_cost}}</h5>
                   {% else %}
                     <h5 class="text-danger">Currently Out Of Stock</h5>
                   {% endif %}
               <div class="card-title">
-                      {% if rating == 0 %}
+                      {% if item.average_rating == 0 %}
                           <i>Not Rated</i>
                       {% endif %}
-                      {% if rating == 1 %}
+                      {% if item.average_rating == 1 %}
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star"></span>
                           <span class="fa fa-star"></span>
                           <span class="fa fa-star"></span>
                           <span class="fa fa-star"></span>
                       {% endif %}
-                      {% if rating == 2%}
+                      {% if item.average_rating == 2%}
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star"></span>
                           <span class="fa fa-star"></span>
                           <span class="fa fa-star"></span>
                       {% endif %}
-                      {% if rating == 3%}
+                      {% if item.average_rating == 3%}
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star"></span>
                           <span class="fa fa-star"></span>
                       {% endif %}
-                      {% if rating == 4%}
+                      {% if item.average_rating == 4%}
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star"></span>
                       {% endif %}
-                      {% if rating == 5 %}
+                      {% if item.average_rating == 5 %}
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>
                           <span class="fa fa-star" style="color:orange"></span>

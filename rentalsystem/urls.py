@@ -26,5 +26,5 @@ urlpatterns = [
     path('account_details/', views.account_details, name='account_details'),
     path('leave/', views.profile, name='leave'),
     path('upload_pic/', views.upload_pic, name='upload_pic'),
-
+    path('cron/',views.updateiteminfo, name='cron')
 ]
