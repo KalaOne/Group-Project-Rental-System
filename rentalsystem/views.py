@@ -65,7 +65,7 @@ def home(request):
 
     print(average_reviews)
     items_and_prices_and_ratings = zip(item_objects, prices, average_reviews)
-    
+
     context = {
         'categories': Category.objects.all().order_by('title'),
         'items': items_and_prices_and_ratings
@@ -842,22 +842,50 @@ def item_listings(request):
         print("Selecting items available between " + str(s_date) + " and " + str(e_date))
         print("S_DATE IS: ", isinstance(s_date, str))
 
-        s_date_datetime = datetime.strptime(s_date, '%Y-%m-%d')
-        e_date_datetime = datetime.strptime(e_date, '%Y-%m-%d')
+        s_date_datetime = datetime.date(datetime.strptime(s_date, '%Y-%m-%d'))
+        e_date_datetime = datetime.date(datetime.strptime(e_date, '%Y-%m-%d'))
         print(s_date_datetime)
 
         items = ItemListing.objects.filter(item_type_id=item.id)
+        available_items = []
 
-        # Find all item listings that are not being rented in requested period
-        for listing in ItemListing.objects.all():
-            transition = Transaction.objects.get(item_id=listing.id)
+        # Add listings that have transactions that donot collide with request rent period
+        # For all listings
+        for listing in items:
+            # For all transactions of requested listing
+            for transaction in Transaction.objects.filter(item_id=listing):
+                t_s_date = transaction.start_date
+                t_e_date = transaction.end_date
+
+                print("t_s_date: ", t_s_date)
+                print("t_e_date: ", t_e_date)
+
+                if not(t_s_date <= s_date_datetime <= t_e_date) or not(t_s_date <= e_date_datetime <= t_e_date):
+                    if not(s_date_datetime <= t_s_date <= e_date_datetime) or not(s_date_datetime <= t_e_date <= e_date_datetime):
+                        print("Start and End date not colliding")
+                        available_items.append(listing)
+                    else:
+                        print("!!!!!!!!!")
+                else:
+                    print("!!!!!!!!!")
+
+
+        # Add all listings that dont have transactions
+        no_transactions = []
+        for listing in items:
+            has_transaction = False
+            for transaction in Transaction.objects.filter(item_id=listing):
+                if transaction.item_id is listing:
+                    has_transaction = True
+                if has_transaction is False:
+                    available_items.append(listing)
 
         cost = 10
 
         # create context with all available item listings
         context = {
             'item': item,
-            'item_listings': items,
+            'item_listings': available_items,
             'dates': [s_date, e_date],
             'cost': cost,
             'categories': categories
