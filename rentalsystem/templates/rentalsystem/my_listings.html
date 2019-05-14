@@ -23,24 +23,12 @@
                                     <div class="card-body">
                                         {% if items.count > 0 %}
                                             {% for items in items %}
-                                                <div class="row>">
-                                                    <div class="col-md-12 bg-dark">
-                                                        <table class="table bg-secondary" style="border-top: none">
-                                                            <tr>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.id }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.item_id }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.owner_id }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.start_date }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.end_date }} </td>
-                                                            </tr>
-                                                        </table>
+                                                <div class="row mb-32">
+                                                    <div class="col-md-12 bg-info center-text" style="padding: 20px;">
+
                                                         <div class="row">
                                                             <div class="col-md-2  text-center">
 
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                    </div>
-                                                                </div>
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         {{ items.title }}
@@ -50,13 +38,17 @@
                                                             </div>
                                                             <div class="col-md-8">
                                                                 <div class="col-md-12">
-                                                                        {{ items.additional_info }}
-                                                                    </div>
+                                                                    {{ items.additional_info }}
+                                                                </div>
                                                             </div>
                                                             <div class="col-md-2  text-center">
                                                                 <div class="row">
                                                                     <div class="col-md-12">
-                                                                        {{ items.cost_per_day }}£
+                                                                        £{{ items.cost_per_day }}
+                                                                        <form action='/confirm_return/' method='post' autocomplete="off">
+                                                                          <input type="hidden" name="listing" value="{{item}}">
+                                                                        <button style="margin: 15px; padding: 10px;" class="btn btn-primary"type="button" name="button"> Request return</button>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
 
