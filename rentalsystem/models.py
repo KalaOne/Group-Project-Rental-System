@@ -93,7 +93,7 @@ class Transaction(models.Model):
     renter_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='renter_id')
     total_cost = models.PositiveIntegerField()
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(blank = True, null = True)
 
 
 # job list class
@@ -103,7 +103,7 @@ class JobList(models.Model):
 
 # job class
 class Job(models.Model):
-    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id')
+    transaction_id = models.ForeignKey(Transaction, on_delete=models.PROTECT, db_column='transaction_id', null=True)
     job_list_id = models.ForeignKey(JobList, on_delete=models.PROTECT, db_column='job_list_id', blank=True, null=True)
     due_delivery_datetime = models.DateTimeField()
     delivered_datetime = models.DateTimeField(blank=True, null=True)
