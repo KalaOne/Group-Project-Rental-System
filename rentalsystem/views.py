@@ -38,7 +38,7 @@ def updateAverageRating(itemid):
 
     item_listing_ids = set()
     for itemlisting in ItemListing.objects.all():
-        
+
         if itemlisting.item_type_id.id == itemid:
             item_listing_ids.add(itemlisting.id)
 
@@ -940,3 +940,12 @@ def item_listings(request):
     else:
         print('Not showing item listings yet: need dates')
         return render(request, "rentalsystem/itemListings.html", context)
+
+
+def confirm_return(request):
+    listing = request.POST.get('listing')
+
+    context = {
+        'listing': listing
+    }
+    return render(request, "rentalsystem/confirm_return.html", context)
