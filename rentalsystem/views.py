@@ -60,7 +60,7 @@ def updateAverageRating(itemid):
         else:
             setattr(item, 'average_rating', 0)
             item.save()
-        
+
     else:
         setattr(item, 'average_rating', 0)
         item.save()
@@ -71,7 +71,7 @@ def updateAllItemsRatings():
 
 def home(request):
     item_objects = Item.objects.all().order_by('name')
-    
+
     context = {
         'categories': Category.objects.all().order_by('title'),
         'items': item_objects
@@ -105,15 +105,13 @@ def home_search(request):
 
         cat_id = Category.objects.filter(title__icontains=request.GET['search_query']).values_list('pk', flat=True)
 
-    average_reviews = []
-    for item in Item.objects.all():
-        average_reviews.append(int(getAverageRating(item.id)))
 
-    prices = getLowestPrices()
 
-    items_and_prices_and_ratings = zip(items, prices, average_reviews)
+
+
+
     context = {
-        'items': items_and_prices_and_ratings,
+        'items': items,
         'categories': Category.objects.all().order_by('title')
     }
     return render(request, "rentalsystem/home.html", context)

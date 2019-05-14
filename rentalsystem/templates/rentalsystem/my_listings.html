@@ -45,9 +45,10 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         £{{ items.cost_per_day }}
-                                                                        <form action='/confirm_return/' method='post' autocomplete="off">
+                                                                        <form action='/confirm_return/' method='post'>
+                                                                          {% csrf_token %}
                                                                           <input type="hidden" name="listing" value="{{item}}">
-                                                                        <button style="margin: 15px; padding: 10px;" class="btn btn-primary"type="button" name="button"> Request return</button>
+                                                                          <button style="margin: 15px; padding: 10px;" class="btn btn-primary"type="submit"> Request return</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
