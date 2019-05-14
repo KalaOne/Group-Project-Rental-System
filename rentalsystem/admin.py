@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from rentalsystem.models import Job
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, ItemCategoryPair, Profile, JobList
+from .models import CustomUser, ItemCategoryPair, Profile, JobList, Address
 
 
 class CustomUserAdmin(UserAdmin):
@@ -13,10 +13,10 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ['email', 'username', 'role', 'region', 'name', 'job_capacity',
-                    'card_long_number', 'card_expiry_date', 'card_cvv']
+                    'card_long_number', 'card_expiry_date', 'card_cvv', 'address']
     fieldsets = (
         ('Basic information', {
-            'fields': ('email', 'username', 'role', 'region', 'name')
+            'fields': ('email', 'username', 'role', 'region', 'name', 'address')
         }),
         ('Customer payment information', {
             'fields': ('card_long_number', 'card_expiry_date', 'card_cvv')
@@ -37,6 +37,8 @@ class CategoryAdmin(admin.ModelAdmin):
 class ItemCategoryPairInline(admin.StackedInline):
     model = ItemCategoryPair
     list_display = ['']
+
+
 
 
 # sets up the item view in the admin page
