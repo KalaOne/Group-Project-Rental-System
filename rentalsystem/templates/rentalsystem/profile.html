@@ -24,9 +24,9 @@
                             <div class="col-md-7">
                                 <h2 class="account-heading">{% if controller == True %}{{ username }}{% else %}{{ user.username }}{% endif %}</h2>
                                 <p class="text-secondary">{% if controller == True %}{{ email }}{% else %}{{ user.email }}{% endif %}</p>
-                                <p class="text-secondary">{{ user.address.address1 }}</p>
-                                <p class="text-secondary">{{ user.address.address2 }}</p>
-                                <p class="text-secondary">{{ user.address.post_code }}</p>
+                                <p class="text-secondary">{% if not adline1 %} {{ user.address.address1 }} {% else %} {{ adline1 }} {% endif %}</p>
+                                <p class="text-secondary">{% if not adline2 %} {{ user.address.address2 }} {% else %} {{ adline2 }} {% endif %}</p>
+                                <p class="text-secondary">{% if not adline3 %} {{ user.address.post_code }} {% else %} {{ adline3 }} {% endif %}</p>
                                 <div class="row">
                                     <form action='/edit_account/' method='POST'>
                                         {% csrf_token %}

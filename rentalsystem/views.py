@@ -471,7 +471,9 @@ def profile(request):
     current_user_id = request.user.id
 
     reviews = Reviews.objects.filter(left_by_user_id=current_user_id)
+    ad = request.user.address
     context = {
+        'ad':ad,
         'reviews': reviews
     }
     return render(request, 'profile.html', context)
@@ -559,7 +561,8 @@ def account_details(request):
                            "Region is invalid",
                            "Card number is invalid or you left it blank",
                            "Card expiry date is invalid or card has expired",
-                           "Card CVV is invalid"]
+                           "Invalid CVV",
+                           "Invalid address"]
         context = {
             'username': usname,
             'email': email,
@@ -573,16 +576,13 @@ def account_details(request):
             'adline2': adline2,
             'adline3': adline3,
         }
-        print(adline1)
-        print(adline2)
-        print(adline3)
         username_list = list(User.objects.values_list('username', flat=True))
         username_list.remove(user.username)
         if usname != '' and usname not in username_list:
             # print('___________________')
             # print(username)
             # print('___________________')
-            if usname == user.username and email != '' and card_number != '' and expiry_date != '' and cvv != '':
+            if usname == user.username and email != '' and card_number != '' and expiry_date != '' and cvv != '' and adline1 != '':
                 context['controller'] = True
             user.username = usname
             user.save()
@@ -596,7 +596,7 @@ def account_details(request):
             # print('___________________')
             # print(email)
             # print('___________________')
-            if email == user.email and usname != '' and card_number != '' and expiry_date != '' and cvv != '':
+            if email == user.email and usname != '' and card_number != '' and expiry_date != '' and cvv != '' and adline1 != '':
                 context['controller'] = True
             user.email = email
             user.save()
@@ -620,7 +620,7 @@ def account_details(request):
             # print('___________________')
             # print(card_number)
             # print('___________________')
-            if card_number == user.card_long_number and email != '' and usname != '' and expiry_date != '' and cvv != '':
+            if card_number == user.card_long_number and email != '' and usname != '' and expiry_date != '' and cvv != '' and adline1 != '':
                 context['controller'] = True
             user.card_long_number = card_number
             user.save()
@@ -632,7 +632,7 @@ def account_details(request):
             # print('___________________')
             # print(expiry_date)
             # print('___________________')
-            if expiry_date == user.card_expiry_date and email != '' and usname != '' and card_number != '' and cvv != '':
+            if expiry_date == user.card_expiry_date and email != '' and usname != '' and card_number != '' and cvv != '' and adline1 != '':
                 context['controller'] = True
             user.card_expiry_date = expiry_date
             user.save()
@@ -647,12 +647,32 @@ def account_details(request):
             # print('___________________')
             # print(cvv)
             # print('___________________')
-            if cvv == user.card_cvv and email != '' and usname != '' and card_number != '' and expiry_date != '':
+            if cvv == user.card_cvv and email != '' and usname != '' and card_number != '' and expiry_date != '' and adline1 != '':
                 context['controller'] = True
             user.card_cvv = cvv
             user.save()
         else:
             context['error'] = error_selection[5]
+            context['error_set'] = True
+            # print('___________________')
+            # print(expiry_date)
+            # print('___________________')
+            return render(request, 'rentalsystem/profile.html', context)
+        if adline1 != '' and adline2 != '' and adline3 != '':
+            # print('___________________')
+            # print(cvv)
+            # print('___________________')
+            if adline1 == user.address.address1 and email != '' and usname != '' and card_number != '' and expiry_date != '':
+                context['controller'] = True
+            add = Address.objects.create(address1 = adline1,address2 = adline2,post_code = adline3)
+            user.address = add
+            user.save()
+            # print('___________________')
+            # print(adline1)
+            # print(user.address.address1)
+            # print('___________________')
+        else:
+            context['error'] = error_selection[6]
             context['error_set'] = True
             # print('___________________')
             # print(expiry_date)
