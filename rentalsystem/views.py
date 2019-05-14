@@ -668,7 +668,7 @@ def upload_pic(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            m = Profile.objects.get(id=request.user.id)
+            m = Profile.objects.get(user=request.user.id)
             m.image = form.cleaned_data['image']
             m.save()
             return render(request, 'profile.html', context)
