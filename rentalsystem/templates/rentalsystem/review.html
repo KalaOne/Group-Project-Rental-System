@@ -9,7 +9,7 @@
     <h2 class="text-center text-info">Leave a review</h2><br>
 	<div class="row">
 		<div class="col-md-3">
-            <a href="#"><img class="card-img-top" src="{{ transaction.item_id.image.url }}" height="200" width="auto"></a>
+            <a href="#"><img class="card-img-top" src="{{ transaction.item_id.item_type_id.image.url }}" height="200" width="auto"></a>
 		</div>
 		<div class="col-md-9">
             <table class="table">
@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td> {{ transaction.id }} </td>
-                    <td> {{ transaction.item_id.name }} </td>
+                    <td> {{ transaction.item_id }} </td>
                     <td> £{{ transaction.total_cost }} </td>
                     <td> {{ transaction.start_date }} </td>
                     <td> {{ transaction.end_date }} </td>
