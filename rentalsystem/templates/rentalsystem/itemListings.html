@@ -29,17 +29,29 @@
 			{% csrf_token %}
 			<div class="col-sm">
 				<h4>Start date of rental</h4>
-					<input id="StartDate" name="date_start" value="{{dates.0}}" required>
+					<input type="date" id="StartDate" name="date_start" value="{{dates.0}}" required>
 			</div>
 			<div class="col-sm">
 					<h4>End date of rental</h4>
-						<input id="EndDate" name="date_end" value="{{dates.1}}" required>
+						<input type="date" id="EndDate" name="date_end" value="{{dates.1}}" required>
 			</div>
 			<div class="col-sm">
 				<button class="btn btn-info">Find available items</button>
 			</div>
 		</div>
 	</form>
+
+	<script type="text/javascript">
+			$("#EndDate").change(function () {
+	    var startDate = document.getElementById("StartDate").value;
+	    var endDate = document.getElementById("EndDate").value;
+
+	    if ((Date.parse(startDate) >= Date.parse(endDate))) {
+	        alert("You've picked an end date thats before the start date!");
+	        document.getElementById("EndDate").value = "";
+	    }
+	});
+	</script>
 
   {% for listing in item_listings %}
   <div class="row muted" style="padding: 30px; border: 1px grey solid; border-radius: 5px; margin: 10px 0px;">
