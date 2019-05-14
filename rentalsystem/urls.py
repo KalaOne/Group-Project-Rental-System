@@ -26,5 +26,6 @@ urlpatterns = [
     path('account_details/', views.account_details, name='account_details'),
     path('leave/', views.profile, name='leave'),
     path('upload_pic/', views.upload_pic, name='upload_pic'),
+    path('my_listings/', views.my_listings, name='my_listings'),
 
 ]

@@ -488,6 +488,9 @@ def account_details(request):
         card_number = request.POST.get('Card number')
         expiry_date = request.POST.get('Card expiry date')
         cvv = request.POST.get('Card cvv')
+        adline1 = request.POST.get('adline1')
+        adline2 = request.POST.get('adline2')
+        adline3 = request.POST.get('adline3')
         user = User.objects.get(id=current_user_id)
         regions = [
             "Greater London",
@@ -539,20 +542,6 @@ def account_details(request):
             "Rutland",
             "City of London",
         ]
-        expiry = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December',
-        ]
         error_selection = ["Username is already taken or you left it blank",
                            "Email is already taken or you left it blank",
                            "Region is invalid",
@@ -568,7 +557,13 @@ def account_details(request):
             'cvv': cvv,
             'reviews': reviews,
             'controller': controller,
+            'adline1': adline1,
+            'adline2': adline2,
+            'adline3': adline3,
         }
+        print(adline1)
+        print(adline2)
+        print(adline3)
         username_list = list(User.objects.values_list('username', flat=True))
         username_list.remove(user.username)
         if usname != '' and usname not in username_list:
@@ -656,6 +651,15 @@ def account_details(request):
     return render(request, 'rentalsystem/profile.html', context)
 
 
+def my_listings(request):
+    current_user_id = request.user.id
+
+    items = ItemListing.objects.filter(owner_id=current_user_id)
+    context = {
+        'items': items
+    }
+    return render(request, "my_listings.html", context)
+
 def upload_pic(request):
     controller = False
     current_user_id = request.user.id
@@ -668,7 +672,7 @@ def upload_pic(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            m = Profile.objects.get(user=request.user.id)
+            m = Profile.objects.get(user=current_user_id)
             m.image = form.cleaned_data['image']
             m.save()
             return render(request, 'profile.html', context)

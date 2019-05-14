@@ -1,0 +1,75 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+  <div class="row" style="margin-top: 2em">
+                            <div class="col-md-12">
+                                <div class="card-header">
+                                    <h6 class="card-title">My Listed items<i style="margin-left: 15px"
+                                                                        class="text-dark small">Ordered by Most
+                                        Recent</i></h6>
+
+                                    <table class="table" style="border:none; margin-bottom: 0px">
+                                        <tr style="border:none">
+                                            <th class="text-center" style="border:none"> GAME</th>
+                                            <th class="text-center" style="border:none"> ADDITIONAL INFO</th>
+                                            <th class="text-center" style="border:none"> COST PER DAY</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="text-white bg-secondary mb-3" style="overflow-y: scroll; height:400px;">
+
+                                    <div class="card-body">
+                                        {% if items.count > 0 %}
+                                            {% for items in items %}
+                                                <div class="row>">
+                                                    <div class="col-md-12 bg-dark">
+                                                        <table class="table bg-secondary" style="border-top: none">
+                                                            <tr>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.id }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.item_id }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.owner_id }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.start_date }} </td>
+                                                                <td class="text-white text-center">  {{ review.transaction_id.end_date }} </td>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="row">
+                                                            <div class="col-md-2  text-center">
+
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        {{ items.title }}
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="col-md-12">
+                                                                        {{ items.additional_info }}
+                                                                    </div>
+                                                            </div>
+                                                            <div class="col-md-2  text-center">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        {{ items.cost_per_day }}£
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock %}
