@@ -15,18 +15,18 @@
 
                     <div class="col-md-8">
 
-                        <div class="row">
+                        <div class="row" style="padding-left: 10%">
 
                             <div class="col-md-5">
                                 <img class="card rounded-circle account-img" style="width:250px"
                                      src="{{ user.profile.image.url }}">
-                                <img class="card rounded-circle account-img" style="width:250px"
-                                     src="{{ m }}">
                             </div>
                             <div class="col-md-7">
                                 <h2 class="account-heading">{% if controller == True %}{{ username }}{% else %}{{ user.username }}{% endif %}</h2>
                                 <p class="text-secondary">{% if controller == True %}{{ email }}{% else %}{{ user.email }}{% endif %}</p>
-                                <p class="text-secondary">{{ user.address_id }}</p>
+                                <p class="text-secondary">{{ user.address.address1 }}</p>
+                                <p class="text-secondary">{{ user.address.address2 }}</p>
+                                <p class="text-secondary">{{ user.address.post_code }}</p>
                                 <div class="row">
                                     <form action='/edit_account/' method='POST'>
                                         {% csrf_token %}
