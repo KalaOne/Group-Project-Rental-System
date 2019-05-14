@@ -1,0 +1,80 @@
+{% extends 'rentalsystem/base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="container"><p class="h2">What we did and why</p>
+<p class="h4">We are a group of 5 who have been given the assignment to create a software from scratch. 
+We have decided to use <u>Python</u> and <u>Django</u> in order to create the project you are currently on.</p>
+
+</div>
+<header class="bg-primary text-center py-4 mb-4">
+    <div class="container">
+      <h1 class="font-weight-light text-white">Meet the Team</h1>
+    </div>
+  </header>
+  
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <!-- Jorge, Pronounced HORHAY -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 shadow">
+          <!-- {% load static %}
+          <img src="{% static "Gorge" %}" alt="My image"> -->
+          <img src="/media/about_pics/George.jpg" class="card-img-top" alt="Horhay">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0">George Marshall-Dutton</h5>
+            <div class="card-text text-black-50">Developer</div>
+          </div>
+        </div>
+      </div>
+      <!-- Jezabelle -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 shadow">
+          <img src="/media/about_pics/Jez.jpg" class="card-img-top" alt="Jezabelle">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0">Jez Bayliss</h5>
+            <div class="card-text text-black-50">Developer</div>
+          </div>
+        </div>
+      </div>
+      <!-- Kelly Anne -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 shadow">
+          <img src="/media/about_pics/Kal.jpg" class="card-img-top" alt="Kelly Anne">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0">Kaloyan Valchev</h5>
+            <div class="card-text text-black-50">Developer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class ="row">
+      <!-- Sir Taylor -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 shadow">
+          <img src="/media/about_pics/Matt.jpg" class="card-img-top" alt="Sir Taylor">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0">Matthew Taylor</h5>
+            <div class="card-text text-black-50">Developer</div>
+          </div>
+        </div>
+      </div>
+      <!-- Mazzy -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 shadow">
+          <img src="/media/about_pics/Maz.jpg" class="card-img-top" alt="Mazzy">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0">Mazvydas Gudelis</h5>
+            <div class="card-text text-black-50">Developer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row -->
+  
+  </div>
+  <!-- /.container -->
+{% endblock %}
