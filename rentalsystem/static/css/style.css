@@ -5,6 +5,9 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+
+  background: url("https://images.pexels.com/photos/628241/pexels-photo-628241.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat center center fixed;
+  background-size: cover;
 }
 
 .searchBar  {
@@ -126,4 +129,9 @@ body {
     display: block;
   }
   tr:nth-child(odd) td {background-color: #dfdfdf; border-color: #9e9e9e}
+}
+
+.white-container {
+  padding: 20px;
+  background-color: white;
 }

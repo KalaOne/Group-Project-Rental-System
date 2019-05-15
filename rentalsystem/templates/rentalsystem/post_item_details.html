@@ -8,8 +8,8 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <p>Title: {{item_name}}</p>
-                    <p>Description: {{info}}</p> 
-                    <p>Cost per day: {{cost}}</p>
+                    <p>Description: {{info}}</p>
+                    <p>Cost per day: £{{cost}}</p>
                     <input type="hidden" value="{{item_name}}" name = "i_name">
                     <input type="hidden" value="{{info}}" name = "i_info">
                     <input type="hidden" value="{{cost}}" name = "i_cost">

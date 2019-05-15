@@ -3,61 +3,63 @@
 {% block title %}My Orders{% endblock %}
 
 {% block content %}
+<div class="white-container">
+  <h2>Current Orders</h2><br>
 
-    <h2>Current Orders</h2><br>
+  <table class="table">
+  <tr>
+      <th>Order ID</th>
+      <th>Product Ordered</th>
+      <th>Total Cost</th>
+      <th>Order Start Date</th>
+      <th>Order End Date</th>
+  </tr>
 
-    <table class="table">
-    <tr>
-        <th>Order ID</th>
-        <th>Product Ordered</th>
-        <th>Total Cost</th>
-        <th>Order Start Date</th>
-        <th>Order End Date</th>
-    </tr>
+  {% for order in current_orders%}
+      <tr>
+          <td> {{ order.id }} </td>
+          <td> {{ order.item_id }} </td>
+          <td> £{{ order.total_cost }} </td>
+          <td> {{ order.start_date }} </td>
+          <td> {{ order.end_date }} </td>
+      </tr>
+  {% endfor %}
+  </table>
 
-    {% for order in current_orders%}
-        <tr>
-            <td> {{ order.id }} </td>
-            <td> {{ order.item_id }} </td>
-            <td> £{{ order.total_cost }} </td>
-            <td> {{ order.start_date }} </td>
-            <td> {{ order.end_date }} </td>
-        </tr>
-    {% endfor %}
-    </table>
+      <h2>Completed Orders</h2><br>
 
-        <h2>Completed Orders</h2><br>
+  <table class="table">
+  <tr>
+      <th>Order ID</th>
+      <th>Product Ordered</th>
+      <th>Total Cost</th>
+      <th>Order Start Date</th>
+      <th>Order End Date</th>
+      <th>Leave A Review</th>
+  </tr>
 
-    <table class="table">
-    <tr>
-        <th>Order ID</th>
-        <th>Product Ordered</th>
-        <th>Total Cost</th>
-        <th>Order Start Date</th>
-        <th>Order End Date</th>
-        <th>Leave A Review</th>
-    </tr>
+  {% for order in completed_orders%}
+      <tr>
+          <td> {{ order.id }} </td>
+          <td> {{ order.item_id }} </td>
+          <td> £{{ order.total_cost }} </td>
+          <td> {{ order.start_date }} </td>
+          <td> {{ order.end_date }} </td>
+          <td>
+              {% if order.reviews_set.count == 0 %}
+              <form action='/leave_review/' method='POST'>
+                  {% csrf_token %}
+                  <input type="hidden" name="transactionpk" value="{{order.id}}">
+                  <button class="btn btn-primary btn-sm">Leave Review!</button>
+              </form>
+              {% else %}
+              <i class="text-success">Already reviewed</i>
+              {% endif %}
+          </td>
+      </tr>
+  {% endfor %}
+  </table>
+</div>
 
-    {% for order in completed_orders%}
-        <tr>
-            <td> {{ order.id }} </td>
-            <td> {{ order.item_id }} </td>
-            <td> £{{ order.total_cost }} </td>
-            <td> {{ order.start_date }} </td>
-            <td> {{ order.end_date }} </td>
-            <td>
-                {% if order.reviews_set.count == 0 %}
-                <form action='/leave_review/' method='POST'>
-                    {% csrf_token %}
-                    <input type="hidden" name="transactionpk" value="{{order.id}}">
-                    <button class="btn btn-primary btn-sm">Leave Review!</button>
-                </form>
-                {% else %}
-                <i class="text-success">Already reviewed</i>
-                {% endif %}
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
 
 {% endblock %}

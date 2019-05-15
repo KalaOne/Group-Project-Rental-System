@@ -3,122 +3,126 @@
 
 {% block content %}
 
-    <div class="container-fluid">
-        <center><h4 style="color:red;">{% if controller == True %}Account details updated{% else %} {% endif %}</h4></center>
-        <center><h4 style="color:red;">{% if error_set %} {{ error }} {% endif %}</h4></center>
+<div class="white-container">
+  <div class="container-fluid">
+      <center><h4 style="color:red;">{% if controller == True %}Account details updated{% else %} {% endif %}</h4></center>
+      <center><h4 style="color:red;">{% if error_set %} {{ error }} {% endif %}</h4></center>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-2">
-                    </div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="row">
+                  <div class="col-md-2">
+                  </div>
 
-                    <div class="col-md-8">
+                  <div class="col-md-8">
 
-                        <div class="row" style="padding-left: 10%">
+                      <div class="row" style="padding-left: 10%">
 
-                            <div class="col-md-5">
-                                <img class="card rounded-circle account-img" style="width:250px"
-                                     src="{{ user.profile.image.url }}">
-                            </div>
-                            <div class="col-md-7">
-                                <h2 class="account-heading">{% if controller == True %}{{ username }}{% else %}{{ user.username }}{% endif %}</h2>
-                                <p class="text-secondary">{% if controller == True %}{{ email }}{% else %}{{ user.email }}{% endif %}</p>
-                                <p class="text-secondary">{% if not adline1 %} {{ user.address.address1 }} {% else %} {{ adline1 }} {% endif %}</p>
-                                <p class="text-secondary">{% if not adline2 %} {{ user.address.address2 }} {% else %} {{ adline2 }} {% endif %}</p>
-                                <p class="text-secondary">{% if not adline3 %} {{ user.address.post_code }} {% else %} {{ adline3 }} {% endif %}</p>
-                                <div class="row">
-                                    <form action='/edit_account/' method='POST'>
-                                        {% csrf_token %}
-                                        <input id="user" type="hidden" name="user" value="{{ user }}">
-                                        <button class="btn btn-secondary btn-sm">Edit account</button>
-                                    </form>
-                                </div>
+                          <div class="col-md-5">
+                              <img class="card rounded-circle account-img" style="width:250px"
+                                   src="{{ user.profile.image.url }}">
+                          </div>
+                          <div class="col-md-7">
+                              <h2 class="account-heading">{% if controller == True %}{{ username }}{% else %}{{ user.username }}{% endif %}</h2>
+                              <p class="text-secondary">{% if controller == True %}{{ email }}{% else %}{{ user.email }}{% endif %}</p>
+                              <p class="text-secondary">{% if not adline1 %} {{ user.address.address1 }} {% else %} {{ adline1 }} {% endif %}</p>
+                              <p class="text-secondary">{% if not adline2 %} {{ user.address.address2 }} {% else %} {{ adline2 }} {% endif %}</p>
+                              <p class="text-secondary">{% if not adline3 %} {{ user.address.post_code }} {% else %} {{ adline3 }} {% endif %}</p>
+                              <div class="row">
+                                  <form action='/edit_account/' method='POST'>
+                                      {% csrf_token %}
+                                      <input id="user" type="hidden" name="user" value="{{ user }}">
+                                      <button class="btn btn-secondary btn-sm">Edit account</button>
+                                  </form>
+                              </div>
 
-                            </div>
-                        </div>
+                          </div>
+                      </div>
 
-                        <div class="row" style="margin-top: 2em">
-                            <div class="col-md-12">
-                                <div class="card-header">
-                                    <h6 class="card-title">My Reviews<i style="margin-left: 15px"
-                                                                        class="text-dark small">Ordered by Most
-                                        Recent</i></h6>
+                      <div class="row" style="margin-top: 2em">
+                          <div class="col-md-12">
+                              <div class="card-header">
+                                  <h6 class="card-title">My Reviews<i style="margin-left: 15px"
+                                                                      class="text-dark small">Ordered by Most
+                                      Recent</i></h6>
 
-                                    <table class="table" style="border:none; margin-bottom: 0px">
-                                        <tr style="border:none">
-                                            <th class="text-center" style="border:none"> ORDER ID</th>
-                                            <th class="text-center" style="border:none"> PRODUCT</th>
-                                            <th class="text-center" style="border:none"> OWNER</th>
-                                            <th class="text-center" style="border:none"> RENTED FROM</th>
-                                            <th class="text-center" style="border:none"> RENTED UNTIL</th>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="text-white bg-secondary mb-3" style="overflow-y: scroll; height:400px;">
+                                  <table class="table" style="border:none; margin-bottom: 0px">
+                                      <tr style="border:none">
+                                          <th class="text-center" style="border:none"> ORDER ID</th>
+                                          <th class="text-center" style="border:none"> PRODUCT</th>
+                                          <th class="text-center" style="border:none"> OWNER</th>
+                                          <th class="text-center" style="border:none"> RENTED FROM</th>
+                                          <th class="text-center" style="border:none"> RENTED UNTIL</th>
+                                      </tr>
+                                  </table>
+                              </div>
+                              <div class="text-white bg-secondary mb-3" style="overflow-y: scroll; height:400px;">
 
-                                    <div class="card-body">
-                                        {% if reviews.count > 0 %}
-                                            {% for review in reviews %}
-                                                <div class="row>">
-                                                    <div class="col-md-12 bg-dark">
-                                                        <table class="table bg-secondary" style="border-top: none">
-                                                            <tr>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.id }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.item_id }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.owner_id }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.start_date }} </td>
-                                                                <td class="text-white text-center">  {{ review.transaction_id.end_date }} </td>
-                                                            </tr>
-                                                        </table>
-                                                        <div class="row">
-                                                            <div class="col-md-2  text-center">
+                                  <div class="card-body">
+                                      {% if reviews.count > 0 %}
+                                          {% for review in reviews %}
+                                              <div class="row>">
+                                                  <div class="col-md-12 bg-dark">
+                                                      <table class="table bg-secondary" style="border-top: none">
+                                                          <tr>
+                                                              <td class="text-white text-center">  {{ review.transaction_id.id }} </td>
+                                                              <td class="text-white text-center">  {{ review.transaction_id.item_id }} </td>
+                                                              <td class="text-white text-center">  {{ review.transaction_id.owner_id }} </td>
+                                                              <td class="text-white text-center">  {{ review.transaction_id.start_date }} </td>
+                                                              <td class="text-white text-center">  {{ review.transaction_id.end_date }} </td>
+                                                          </tr>
+                                                      </table>
+                                                      <div class="row">
+                                                          <div class="col-md-2  text-center">
 
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <i>Game:</i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        {{ review.item_rating }}/5
-                                                                    </div>
-                                                                </div>
+                                                              <div class="row">
+                                                                  <div class="col-md-12">
+                                                                      <i>Game:</i>
+                                                                  </div>
+                                                              </div>
+                                                              <div class="row">
+                                                                  <div class="col-md-12">
+                                                                      {{ review.item_rating }}/5
+                                                                  </div>
+                                                              </div>
 
-                                                            </div>
-                                                            <div class="col-md-8">
-                                                                <p class="text-white text-center"> {{review.content}}</p>
-                                                            </div>
-                                                            <div class="col-md-2  text-center">
+                                                          </div>
+                                                          <div class="col-md-8">
+                                                              <p class="text-white text-center"> {{review.content}}</p>
+                                                          </div>
+                                                          <div class="col-md-2  text-center">
 
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        Quality:
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        {{ review.transaction_rating }}/5
-                                                                    </div>
-                                                                </div>
+                                                              <div class="row">
+                                                                  <div class="col-md-12">
+                                                                      Quality:
+                                                                  </div>
+                                                              </div>
+                                                              <div class="row">
+                                                                  <div class="col-md-12">
+                                                                      {{ review.transaction_rating }}/5
+                                                                  </div>
+                                                              </div>
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          {% endfor %}
+                                      {% endif %}
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
 
-                    <div class="col-md-2">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                  <div class="col-md-2">
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
 
 {% endblock %}
