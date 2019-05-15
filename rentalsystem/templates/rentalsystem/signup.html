@@ -3,6 +3,7 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
+<div class="white-container">
   <h2>Sign up</h2>
   <form method="post">
     {% csrf_token %}
@@ -15,4 +16,6 @@
     {% endfor %}
     <button type="submit">Sign up</button>
   </form>
+</div>
+
 {% endblock %}

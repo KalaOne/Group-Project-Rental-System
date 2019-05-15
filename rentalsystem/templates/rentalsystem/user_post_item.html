@@ -3,26 +3,28 @@
 {% block title %}Add Item{% endblock %}
 
 {% block content %}
+<div class="white-container">
+  <div class="container">
+      <div class="row">
+          <form class="form-horizontal" method="POST", action="{% url 'item_details' %}"  enctype="multipart/form-data">
+              {% csrf_token %}
+              <p>Title: </p>
+                  <select class="mb-32" name="dropdown_value">
+                      {%for i in items %}
+                          <option value="{{i.id}}">{{i.name}}</option>
+                      {%endfor%}
+                  </select>
+              <p>Additional Information: </p>
+                  <input class="mb-32" type="textarea" value='{{info}}' id="info" name="info_field" required>
+              <p>Cost per day: </p>
+              <input class="mb-32" value= '{{i_cost}}'id="Cost" name="cost" required>
+              <input type="submit" value="Submit" class="btn btn-success">
 
-    <div class="container">
-        <div class="row">
-            <form class="form-horizontal" method="POST", action="{% url 'item_details' %}"  enctype="multipart/form-data">
-                {% csrf_token %}
-                <p>Title: </p>
-                    <select class="mb-32" name="dropdown_value">
-                        {%for i in items %}
-                            <option value="{{i.id}}">{{i.name}}</option>
-                        {%endfor%}
-                    </select>
-                <p>Additional Information: </p>
-                    <input class="mb-32" type="textarea" value='{{info}}' id="info" name="info_field" required>
-                <p>Cost per day: </p>
-                <input class="mb-32" value= '{{i_cost}}'id="Cost" name="cost" required>
-                <input type="submit" value="Submit" class="btn btn-success">
+          </form>
+      </div>
 
-            </form>
-        </div>
+  </div>
+</div>
 
-    </div>
 
 {% endblock %}
