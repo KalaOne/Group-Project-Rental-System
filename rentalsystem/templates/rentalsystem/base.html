@@ -67,7 +67,7 @@
             {% endif %}
             {% if user.role ==  'A' %}
                 <li class="nav-item">
-                  <button class="btn btn-primary"><a class="nav-link text-white" href="{% url 'cron' %}">cron</a></button>
+                  <button class="btn btn-sm btn-primary"><a class="nav-link text-white" href="{% url 'cron' %}">cron</a></button>
                 </li>
                 <li class="nav-item">
                     <p><a class="nav-link" href="{% url 'jobstats' %}">Job Stats</a></p>
@@ -76,15 +76,13 @@
                     <p><a class="nav-link" href="/admin/">Admin</a></p>
                 </li>
             {% endif %}
-            {% if user.role ==  'C' or user.role == 'S' or user.role == 'A'%}
-                <li class="nav-item">
+            {% if user.is_authenticated %}
+                <li class="nav-item" style="border-left: 1px solid rgb(78, 77, 77);">
                     <p><a class="nav-link" href="{% url 'user_post_item' %}">Upload Game</a></p>
                 </li>
                 <li class="nav-item">
-                    <p><a class="nav-link" href="{% url 'my_listings' %}">My listings</a></p>
+                    <p><a class="nav-link" href="{% url 'my_listings' %}">My Listings</a></p>
                 </li>
-            {% endif %}
-            {% if user.role ==  'C' or user.role == 'S' or user.role == 'A' %}
                 <li class="nav-item">
                     <p><a class="nav-link" href="{% url 'my_orders' %}">My Orders</a></p>
                 </li>

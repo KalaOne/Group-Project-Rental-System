@@ -764,6 +764,8 @@ def post_item_complete(request):
                                    owner_id=user_id,
                                    item_type_id=i_id)
 
+        updateLowestPrice(i_id.id)
+
 
         # Create a transaction between seller and Admin
         transaction = Transaction.objects.create(total_cost=0,
@@ -913,6 +915,7 @@ def item_listings(request):
         # For all listings
         for listing in items:
             # For all transactions of requested listing
+            
             for transaction in Transaction.objects.filter(item_id=listing):
                 t_s_date = transaction.start_date
                 t_e_date = transaction.end_date
@@ -920,25 +923,26 @@ def item_listings(request):
                 print("t_s_date: ", t_s_date)
                 print("t_e_date: ", t_e_date)
 
-                if not(t_s_date <= s_date_datetime <= t_e_date) or not(t_s_date <= e_date_datetime <= t_e_date):
-                    if not(s_date_datetime <= t_s_date <= e_date_datetime) or not(s_date_datetime <= t_e_date <= e_date_datetime):
-                        print("Start and End date not colliding")
-                        available_items.append(listing)
+                if(t_s_date is not None and t_e_date is not None ):
+
+                    if not(t_s_date <= s_date_datetime <= t_e_date) or not(t_s_date <= e_date_datetime <= t_e_date):
+                        if not(s_date_datetime <= t_s_date <= e_date_datetime) or not(s_date_datetime <= t_e_date <= e_date_datetime):
+                            print("Start and End date not colliding")
+                            available_items.append(listing)
+                            break
+                        else:
+                            print("!!!!!!!!!")
                     else:
                         print("!!!!!!!!!")
-                else:
-                    print("!!!!!!!!!")
 
 
-        # Add all listings that dont have transactions
+        #Add all listings that dont have transactions
         no_transactions = []
         for listing in items:
             has_transaction = False
-            for transaction in Transaction.objects.filter(item_id=listing):
-                if transaction.item_id is listing:
-                    has_transaction = True
-                if has_transaction is False:
-                    available_items.append(listing)
+            if Transaction.objects.filter(item_id=listing).count()==0:
+                available_items.append(listing)
+                
 
         cost = 10
 
@@ -962,6 +966,7 @@ def item_listings(request):
 
 def confirm_return(request):
     listing = request.POST.get('listing')
+    #listing.delete() to be implemented
 
     context = {
         'listing': listing
