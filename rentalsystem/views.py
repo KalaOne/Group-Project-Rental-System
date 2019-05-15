@@ -80,8 +80,12 @@ def home(request):
 
 def updateiteminfo(request):
     if request.user.role == 'A':
+        print("UPDATING AVERAGE ITEM RATINGS")
         updateAllItemsRatings()
+        print("UPDATING LOWEST ITEM PRICE")
         updateAllLowestPrices()
+        print("ALLOCATING JOBS")
+        allocate_jobs()
     return home(request)
 
 # Re renders home page with new 'context' after a search
@@ -425,35 +429,37 @@ def jobstats(request):
 
     # if no POST request then show all job stats
     else:
-        # Default to all regions, max time
 
         ############################### On Time Jobs vs Late Jobs ############################
 
         # On time jobs
-        on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, None)).order_by(
+        on_time_jobs = getOnTimeJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 7)).order_by(
             '-delivered_datetime')
         on_time_jobs_count = on_time_jobs.count()
         print("OnTime Jobs:", on_time_jobs_count)
         # Late jobs
-        late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, None)).order_by('-delivered_datetime')
+        late_jobs = getLateJobsFromQuerySet(getJobsByRegionAndPeriodPast(None, 7)).order_by('-delivered_datetime')
         late_jobs_count = late_jobs.count()
         print("Late Jobs:", late_jobs_count)
 
         ############################### Un-Delivered and Unallocated Jobs ############################
 
         # Un-Delivered jobs
-        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull=True, job_list_id__isnull=False).order_by(
+        undelivered_jobs = Job.objects.filter(delivered_datetime__isnull=True, job_list_id__isnull=False,delivered_datetime__lte=(datetime.now() + timedelta(days=7)),
+                                  delivered_datetime__gte=(datetime.now())).order_by(
             'due_delivery_datetime')
         undelivered_jobs_count = undelivered_jobs.count()
         print("Undelivered Jobs:", undelivered_jobs_count)
         # Unallocated jobs
-        unallocated_jobs = Job.objects.filter(job_list_id__isnull=True).order_by('due_delivery_datetime')
+        unallocated_jobs = Job.objects.filter(job_list_id__isnull=True,delivered_datetime__lte=(datetime.now() + timedelta(days=7)),
+                                  delivered_datetime__gte=(datetime.now())).order_by('due_delivery_datetime')
         unallocated_jobs_count = unallocated_jobs.count()
         print("Unallocated Jobs:",unallocated_jobs_count)
 
+
         context = {
             'searched_region': 'All',
-            'day_sort': 'All time',
+            'day_sort': '1 week',
             'on_time_jobs': on_time_jobs,
             'on_time_jobs_count': on_time_jobs_count,
             'late_jobs': late_jobs,
