@@ -915,7 +915,7 @@ def item_listings(request):
         # For all listings
         for listing in items:
             # For all transactions of requested listing
-            
+
             for transaction in Transaction.objects.filter(item_id=listing):
                 t_s_date = transaction.start_date
                 t_e_date = transaction.end_date
@@ -931,9 +931,11 @@ def item_listings(request):
                             available_items.append(listing)
                             break
                         else:
-                            print("!!!!!!!!!")
+                            print("!!!!!00!!!!")
                     else:
                         print("!!!!!!!!!")
+                else:
+                    available_items.append(listing)
 
 
         #Add all listings that dont have transactions
@@ -942,7 +944,7 @@ def item_listings(request):
             has_transaction = False
             if Transaction.objects.filter(item_id=listing).count()==0:
                 available_items.append(listing)
-                
+
 
         cost = 10
 
