@@ -919,10 +919,15 @@ def item_listings(request):
 
         # Add listings that have transactions that donot collide with request rent period
         # For all listings
+        i = 1;
+        j = 1;
         for listing in items:
             # For all transactions of requested listing
-
+            can_add = True
+            print("\nLISTING: ", i)
             for transaction in Transaction.objects.filter(item_id=listing):
+
+                print("TRANSACTION: ", j)
                 t_s_date = transaction.start_date
                 t_e_date = transaction.end_date
 
@@ -931,25 +936,51 @@ def item_listings(request):
 
                 if(t_s_date is not None and t_e_date is not None ):
 
-                    if not(t_s_date <= s_date_datetime <= t_e_date) or not(t_s_date <= e_date_datetime <= t_e_date):
-                        if not(s_date_datetime <= t_s_date <= e_date_datetime) or not(s_date_datetime <= t_e_date <= e_date_datetime):
-                            print("Start and End date not colliding")
-                            available_items.append(listing)
-                            break
+                    # If requested start date isn't between the start and end dates of existing transaction
+                    if not(t_s_date <= s_date_datetime <= t_e_date):
+                        # If requested end date isn't between the start and end dates of existing transaction
+                        if not(t_s_date <= e_date_datetime <= t_e_date):
+                            # If existing start date isn't between existing requested start and end date
+                            if not(s_date_datetime <= t_s_date <= e_date_datetime):
+                                # If existing end date isn't between existing requested start and end date
+                                if not(s_date_datetime <= t_e_date <= e_date_datetime):
+                                    print("Start and End date not colliding")
+                                else:
+                                    print("!!!!! 4 !!!!")
+                                    can_add = False
+                                    break
+                            else:
+                                print("!!!!! 3 !!!!")
+                                can_add = False
+                                break
                         else:
-                            print("!!!!!00!!!!")
+                            print("!!!!! 2 !!!!")
+                            can_add = False
+                            break
                     else:
-                        print("!!!!!!!!!")
+                        print("!!!!! 1 !!!!")
+                        can_add = False
+                        break
+
+                # transaction is items initial pick up and can be added
                 else:
+                    print("!! INITIAL PICK UP !!")
                     available_items.append(listing)
-
-
-        #Add all listings that dont have transactions
-        no_transactions = []
-        for listing in items:
-            has_transaction = False
-            if Transaction.objects.filter(item_id=listing).count()==0:
+                    can_add = False
+                    break
+                j = j+1
+            if can_add:
+                print("ADDING LISTING ", i)
                 available_items.append(listing)
+            i = i+1
+
+        # #Add all listings that dont have transactions
+        # no_transactions = []
+        # for listing in items:
+        #     # has_transaction = False
+        #     if Transaction.objects.filter(item_id=listing).count()==0:
+        #         print("LISTING HAS NO TRANSACTIONS : ADDING ")
+        #         available_items.append(listing)
 
 
         cost = 10

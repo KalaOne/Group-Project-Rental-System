@@ -88,7 +88,11 @@
 			</form>
 		</div>
         {% else %}
+					{% if user.is_authenticated %}
             <i class="text-secondary"><a href="/edit_account/">Please add card details</a></i>
+					{% else %}
+						<i class="text-secondary"><a href="{% url 'login' %}">Please Log In</a></i>
+					{% endif %}
         {% endif %}
 	</div>
   {% endfor %}
